@@ -1,0 +1,110 @@
+{
+  "github.com/asaskevich/govalidator": {
+    "type": "git",
+    "name": "github.com/asaskevich/govalidator",
+    "remote": "https://github.com/asaskevich/govalidator",
+    "commit": "500e5aa5770c19173c4dcddc33725d76adde8def"
+  },
+  "github.com/codegangsta/cli": {
+    "type": "git",
+    "name": "github.com/codegangsta/cli",
+    "remote": "https://github.com/codegangsta/cli",
+    "commit": "942282e931e8286aa802a30b01fa7e16befb50f3"
+  },
+  "github.com/elazarl/go-bindata-assetfs": {
+    "type": "git",
+    "name": "github.com/elazarl/go-bindata-assetfs",
+    "remote": "https://github.com/elazarl/go-bindata-assetfs",
+    "commit": "bea323321994103859d60197d229f1a94699dde3"
+  },
+  "github.com/gin-gonic/gin": {
+    "type": "git",
+    "name": "github.com/gin-gonic/gin",
+    "remote": "https://github.com/gin-gonic/gin",
+    "commit": "40d41bbe96b58cec476932a1c118df315256133a"
+  },
+  "github.com/go-gorp/gorp": {
+    "type": "git",
+    "name": "github.com/go-gorp/gorp",
+    "remote": "https://github.com/go-gorp/gorp",
+    "commit": "9008e6d2b810022be6f673ff98d9ad1717f9b126"
+  },
+  "github.com/gorilla/websocket": {
+    "type": "git",
+    "name": "github.com/gorilla/websocket",
+    "remote": "https://github.com/gorilla/websocket",
+    "commit": "1551221275a7bd42978745a376b2531f791d88f3"
+  },
+  "github.com/jinzhu/gorm": {
+    "type": "git",
+    "name": "github.com/jinzhu/gorm",
+    "remote": "https://github.com/jinzhu/gorm",
+    "commit": "b96ca76e5924c4f83d9bac72415dfe754e2812bd"
+  },
+  "github.com/jteeuwen/go-bindata": {
+    "type": "git",
+    "name": "github.com/jteeuwen/go-bindata",
+    "remote": "https://github.com/jteeuwen/go-bindata",
+    "commit": "d0a5f1749d7a5a9a9787b0932416082c7bd0609d"
+  },
+  "github.com/lib/pq": {
+    "type": "git",
+    "name": "github.com/lib/pq",
+    "remote": "https://github.com/lib/pq",
+    "commit": "93e9980741c9e593411b94e07d5bad8cfb4809db"
+  },
+  "github.com/manucorporat/sse": {
+    "type": "git",
+    "name": "github.com/manucorporat/sse",
+    "remote": "https://github.com/manucorporat/sse",
+    "commit": "b7eeebd8987e6b233e43db2551d43f71b2e115d5"
+  },
+  "github.com/mattn/go-colorable": {
+    "type": "git",
+    "name": "github.com/mattn/go-colorable",
+    "remote": "https://github.com/mattn/go-colorable",
+    "commit": "d67e0b7d1797975196499f79bcc322c08b9f218b"
+  },
+  "github.com/mattn/go-sqlite3": {
+    "type": "git",
+    "name": "github.com/mattn/go-sqlite3",
+    "remote": "https://github.com/mattn/go-sqlite3",
+    "commit": "542ae647f8601bafd96233961b150cae198e0295"
+  },
+  "github.com/olebedev/config": {
+    "type": "git",
+    "name": "github.com/olebedev/config",
+    "remote": "https://github.com/olebedev/config",
+    "commit": "13747a773c5077a2b8187d92f293fd07aa7c02f8"
+  },
+  "github.com/olebedev/go-duktape": {
+    "type": "git",
+    "name": "github.com/olebedev/go-duktape",
+    "remote": "https://github.com/olebedev/go-duktape",
+    "commit": "59cd97378c278a975f1cb47a503bba41e3687199"
+  },
+  "github.com/rubenv/sql-migrate": {
+    "type": "git",
+    "name": "github.com/rubenv/sql-migrate",
+    "remote": "https://github.com/rubenv/sql-migrate",
+    "commit": "803b4eaa28bbde05e59e23ee6175276e691db148"
+  },
+  "golang.org/x/net": {
+    "type": "git",
+    "name": "golang.org/x/net",
+    "remote": "https://go.googlesource.com/net",
+    "commit": "621fff363a1d9ad7fdd0bfa9d80a42881267deb4"
+  },
+  "gopkg.in/bluesuncorp/validator.v5": {
+    "type": "git",
+    "name": "gopkg.in/bluesuncorp/validator.v5",
+    "remote": "https://gopkg.in/bluesuncorp/validator.v5",
+    "commit": "07cbdd2e6dfd947b002e83c13b775c7580fab2d5"
+  },
+  "launchpad.net/~niemeyer/goyaml/beta": {
+    "type": "bzr",
+    "name": "launchpad.net/~niemeyer/goyaml/beta",
+    "remote": "http://bazaar.launchpad.net/~niemeyer/goyaml/beta/",
+    "commit": "64"
+  }
+}
