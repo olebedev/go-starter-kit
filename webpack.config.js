@@ -60,8 +60,8 @@ var config  = {
       {test: /\.json$/, loader: 'json-loader'},
       {
         test: /\.jsx?$/,
-        include: path.join(__dirname, 'src'),
-        loader: 'babel'
+        include: path.join(__dirname, 'src/app/client'),
+        loaders: ['babel']
       }
     ]
   },

@@ -7,3 +7,5 @@ src/app/server/data/bindata.go
 src/app/server/data/static/build/
 
 .pid
+.pid_wds
+.pid_wp
