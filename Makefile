@@ -2,7 +2,7 @@ BIN = $(GOPATH)/bin
 NODE_BIN = ./node_modules/.bin
 PID = .pid
 GO_FILES = $(filter-out bindata.go, $(shell find src/app -type f -name "*.go"))
-BINDATA_FLAGS ?= -debug -pkg=static -prefix=src/app/server/static -ignore=src\\/app\\/server\\/static\\/bindata.go
+BINDATA_FLAGS ?= -debug -pkg=data -prefix=src/app/server/data -ignore=src\\/app\\/server\\/data\\/bindata.go
 
 clean:
 	@echo cleaned
@@ -21,8 +21,8 @@ serve: clean
 
 restart: src/app/server/static/bindata.go
 	@make kill
-	go install app
-	$(BIN)/app & echo $$! > $(PID)
+	@go install app
+	@$(BIN)/app & echo $$! > $(PID)
 
-src/app/server/static/bindata.go:
-	$(BIN)/go-bindata $(BINDATA_FLAGS) -o=$@ src/app/server/static/...
+src/app/server/data/bindata.go:
+	$(BIN)/go-bindata $(BINDATA_FLAGS) -o=$@ src/app/server/data/...

@@ -46,8 +46,8 @@ var cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader?disableStr
 var config  = {
   entry: [path.join(__dirname, 'src/app/client/entry.js')],
   output: {
-    path: path.join(__dirname, 'src/app/server/static'),
-    publicPath: "/static/",
+    path: path.join(__dirname, 'src/app/server/data/static/build'),
+    publicPath: "/static/build",
     filename: 'bundle.js'
   },
   plugins: plugins,

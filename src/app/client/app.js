@@ -1,15 +1,11 @@
-/**
- * @jsx React.DOM
- */
+import React, { Component } from 'react';
 
-var React = require('react');
+export default class App extends Component {
 
-var App = React.createClass({
-
-  render: function() {
-    return <html lang="en">
+  render() {
+    return <html lang='en'>
       <head>
-        <meta charset="UTF-8">
+        <meta charSet='UTF-8' />
         <title></title>
       </head>
       <body>
@@ -18,6 +14,4 @@ var App = React.createClass({
     </html>;
   }
 
-});
-
-module.exports = App;
+}
