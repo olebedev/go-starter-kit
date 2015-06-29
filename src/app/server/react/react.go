@@ -3,7 +3,9 @@ package react
 import (
 	"app/server/data"
 	. "app/server/utils"
+	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/olebedev/go-duktape"
@@ -31,17 +33,69 @@ func (r *react) init() {
 }
 
 func (r *react) handle(c *gin.Context) {
-	var v string
 	vm := r.pool.get()
-	vm.PevalString(`React.renderToString(React.createElement(App, {}));`)
-	v = vm.SafeToString(-1)
-	vm.PopN(vm.GetTop())
-	r.pool.put(vm)
 
-	c.Writer.WriteHeader(200)
-	c.Writer.Header().Add("Content-Type", "text/html")
-	c.Writer.Write([]byte("<!doctype html>\n" + v))
-	c.Abort()
+	vm.PushGlobalObject()
+	vm.GetPropString(-1, "__router__")
+	vm.PushString("renderToString")
+
+	req := func() string {
+		b, _ := json.Marshal(map[string]interface{}{
+			"url":     c.Request.URL.String(),
+			"headers": c.Request.Header,
+		})
+		return string(b)
+	}()
+	vm.PushString(req)
+	vm.JsonDecode(-1)
+	ch := make(chan struct{}, 1)
+	vm.PushGoFunction(func(ctx *duktape.Context) int {
+
+		// Getting response object via json
+		r := func() *resp {
+			var re resp
+			json.Unmarshal([]byte(vm.JsonEncode(-1)), &re)
+			return &re
+		}()
+
+		// Handle the response
+		if len(r.Redirect) == 0 && len(r.Error) == 0 {
+			// If no redirection and no error
+			c.Writer.WriteHeader(http.StatusOK)
+			c.Writer.Header().Add("Content-Type", "text/html")
+			c.Writer.Write([]byte("<!doctype html>\n" + r.Body))
+			c.Abort()
+			// If redirect
+		} else if len(r.Redirect) != 0 {
+			c.Redirect(http.StatusMovedPermanently, r.Redirect)
+			// If internal error
+		} else if len(r.Error) != 0 {
+			c.Writer.WriteHeader(http.StatusInternalServerError)
+			c.Writer.Header().Add("Content-Type", "text/plain")
+			c.Writer.Write([]byte(r.Error))
+			c.Abort()
+		}
+
+		// Unlock handler
+		ch <- struct{}{}
+		// Return nothing into duktape context
+		return 0
+	})
+
+	// Duktape stack -> [ {global}, __router__, "renderToString", {\"test\":1}, {test:1}, {func: true} ]
+	vm.PcallProp(1, 2)
+	// Lock handler and wait for app response
+	<-ch
+	// Clean stack
+	vm.PopN(vm.GetTop())
+	// Return vm back to the pool
+	r.pool.put(vm)
+}
+
+type resp struct {
+	Error    string `json:"error"`
+	Redirect string `json:"redirect"`
+	Body     string `json:"body"`
 }
 
 // Interface to serve React app on demand or from prepared pool
@@ -76,8 +130,9 @@ func newDuktapeContext(engine *gin.Engine) *duktape.Context {
 	if err := vm.PevalString(string(app)); err != nil {
 		derr := err.(*duktape.Error)
 		fmt.Printf("\n\n\n%v\n%v\n\n\n", derr.FileName, derr.LineNumber)
-		panic(err.(*duktape.Error).Message)
+		panic(derr.Message)
 	}
+	vm.PopN(vm.GetTop())
 	return vm
 }
 

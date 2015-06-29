@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { RouteHandler } from 'react-router';
 import { example } from './styles';
+import Homepage from '../homepage';
 
 export default class App extends Component {
 
@@ -11,8 +13,8 @@ export default class App extends Component {
         <title></title>
       </head>
       <body>
-       <h1 className={example}>Go Starter Kit</h1>
-       <script src='/static/build/bundle.js'></script>
+        <RouteHandler {...this.props} />
+        <script src='/static/build/bundle.js'></script>
       </body>
     </html>;
   }
