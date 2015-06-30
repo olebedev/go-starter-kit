@@ -16,12 +16,14 @@
     "eslint-plugin-react": "^2.3.0",
     "expose-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^0.8.1",
+    "lodash": "^3.9.3",
     "react": "^0.13.3",
     "react-hot-loader": "^1.2.7",
     "react-router": "^0.13.3",
     "style-loader": "^0.12.3",
     "stylus-loader": "^1.2.0",
     "webpack": "^1.9.6",
-    "webpack-dev-server": "^1.8.2"
+    "webpack-dev-server": "^1.8.2",
+    "when": "^3.7.3"
   }
 }

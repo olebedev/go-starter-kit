@@ -1,7 +1,7 @@
 import React from 'react';
 import Router from 'react-router';
 import routes from './routes';
-
+import loadProps from '#app/utils/loadProps';
 
 /**
  * Handle HTTP request at Golang server
@@ -16,6 +16,7 @@ export default function (options, cbk) {
     body: null,
     redirect: null
   };
+
 
   const router = Router.create({
     routes: routes,
@@ -37,8 +38,12 @@ export default function (options, cbk) {
   });
 
   try {
-    router.run(Handler => {
-      result.Body = React.renderToString(<Handler />);
+    router.run((Handler, state) => {
+      const routeHandlerInfo = { state };
+      loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
+        result.body = React.renderToString(<Handler />);
+        cbk(result);
+      });
     });
   } catch (error){
     if (error.redirect) {
@@ -46,7 +51,7 @@ export default function (options, cbk) {
     } else {
       result.error = error;
     }
+    cbk(result);
   }
 
-  return cbk(result);
 }

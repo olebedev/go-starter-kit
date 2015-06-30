@@ -4,6 +4,8 @@ import { example, link } from './styles';
 
 export default class Homepage extends Component {
 
+  static loadProps() {}
+
   render() {
     return <div>
       <h1 className={example}>Golang + React + Router + Redux Isomorphic Starter Kit</h1>
