@@ -43,7 +43,7 @@ export default function (options, cbk) {
 
   try {
     router.run((Handler, state) => {
-      const routeHandlerInfo = { state };
+      const routeHandlerInfo = { flux, state };
       loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
         result.body = React.renderToString(
           <FluxComponent flux={flux}>

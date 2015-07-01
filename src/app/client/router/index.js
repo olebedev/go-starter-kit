@@ -11,7 +11,7 @@ const flux = new Flux();
 
 export function run() {
   Router.run(routes, Router.HistoryLocation, (Handler, state) => {
-    const routeHandlerInfo = { state };
+    const routeHandlerInfo = { flux, state };
     loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
       React.render(
         <FluxComponent flux={flux}>
@@ -24,3 +24,15 @@ export function run() {
 };
 
 export const renderToString = RenderToString;
+
+// NOTE: Make sure that you use
+// webpack.optimize.DedupePlugin
+//
+if (module.hot) {
+  require('../styles');
+  const inc = flux.getActions('app').refreshStyles;
+  module.hot.accept('../styles', () => {
+    require('../styles');
+    inc();
+  });
+}
