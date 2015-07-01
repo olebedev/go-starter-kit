@@ -1,5 +1,7 @@
 import React from 'react';
 import Router from 'react-router';
+import FluxComponent from 'flummox/component';
+import Flux from '../flux';
 import routes from './routes';
 import loadProps from '#app/utils/loadProps';
 
@@ -37,11 +39,17 @@ export default function (options, cbk) {
     }
   });
 
+  const flux = new Flux();
+
   try {
     router.run((Handler, state) => {
       const routeHandlerInfo = { state };
       loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
-        result.body = React.renderToString(<Handler />);
+        result.body = React.renderToString(
+          <FluxComponent flux={flux}>
+            <Handler />
+          </FluxComponent>
+        );
         cbk(result);
       });
     });
