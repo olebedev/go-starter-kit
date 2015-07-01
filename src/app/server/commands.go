@@ -44,7 +44,11 @@ func runServer(c *cli.Context) {
 		Prefix:   "static",
 	})
 
-	// routes.bind(r)
+	// Avoid favicon react handling
+	kit.Engine.GET("/favicon.ico", func(c *gin.Context) {
+		c.Redirect(301, "/static/images/favicon.ico")
+	})
+
 	react.Bind(kit)
 	Must(kit.Engine.Run(":" + kit.Conf.UString("port")))
 }
