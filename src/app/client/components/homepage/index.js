@@ -4,7 +4,10 @@ import { example, link } from './styles';
 
 export default class Homepage extends Component {
 
-  static loadProps() {}
+  static loadProps({flux, state}) {
+    // Load all needed data and set the document title
+    flux.getActions('app').setTitle('Homepage')
+  }
 
   render() {
     return <div>

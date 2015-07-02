@@ -82,12 +82,14 @@ func (r *react) handle(c *gin.Context) {
 		return 0
 	})
 
-	// Duktape stack -> [ {global}, __router__, "renderToString", {\"test\":1}, {test:1}, {func: true} ]
+	// Duktape stack -> [ {global}, __router__, "renderToString", {\"url\":\"...\"}, {url:...}, {func: true} ]
 	vm.PcallProp(1, 2)
 	// Lock handler and wait for app response
 	<-ch
 	// Clean stack
-	vm.PopN(vm.GetTop())
+	if i := vm.GetTop(); i > 0 {
+		vm.PopN(i)
+	}
 	// Return vm back to the pool
 	r.pool.put(vm)
 }

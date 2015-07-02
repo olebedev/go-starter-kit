@@ -10,7 +10,7 @@ class Html extends Component {
       <head>
         <meta charSet='UTF-8' />
         <link rel='stylesheet' href={'/static/build/bundle.css?' + this.props.count}/>
-        <title>{'Count: ' + this.props.count}</title>
+        <title>{this.props.title}</title>
       </head>
       <body>
         {this.props.children}

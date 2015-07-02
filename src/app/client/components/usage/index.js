@@ -4,6 +4,11 @@ import { example } from './styles';
 
 export default class Usage extends Component {
 
+  static loadProps({flux, state}) {
+    // Load all needed data and set the document title
+    flux.getActions('app').setTitle('Usage')
+  }
+
   render() {
     return <div>
       Usage
