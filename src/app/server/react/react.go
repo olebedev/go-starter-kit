@@ -19,16 +19,15 @@ func Bind(kit *Kit) {
 }
 
 type react struct {
-	pool   pool
-	engine *gin.Engine
-	kit    *Kit
+	pool pool
+	kit  *Kit
 }
 
 func (r *react) init() {
 	if r.kit.Conf.UBool("duktape.pool.use") {
-		r.pool = newDuktapePool(r.kit.Conf.UInt("duktape.pool.size", 1), r.engine)
+		r.pool = newDuktapePool(r.kit.Conf.UInt("duktape.pool.size", 1), r.kit.Engine)
 	} else {
-		r.pool = &onDemandPool{r.engine}
+		r.pool = &onDemandPool{r.kit.Engine}
 	}
 }
 
