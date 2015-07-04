@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { example } from './styles';
+import { usage, todo } from './styles';
+import { example, p, link } from '../homepage/styles';
 
 export default class Usage extends Component {
 
@@ -10,14 +11,13 @@ export default class Usage extends Component {
   }
 
   render() {
-    return <div>
-      Usage
-      <ul>
-        <li>one</li>
-        <li>two</li>
-        <li>three</li>
-      </ul>
-      <Link to='home'>home</Link>
+    return <div className={usage}>
+      <h2 className={example}>Usage:</h2>
+      <p className={p}>
+        <span className={todo}>// TODO</span>
+      </p>
+      <br />
+      <Link to='home' className={link}>go home</Link>
     </div>;
   }
 

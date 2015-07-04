@@ -11,7 +11,8 @@ export default class AppStore extends Store {
 
     this.state = {
       count: 0,
-      title: 'Go + React = rocks!'
+      title: 'Go + React = rocks!',
+      fontSize: 150
     };
   }
 

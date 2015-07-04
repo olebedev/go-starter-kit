@@ -30,9 +30,9 @@ export const renderToString = RenderToString;
 //
 if (module.hot) {
   require('../styles');
-  const inc = flux.getActions('app').refreshStyles;
+  const refreshStyles = flux.getActions('app').refreshStyles;
   module.hot.accept('../styles', () => {
     require('../styles');
-    inc();
+    refreshStyles();
   });
 }

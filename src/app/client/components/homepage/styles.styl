@@ -1,6 +1,23 @@
+@require '../../styles/variables'
+
 :local(.example)
-  color #666
+  color mainColor
+  font-size px(40)
+  font-weight 500
 :local(.link)
-  color #666
-  &:hover
-    color #666
+  color mainColor
+  position relative
+  &:before
+    content ''
+    position absolute
+    top px(22)
+    left px(-2)
+    right @left
+    bottom px(-1)
+    background-color yellow
+  &:hover:before
+    background-color mainColor
+
+
+:local.p
+  color mainColor
