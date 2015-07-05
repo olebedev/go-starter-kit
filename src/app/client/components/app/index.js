@@ -17,7 +17,7 @@ class Html extends Component {
         <div className={bodyWrapper}>
           {this.props.children}
         </div>
-        <script src='/static/build/bundle.js'></script>
+        <script async src='/static/build/bundle.js'></script>
       </body>
     </html>;
   }

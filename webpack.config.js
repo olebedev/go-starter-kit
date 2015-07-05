@@ -15,7 +15,7 @@ var config  = {
   entry: [path.join(__dirname, 'src/app/client/entry.js')],
   output: {
     path: path.join(__dirname, 'src/app/server/data/static/build'),
-    publicPath: "/static/build",
+    publicPath: "/static/build/",
     filename: 'bundle.js'
   },
   plugins: plugins,
