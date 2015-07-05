@@ -36,7 +36,10 @@ var config  = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.styl'],
     alias: {
-      '#app': path.join(__dirname, '/src/app/client')
+      '#app': path.join(__dirname, '/src/app/client'),
+      '#c': path.join(__dirname, '/src/app/client/components'),
+      '#s': path.join(__dirname, '/src/app/client/stores'),
+      '#a': path.join(__dirname, '/src/app/client/actions')
     }
   },
   svgo1: {
@@ -56,10 +59,6 @@ var config  = {
       {removeTitle: true},
       {removeDesc: true}
     ]
-  },
-  stylus: {
-    // paths: [path.join(__dirname, 'src/app/client/styles')] // ,
-    // import: ['./ctx']
   }
 };
 

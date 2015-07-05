@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { notFound } from './styles';
+import { link } from '../homepage/styles';
 
 export default class NotFound extends Component {
 
   static loadProps({flux, state}) {
-    // Load all needed data and set the document title
+    // Set the document title
     flux.getActions('app').setTitle('404 Page Not Found')
   }
 
   render() {
-    return <div className={notFound}>
-      404 Page Not Found
+    return <div>
+      <h2 className={notFound}>
+      404 Page Not Found</h2>
+      <Link to='home' className={link}>go home</Link>
     </div>;
   }
 

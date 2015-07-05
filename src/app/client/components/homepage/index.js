@@ -12,7 +12,8 @@ export default class Homepage extends Component {
   render() {
     return <div>
       <h1 className={example}>
-        Golang + React + Router + Flummox + Css-Module Isomorphic Starter Kit</h1>
+        Fully Hot Reloadable <br />
+        Golang + React + Flummox + Css-Module Isomorphic Starter Kit</h1>
       <p className={p}>
         Please take a look at <Link className={link} to='/docs'>usage</Link> page.
       </p>
