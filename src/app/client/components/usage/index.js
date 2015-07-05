@@ -5,9 +5,9 @@ import { example, p, link } from '../homepage/styles';
 
 export default class Usage extends Component {
 
-  static loadProps({flux, state}) {
+  static loadProps({flux}) {
     // Load all needed data and set the document title
-    flux.getActions('app').setTitle('Usage')
+    flux.getActions('app').setTitle('Usage');
   }
 
   render() {

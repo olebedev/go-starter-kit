@@ -13,7 +13,7 @@
     "babel-eslint": "^3.1.9",
     "babel-loader": "^5.1.2",
     "css-loader": "^0.14.5",
-    "eslint-plugin-react": "^2.3.0",
+    "eslint-plugin-react": "^2.6.4",
     "expose-loader": "^0.7.0",
     "extract-text-webpack-plugin": "^0.8.1",
     "file-loader": "^0.8.4",

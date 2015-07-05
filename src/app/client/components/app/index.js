@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { RouteHandler } from 'react-router';
 import Flux from 'flummox/component';
 import { body, bodyWrapper } from './styles';
-import Homepage from '../homepage';
-
 
 class Html extends Component {
   render() {

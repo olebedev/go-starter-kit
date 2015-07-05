@@ -21,7 +21,7 @@ export function run() {
       );
     });
   });
-};
+}
 
 export const renderToString = RenderToString;
 

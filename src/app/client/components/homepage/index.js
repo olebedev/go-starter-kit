@@ -4,9 +4,9 @@ import { example, p, link } from './styles';
 
 export default class Homepage extends Component {
 
-  static loadProps({flux, state}) {
+  static loadProps({flux}) {
     // Load all needed data and set the document title
-    flux.getActions('app').setTitle('Homepage')
+    flux.getActions('app').setTitle('Homepage');
   }
 
   render() {

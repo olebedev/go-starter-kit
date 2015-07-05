@@ -7,7 +7,7 @@ export default class AppActions extends Actions {
   }
 
   setTitle(title) {
-    return title
+    return title;
   }
 
 }

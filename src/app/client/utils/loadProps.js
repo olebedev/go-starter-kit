@@ -1,5 +1,4 @@
-import when from 'when'
-import _ from 'lodash'
+import when from 'when';
 
 /**
  * Returns a promise that resolves after any promises returned by the routes

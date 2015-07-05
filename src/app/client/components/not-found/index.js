@@ -5,9 +5,9 @@ import { link } from '../homepage/styles';
 
 export default class NotFound extends Component {
 
-  static loadProps({flux, state}) {
+  static loadProps({flux}) {
     // Set the document title
-    flux.getActions('app').setTitle('404 Page Not Found')
+    flux.getActions('app').setTitle('404 Page Not Found');
   }
 
   render() {

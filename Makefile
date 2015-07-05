@@ -39,3 +39,7 @@ restart: $(BINDATA)
 
 $(BINDATA):
 	$(BIN)/go-bindata $(BINDATA_FLAGS) -o=$@ src/app/server/data/...
+
+lint:
+	@eslint src/app/client
+	@golint app/...
