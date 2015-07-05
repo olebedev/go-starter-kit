@@ -9,7 +9,7 @@ var plugins = [
     new ExtractTextPlugin('bundle.css')
 ];
 
-var cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader?disableStructuralMinification!autoprefixer-loader!stylus-loader');
+var cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader?disableStructuralMinification!autoprefixer-loader!stylus-loader?paths=src/app/client/styles/&import=./ctx');
 
 var config  = {
   entry: [path.join(__dirname, 'src/app/client/entry.js')],
@@ -57,6 +57,10 @@ var config  = {
       {removeDesc: true}
     ]
   },
+  stylus: {
+    // paths: [path.join(__dirname, 'src/app/client/styles')] // ,
+    // import: ['./ctx']
+  }
 };
 
 module.exports = config;
