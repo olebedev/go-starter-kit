@@ -6,29 +6,20 @@
   color mainColor
   position relative
   &:before
-  &:after
     content ''
     position absolute
-    top px(22)
+    top px(23)
     bottom px(-1)
     transition 300ms
-
-  &:after
-    background-color mainColor
-    right 0
-    left 0
-
-  &:hover:after
-    left 100%
-
-  &:before
     background-color yellow
-    right 100%
-    left 0
+    right px(2)
+    left @right
 
-  &:hover:before
-    right 0
-
+  &:hover
+    color yellow
+    &:before
+      left px(-2)
+      right px(-2)
 
 :local.p
   color mainColor

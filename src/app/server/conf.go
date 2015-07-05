@@ -21,13 +21,11 @@ local:
   duktape:
     pool:
       use: false
-      size: 1
 
 production:
   debug: false
   port: 5000
   title: lmbd
-  db: /host/db.sqlite
   api:
     prefix: /api
   duktape:

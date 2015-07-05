@@ -4,6 +4,7 @@ import Flux from 'flummox/component';
 import { body, bodyWrapper } from './styles';
 import Homepage from '../homepage';
 
+
 class Html extends Component {
   render() {
     return <html lang='en' style={{fontSize: this.props.fontSize + 'px'}}>

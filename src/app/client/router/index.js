@@ -28,8 +28,8 @@ export const renderToString = RenderToString;
 // NOTE: Make sure that you use
 // webpack.optimize.DedupePlugin
 //
+require('../styles');
 if (module.hot) {
-  require('../styles');
   const refreshStyles = flux.getActions('app').refreshStyles;
   module.hot.accept('../styles', () => {
     require('../styles');
