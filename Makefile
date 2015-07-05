@@ -42,4 +42,8 @@ $(BINDATA):
 
 lint:
 	@eslint src/app/client
-	@golint app/...
+	@golint -min_confidence=1 app
+	@golint -min_confidence=1 app/server
+	@golint -min_confidence=1 app/server/api
+	@golint -min_confidence=1 app/server/utils
+	@golint -min_confidence=1 app/server/react
