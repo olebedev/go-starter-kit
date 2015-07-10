@@ -8,6 +8,8 @@ export default class AppStore extends Store {
     const appActionIds = flux.getActionIds('app');
     this.register(appActionIds.refreshStyles, this.handleRefreshStyles);
     this.register(appActionIds.setTitle, this.handleSetTitle);
+    this.register(appActionIds.incrFontSize, this.handleFontSize);
+    this.register(appActionIds.decrFontSize, this.handleFontSize);
 
     this.state = {
       count: 0,
@@ -26,6 +28,12 @@ export default class AppStore extends Store {
     this.setState({
       title: title
     });
+  }
+
+  handleFontSize(value) {
+    this.setState({
+      fontSize: this.state.fontSize + value * 10
+    })
   }
 
 }

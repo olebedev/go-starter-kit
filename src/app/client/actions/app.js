@@ -10,4 +10,12 @@ export default class AppActions extends Actions {
     return title;
   }
 
+  incrFontSize() {
+    return 1;
+  }
+
+  decrFontSize() {
+    return -1;
+  }
+
 }

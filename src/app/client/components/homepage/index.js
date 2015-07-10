@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
-import { example, p, link } from './styles';
+import { example, p, link, button } from './styles';
 
 export default class Homepage extends Component {
 
@@ -10,6 +10,7 @@ export default class Homepage extends Component {
   }
 
   render() {
+    const actions = this.props.flux.getActions('app');
     return <div>
       <h1 className={example}>
         Hot Reloadable <br />
@@ -17,6 +18,11 @@ export default class Homepage extends Component {
       <br />
       <p className={p}>
         Please take a look at <Link className={link} to='/docs'>usage</Link> page.
+      </p>
+      <p className={p}>
+        <button onClick={actions.incrFontSize} className={button}>+</button>
+        &nbsp;
+        <button onClick={actions.decrFontSize} className={button}>-</button>
       </p>
     </div>;
   }
