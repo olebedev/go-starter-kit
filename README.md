@@ -46,7 +46,7 @@ Start dev server:
 ```
 $ make serve
 ```
-that's it. Now you ready to start coding your awesome project :-)
+that's it. Now you ready to start coding your awesome project
 
 ## Build
 
