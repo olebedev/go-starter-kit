@@ -51,7 +51,7 @@
     "type": "git",
     "name": "github.com/olebedev/go-duktape-fetch",
     "remote": "https://github.com/olebedev/go-duktape-fetch",
-    "commit": "44b76aa8510ab817404bfb5069bce04db07a2521"
+    "commit": "169731eb855e3839585d2cf44711c9dac3434a73"
   },
   "github.com/parnurzeal/gorequest": {
     "type": "git",

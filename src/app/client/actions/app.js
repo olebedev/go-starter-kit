@@ -18,4 +18,8 @@ export default class AppActions extends Actions {
     return -1;
   }
 
+  loadConfig() {
+    return 'loading';
+  }
+
 }

@@ -10,25 +10,35 @@ import routes from './routes';
 const flux = new Flux();
 
 export function run() {
-  Router.run(routes, Router.HistoryLocation, (Handler, state) => {
-    const routeHandlerInfo = { flux, state };
-    loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
-      React.render(
-        <FluxComponent flux={flux}>
-          <Handler />
-        </FluxComponent>,
-        document
-      );
+  // share flux instance
+  window.__flux__ = flux;
+
+  fetch('/api/v1/conf').then((r) => {
+    return r.json();
+  }).then((conf) => {
+
+    flux.getStore('app').setAppConfig(conf);
+
+    Router.run(routes, Router.HistoryLocation, (Handler, state) => {
+      const routeHandlerInfo = { flux, state };
+      loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
+        React.render(
+          <FluxComponent flux={flux}>
+            <Handler />
+          </FluxComponent>,
+          document
+        );
+      });
     });
+
   });
 }
 
 export const renderToString = RenderToString;
 
-// NOTE: Make sure that you use
-// webpack.optimize.DedupePlugin
-//
 require('../styles');
+
+// Style live reload
 if (module.hot) {
   const refreshStyles = flux.getActions('app').refreshStyles;
   module.hot.accept('../styles', () => {

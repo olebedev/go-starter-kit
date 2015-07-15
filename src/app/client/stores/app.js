@@ -10,11 +10,14 @@ export default class AppStore extends Store {
     this.register(appActionIds.setTitle, this.handleSetTitle);
     this.register(appActionIds.incrFontSize, this.handleFontSize);
     this.register(appActionIds.decrFontSize, this.handleFontSize);
+    this.register(appActionIds.loadConfig, this.handleLoadConfig);
 
     this.state = {
       count: 0,
       title: 'Go + React = rocks!',
-      fontSize: 150
+      fontSize: 100,
+      config: {},
+      headers: {}
     };
   }
 
@@ -33,7 +36,15 @@ export default class AppStore extends Store {
   handleFontSize(value) {
     this.setState({
       fontSize: this.state.fontSize + value * 10
-    })
+    });
+  }
+
+  setAppConfig(config) {
+    this.setState({config: config});
+  }
+
+  setAppHeaders(headers) {
+    this.setState({headers: headers});
   }
 
 }

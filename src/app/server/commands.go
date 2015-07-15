@@ -1,6 +1,7 @@
 package server
 
 import (
+	"app/server/api"
 	"app/server/data"
 	"app/server/react"
 	. "app/server/utils"
@@ -44,11 +45,16 @@ func runServer(c *cli.Context) {
 		Prefix:   "static",
 	})
 
+	kit.Engine.Use(func(c *gin.Context) {
+		c.Set("kit", kit)
+	})
+
 	// Avoid favicon react handling
 	kit.Engine.GET("/favicon.ico", func(c *gin.Context) {
 		c.Redirect(301, "/static/images/favicon.ico")
 	})
 
+	kit.Engine.GET("/api/v1/conf", api.ConfHandler)
 	react.Bind(kit)
 	Must(kit.Engine.Run(":" + kit.Conf.UString("port")))
 }
