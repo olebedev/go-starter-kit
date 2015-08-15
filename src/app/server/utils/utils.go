@@ -20,7 +20,8 @@ type Kit struct {
 
 func NewKit(c *cli.Context, conf *config.Config) *Kit {
 	co, err := conf.Get(c.String("config"))
-	co.Env() // parse environ variables
+	// parse environ variables
+	co.Env()
 	Must(err)
 
 	// set up gin

@@ -4,18 +4,19 @@ import (
 	"app/server/api"
 	"app/server/data"
 	"app/server/react"
-	. "app/server/utils"
+	"app/server/utils"
 
 	"github.com/codegangsta/cli"
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+	"github.com/nu7hatch/gouuid"
 )
 
 func Run(args []string) {
 
 	app := cli.NewApp()
 	app.Name = "app"
-	app.Usage = "lmbd landing server application"
+	app.Usage = "React server application"
 
 	configFlag := cli.StringFlag{
 		Name:   "config, c",
@@ -36,7 +37,7 @@ func Run(args []string) {
 }
 
 func runServer(c *cli.Context) {
-	kit := NewKit(c, conf)
+	kit := utils.NewKit(c, conf)
 	kit.Engine = gin.Default()
 
 	kit.Engine.StaticFS("/static", &assetfs.AssetFS{
@@ -55,6 +56,11 @@ func runServer(c *cli.Context) {
 	})
 
 	kit.Engine.GET("/api/v1/conf", api.ConfHandler)
+
+	kit.Engine.Use(func(c *gin.Context) {
+		id, _ := uuid.NewV4()
+		c.Set("uuid", id)
+	})
 	react.Bind(kit)
-	Must(kit.Engine.Run(":" + kit.Conf.UString("port")))
+	utils.Must(kit.Engine.Run(":" + kit.Conf.UString("port")))
 }

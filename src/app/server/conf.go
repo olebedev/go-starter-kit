@@ -18,9 +18,6 @@ local:
   db: ./db.sqlite
   api:
     prefix: /api
-  duktape:
-    pool:
-      use: false
 
 production:
   debug: false
@@ -28,10 +25,6 @@ production:
   title: lmbd
   api:
     prefix: /api
-  duktape:
-    pool:
-      use: true
-      size: 1
 `)
 	Must(err)
 	conf = c
