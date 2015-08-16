@@ -35,6 +35,12 @@
     "remote": "https://github.com/mattn/go-colorable",
     "commit": "d67e0b7d1797975196499f79bcc322c08b9f218b"
   },
+  "github.com/nu7hatch/gouuid": {
+    "type": "git",
+    "name": "github.com/nu7hatch/gouuid",
+    "remote": "https://github.com/nu7hatch/gouuid",
+    "commit": "179d4d0c4d8d407a32af483c2354df1d2c91e6c3"
+  },
   "github.com/olebedev/config": {
     "type": "git",
     "name": "github.com/olebedev/config",
@@ -45,7 +51,7 @@
     "type": "git",
     "name": "github.com/olebedev/go-duktape",
     "remote": "https://github.com/olebedev/go-duktape",
-    "commit": "816fc4cb58ded633e09bd6b17459f815fd5e8b00"
+    "commit": "e17748cec17cf367c9b75fdc6cc7c2144a012396"
   },
   "github.com/olebedev/go-duktape-fetch": {
     "type": "git",
