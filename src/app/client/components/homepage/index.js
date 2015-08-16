@@ -19,13 +19,6 @@ export default class Homepage extends Component {
       <p className={p}>
         Please take a look at <Link className={link} to='/docs'>usage</Link> page.
       </p>
-      {/*
-      <p className={p}>
-        <button onClick={actions.incrFontSize} className={button}>+</button>
-        &nbsp;
-        <button onClick={actions.decrFontSize} className={button}>-</button>
-      </p>
-      */}
     </div>;
   }
 

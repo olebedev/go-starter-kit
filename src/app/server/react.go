@@ -1,8 +1,7 @@
-package react
+package server
 
 import (
 	"app/server/data"
-	"app/server/utils"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -15,32 +14,32 @@ import (
 	"github.com/olebedev/go-duktape-fetch"
 )
 
-func Bind(kit *utils.Kit) {
-	r := react{kit: kit}
-	r.init()
-	kit.Engine.NoRoute(r.handle)
-}
-
-type react struct {
-	pool pool
-	kit  *utils.Kit
-}
-
-func (r *react) init() {
-	if !r.kit.Conf.UBool("debug") {
-		r.pool = newDuktapePool(runtime.NumCPU(), r.kit.Engine)
+// NewReact initialized React struct
+func NewReact(debug bool, server http.Handler) *React {
+	r := &React{}
+	if !debug {
+		r.pool = newDuktapePool(runtime.NumCPU(), server)
 	} else {
 		// Use onDemandPool to load full react
 		// app each time for any http requests.
 		// Useful to debug the app.
-		r.pool = &onDemandPool{r.kit.Engine}
+		r.pool = &onDemandPool{server}
 	}
+	return r
+}
+
+// React struct is contains duktape
+// pool to serve HTTP requests and
+// separates some domain specific
+// resources.
+type React struct {
+	pool
 }
 
 // Handle handles all HTTP requests which
 // have no been caught via static file
-// handler or other middlewares
-func (r *react) handle(c *gin.Context) {
+// handler or other middlewares.
+func (r *React) Handle(c *gin.Context) {
 	defer func() {
 		if r := recover(); r != nil {
 			UUID := c.MustGet("uuid").(*uuid.UUID)
@@ -51,12 +50,11 @@ func (r *react) handle(c *gin.Context) {
 		}
 	}()
 
-	vm := r.pool.get()
+	vm := r.get()
 	vm.Lock()
 
 	vm.PushGlobalObject()
 	vm.GetPropString(-1, "__router__")
-	// vm.Replace(-2)
 	vm.PushString("renderToString")
 
 	req := func() string {
@@ -90,7 +88,7 @@ func (r *react) handle(c *gin.Context) {
 	select {
 	case re := <-ch:
 		// Hold the context. This call is really important
-		// because async calls is possible. So, we cannot
+		// because async calls is possible. And we cannot
 		// allow to break the context stack.
 		vm.Lock()
 		// Clean duktape vm stack
@@ -101,7 +99,7 @@ func (r *react) handle(c *gin.Context) {
 		// Release the context
 		vm.Unlock()
 		// Return vm back to the pool
-		r.pool.put(vm)
+		r.put(vm)
 
 		// Handle the response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
@@ -121,7 +119,8 @@ func (r *react) handle(c *gin.Context) {
 			c.Abort()
 		}
 	case <-time.After(5 * time.Second):
-		r.pool.drop(vm)
+		// release duktape context
+		r.drop(vm)
 		UUID := c.MustGet("uuid").(*uuid.UUID)
 		c.Writer.WriteHeader(http.StatusInternalServerError)
 		c.Writer.Header().Add("Content-Type", "text/plain")
@@ -130,20 +129,23 @@ func (r *react) handle(c *gin.Context) {
 	}
 }
 
+// Resp is a struct for convinient
+// react app response parsing.
 type resp struct {
 	Error    string `json:"error"`
 	Redirect string `json:"redirect"`
 	Body     string `json:"body"`
 }
 
-// Interface to serve React app on demand or from prepared pool
+// Interface to serve React app on demand or from prepared pool.
 type pool interface {
 	get() *duktape.Context
 	put(*duktape.Context)
 	drop(*duktape.Context)
 }
 
-func newDuktapePool(size int, engine *gin.Engine) *duktapePool {
+// NewDuktapePool return new duktape contexts pool.
+func newDuktapePool(size int, engine http.Handler) *duktapePool {
 	pool := &duktapePool{
 		ch:     make(chan *duktape.Context, size),
 		engine: engine,
@@ -158,13 +160,13 @@ func newDuktapePool(size int, engine *gin.Engine) *duktapePool {
 	return pool
 }
 
-// Loads bundle.js to context
-func newDuktapeContext(engine *gin.Engine) *duktape.Context {
+// NewDuktapeContext loads bundle.js to context.
+func newDuktapeContext(engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
 	fetch.Define(vm, engine)
 	app, err := data.Asset("static/build/bundle.js")
-	utils.Must(err)
+	Must(err)
 	fmt.Println("static/build/bundle.js loaded")
 	if err := vm.PevalString(string(app)); err != nil {
 		derr := err.(*duktape.Error)
@@ -175,8 +177,10 @@ func newDuktapeContext(engine *gin.Engine) *duktape.Context {
 	return vm
 }
 
+// Pool's implementations
+
 type onDemandPool struct {
-	engine *gin.Engine
+	engine http.Handler
 }
 
 func (f *onDemandPool) get() *duktape.Context {
@@ -194,7 +198,7 @@ func (on *onDemandPool) drop(c *duktape.Context) {
 
 type duktapePool struct {
 	ch     chan *duktape.Context
-	engine *gin.Engine
+	engine http.Handler
 }
 
 func (o *duktapePool) get() *duktape.Context {

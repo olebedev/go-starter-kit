@@ -1,31 +1,25 @@
 package server
 
-import (
-	. "app/server/utils"
-
-	"github.com/olebedev/config"
-)
-
-var conf *config.Config
-
-func init() {
-	c, err := config.ParseYaml(`
+// Most easiest way to configure
+// an application is define config as
+// yaml string and then parse it into
+// map.
+// How it works see here:
+//     https://github.com/olebedev/config
+var confString = `
 
 local:
   debug: true
   port: 5000
-  title: lmbd
-  db: ./db.sqlite
+  title: Go Starter Kit
   api:
     prefix: /api
 
 production:
   debug: false
   port: 5000
-  title: lmbd
+  title: Go Starter Kit
   api:
     prefix: /api
-`)
-	Must(err)
-	conf = c
-}
+
+`
