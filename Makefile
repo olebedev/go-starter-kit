@@ -2,8 +2,8 @@ BIN = $(GOPATH)/bin
 NODE_BIN = $(shell npm bin)
 PID = .pid
 GO_FILES = $(filter-out bindata.go, $(shell find src/app -type f -name "*.go"))
-BINDATA = src/app/server/data/bindata.go
-BINDATA_FLAGS = -pkg=data -prefix=src/app/server/data -ignore=src\\/app\\/server\\/data\\/bindata.go
+BINDATA = src/app/server/bindata.go
+BINDATA_FLAGS = -pkg=server -prefix=src/app/server/data
 BUNDLE = src/app/server/data/static/build/bundle.js
 APP = $(shell find src/app/client -type f)
 
@@ -11,7 +11,7 @@ build: clean $(BIN)/app
 
 clean:
 	@rm -rf src/app/server/data/static/build/*
-	@rm -rf src/app/server/data/bindata.go
+	@rm -rf $(BINDATA)
 	@echo cleaned
 
 $(BUNDLE): $(APP)
@@ -44,6 +44,3 @@ lint:
 	@eslint src/app/client
 	@golint -min_confidence=1 app
 	@golint -min_confidence=1 app/server
-	@golint -min_confidence=1 app/server/api
-	@golint -min_confidence=1 app/server/utils
-	@golint -min_confidence=1 app/server/react

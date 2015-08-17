@@ -3,7 +3,7 @@
 /pkg
 /src/*
 !/src/app
-src/app/server/data/bindata.go
+src/app/server/bindata.go
 src/app/server/data/static/build/
 
 .pid

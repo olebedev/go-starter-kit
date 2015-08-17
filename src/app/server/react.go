@@ -1,7 +1,6 @@
 package server
 
 import (
-	"app/server/data"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -165,7 +164,7 @@ func newDuktapeContext(engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
 	fetch.Define(vm, engine)
-	app, err := data.Asset("static/build/bundle.js")
+	app, err := Asset("static/build/bundle.js")
 	Must(err)
 	fmt.Println("static/build/bundle.js loaded")
 	if err := vm.PevalString(string(app)); err != nil {

@@ -1,8 +1,6 @@
 package server
 
 import (
-	"app/server/data"
-
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
 	"github.com/nu7hatch/gouuid"
@@ -61,8 +59,8 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Define routes and middlewares
 	app.Engine.StaticFS("/static", &assetfs.AssetFS{
-		Asset:    data.Asset,
-		AssetDir: data.AssetDir,
+		Asset:    Asset,
+		AssetDir: AssetDir,
 		Prefix:   "static",
 	})
 
