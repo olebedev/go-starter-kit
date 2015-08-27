@@ -18,7 +18,7 @@ $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors
 
 $(BIN)/app: $(BUNDLE) $(BINDATA)
-	@go install -ldflags '-w' app
+	@go install -ldflags "-w -X main.buildstamp `date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag `git describe --tags` -X main.githash `git rev-parse HEAD`" app
 
 kill:
 	@kill `cat $(PID)` || true
