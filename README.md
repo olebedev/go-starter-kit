@@ -5,7 +5,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 ## What it contains?
 
 * server side render via [go-duktape](https://github.com/olebedev/go-duktape)
-* api requests between your react application and server side application directly  via fetch polyfill for go-duktape at server side, and it is possible to process requests with user session as well
+* api requests between your react application and server side application directly  via [fetch polyfill](https://github.com/olebedev/go-duktape-fetch) for go-duktape at server side, and it is possible to process requests with user session as well
 * title, Open Graph and other domain-specific meta tags render for each page at the server and at the client
 * server side redirect
 * embedding static files into artefact via bindata
@@ -21,6 +21,15 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * hot reload components & styles via [react-hot-loader](https://github.com/gaearon/react-hot-loader) & [HMR](http://webpack.github.io/docs/hot-module-replacement.html)
 * webpack bundle builder
 * eslint and golint rules for Makefile
+
+## Dependencies
+
+* [golang](http://golang.org/)
+* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/)
+* [GNU make](https://www.gnu.org/software/make/)
+* [fswatch](https://github.com/emcrisostomo/fswatch/)
+
+Note that probably not works at windows.
 
 ## Install
 
