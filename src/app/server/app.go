@@ -20,12 +20,12 @@ type App struct {
 // NewApp returns initialized struct
 // of main server application.
 func NewApp(opts ...AppOptions) *App {
-	var options AppOptions
+	options := AppOptions{}
 	for _, i := range opts {
 		options = i
-		i.init()
 		break
 	}
+	options.init()
 
 	// Parse config yaml string from ./conf.go
 	conf, err := config.ParseYaml(confString)
