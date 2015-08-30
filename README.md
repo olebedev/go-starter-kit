@@ -55,7 +55,7 @@ Start dev server:
 ```
 $ make serve
 ```
-that's it. Now you ready to start coding your awesome project
+that's it. Open [http://localhost:5001/](http://localhost:5001/) at your browser. Now you ready to start coding your awesome project.
 
 ## Build
 
