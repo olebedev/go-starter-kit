@@ -25,7 +25,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 ## Dependencies
 
 * [golang](http://golang.org/)
-* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/)
+* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only for javascript workflow
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
 
