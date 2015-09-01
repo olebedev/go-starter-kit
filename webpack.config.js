@@ -9,7 +9,7 @@ var plugins = [
     new ExtractTextPlugin('bundle.css')
 ];
 
-var cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader?disableStructuralMinification!autoprefixer-loader!stylus-loader?paths=src/app/client/styles/&import=./ctx');
+var cssLoader = ExtractTextPlugin.extract('style-loader', 'css-loader?module&localIdentName=[name]__[local]___[hash:base64:5]&disableStructuralMinification!autoprefixer-loader!stylus-loader?paths=src/app/client/styles/&import=./ctx');
 
 var config  = {
   entry: [path.join(__dirname, 'src/app/client/entry.js')],
