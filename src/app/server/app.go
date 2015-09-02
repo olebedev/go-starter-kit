@@ -52,6 +52,7 @@ func NewApp(opts ...AppOptions) *App {
 		Engine: engine,
 		Api:    &Api{},
 		React: NewReact(
+			conf.UString("duktape.path"),
 			conf.UBool("debug"),
 			engine,
 		),

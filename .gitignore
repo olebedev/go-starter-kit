@@ -5,6 +5,7 @@
 !/src/app
 src/app/server/bindata.go
 src/app/server/data/static/build/
+src/app/server/data/bundle.server.js
 
 .pid
 .pid_wds

@@ -11,6 +11,7 @@ build: clean $(BIN)/app
 
 clean:
 	@rm -rf src/app/server/data/static/build/*
+	@rm -rf src/app/server/data/bundle.server.js
 	@rm -rf $(BINDATA)
 	@echo cleaned
 

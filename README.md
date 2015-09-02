@@ -59,7 +59,7 @@ that's it. Open [http://localhost:5001/](http://localhost:5001/) at your browser
 
 ## Build
 
-Install dependencies and just type `make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`.
+Install dependencies and just type `NODE_ENV=production make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`.
 
 
 

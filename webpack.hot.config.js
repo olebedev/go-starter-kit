@@ -1,10 +1,13 @@
 var webpack = require('webpack');
 var config = require('./webpack.config');
 
-config.entry.unshift(
-  'webpack-dev-server/client?http://localhost:5001',
-  'webpack/hot/only-dev-server'
-)
+config.entry = {
+  bundle: [
+    'webpack-dev-server/client?http://localhost:5001',
+    'webpack/hot/only-dev-server',
+    config.entry.bundle
+  ]
+};
 
 config.plugins.push(
   new webpack.HotModuleReplacementPlugin()

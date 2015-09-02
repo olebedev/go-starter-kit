@@ -14,6 +14,8 @@ local:
   title: Go Starter Kit
   api:
     prefix: /api
+  duktape:
+    path: static/build/bundle.js
 
 production:
   debug: false
@@ -21,5 +23,7 @@ production:
   title: Go Starter Kit
   api:
     prefix: /api
+  duktape:
+    path: bundle.server.js
 
 `

@@ -14,15 +14,21 @@ import (
 )
 
 // NewReact initialized React struct
-func NewReact(debug bool, server http.Handler) *React {
-	r := &React{}
+func NewReact(filePath string, debug bool, server http.Handler) *React {
+	r := &React{
+		debug: debug,
+		path:  filePath,
+	}
 	if !debug {
-		r.pool = newDuktapePool(runtime.NumCPU(), server)
+		r.pool = newDuktapePool(filePath, runtime.NumCPU(), server)
 	} else {
 		// Use onDemandPool to load full react
 		// app each time for any http requests.
 		// Useful to debug the app.
-		r.pool = &onDemandPool{server}
+		r.pool = &onDemandPool{
+			path:   filePath,
+			engine: server,
+		}
 	}
 	return r
 }
@@ -33,6 +39,8 @@ func NewReact(debug bool, server http.Handler) *React {
 // resources.
 type React struct {
 	pool
+	debug bool
+	path  string
 }
 
 // Handle handles all HTTP requests which
@@ -144,15 +152,16 @@ type pool interface {
 }
 
 // NewDuktapePool return new duktape contexts pool.
-func newDuktapePool(size int, engine http.Handler) *duktapePool {
+func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool {
 	pool := &duktapePool{
+		path:   filePath,
 		ch:     make(chan *duktape.Context, size),
 		engine: engine,
 	}
 
 	go func() {
 		for i := 0; i < size; i++ {
-			pool.ch <- newDuktapeContext(engine)
+			pool.ch <- newDuktapeContext(filePath, engine)
 		}
 	}()
 
@@ -160,13 +169,13 @@ func newDuktapePool(size int, engine http.Handler) *duktapePool {
 }
 
 // NewDuktapeContext loads bundle.js to context.
-func newDuktapeContext(engine http.Handler) *duktape.Context {
+func newDuktapeContext(filePath string, engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
 	fetch.Define(vm, engine)
-	app, err := Asset("static/build/bundle.js")
+	app, err := Asset(filePath)
 	Must(err)
-	fmt.Println("static/build/bundle.js loaded")
+	fmt.Printf("%s loaded\n", filePath)
 	if err := vm.PevalString(string(app)); err != nil {
 		derr := err.(*duktape.Error)
 		fmt.Printf("\n\n\n%v\n%v\n\n\n", derr.FileName, derr.LineNumber)
@@ -179,11 +188,12 @@ func newDuktapeContext(engine http.Handler) *duktape.Context {
 // Pool's implementations
 
 type onDemandPool struct {
+	path   string
 	engine http.Handler
 }
 
 func (f *onDemandPool) get() *duktape.Context {
-	return newDuktapeContext(f.engine)
+	return newDuktapeContext(f.path, f.engine)
 }
 
 func (_ onDemandPool) put(c *duktape.Context) {
@@ -197,6 +207,7 @@ func (on *onDemandPool) drop(c *duktape.Context) {
 
 type duktapePool struct {
 	ch     chan *duktape.Context
+	path   string
 	engine http.Handler
 }
 
@@ -212,5 +223,5 @@ func (o *duktapePool) put(ot *duktape.Context) {
 func (o *duktapePool) drop(ot *duktape.Context) {
 	ot.DestroyHeap()
 	ot = nil
-	o.ch <- newDuktapeContext(o.engine)
+	o.ch <- newDuktapeContext(o.path, o.engine)
 }
