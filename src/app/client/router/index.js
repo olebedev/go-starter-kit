@@ -18,7 +18,12 @@ export function run() {
   }).then((conf) => {
 
     flux.getStore('app').setAppConfig(conf);
-
+    if (process.env.NODE_ENV !== 'production'){
+      flux.on('dispatch', (action) => {
+        const {actionId, body} = action;
+        console.log('%c[FLUX] %c%s', 'color: green', 'color: grey', actionId, body);
+      });
+    }
     Router.run(routes, Router.HistoryLocation, (Handler, state) => {
       const routeHandlerInfo = { flux, state };
       loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {

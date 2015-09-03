@@ -1,8 +1,6 @@
 package server
 
-import (
-	"github.com/gin-gonic/gin"
-)
+import "github.com/gin-gonic/gin"
 
 // API is a defined as struct bundle
 // for api. Feel free to organize
