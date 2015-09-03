@@ -7,6 +7,7 @@ import (
 	"github.com/olebedev/config"
 )
 
+// App struct.
 // There is no singleton anti-pattern,
 // all variables defined locally inside
 // this struct.
@@ -14,7 +15,7 @@ type App struct {
 	Engine *gin.Engine
 	Conf   *config.Config
 	React  *React
-	Api    *Api
+	API    *API
 }
 
 // NewApp returns initialized struct
@@ -50,7 +51,7 @@ func NewApp(opts ...AppOptions) *App {
 	app := &App{
 		Conf:   conf,
 		Engine: engine,
-		Api:    &Api{},
+		API:    &API{},
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
@@ -77,7 +78,7 @@ func NewApp(opts ...AppOptions) *App {
 	})
 
 	// Bind api hadling for URL api.prefix
-	app.Api.Bind(
+	app.API.Bind(
 		app.Engine.Group(
 			app.Conf.UString("api.prefix"),
 		),

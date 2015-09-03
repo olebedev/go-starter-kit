@@ -11,7 +11,7 @@ const flux = new Flux();
 
 export function run() {
   // share flux instance
-  window.__flux__ = flux;
+  window.flux = flux;
 
   fetch('/api/v1/conf').then((r) => {
     return r.json();

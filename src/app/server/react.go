@@ -196,13 +196,13 @@ func (f *onDemandPool) get() *duktape.Context {
 	return newDuktapeContext(f.path, f.engine)
 }
 
-func (_ onDemandPool) put(c *duktape.Context) {
+func (f onDemandPool) put(c *duktape.Context) {
 	c.Gc(0)
 	c.DestroyHeap()
 }
 
-func (on *onDemandPool) drop(c *duktape.Context) {
-	on.put(c)
+func (f *onDemandPool) drop(c *duktape.Context) {
+	f.put(c)
 }
 
 type duktapePool struct {

@@ -1,6 +1,5 @@
 import React from 'react';
 import Router from 'react-router';
-import assign from 'lodash/object/assign';
 import FluxComponent from 'flummox/component';
 import Flux from '../flux';
 import routes from './routes';
@@ -71,5 +70,5 @@ export default function (options, cbk) {
       cbk(result);
     }
 
-  })
-};
+  });
+}

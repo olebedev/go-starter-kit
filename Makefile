@@ -1,7 +1,7 @@
 BIN = $(GOPATH)/bin
 NODE_BIN = $(shell npm bin)
 PID = .pid
-GO_FILES = $(filter-out bindata.go, $(shell find src/app -type f -name "*.go"))
+GO_FILES = $(filter-out src/app/server/bindata.go, $(shell find src/app -type f -name "*.go"))
 BINDATA = src/app/server/bindata.go
 BINDATA_FLAGS = -pkg=server -prefix=src/app/server/data
 BUNDLE = src/app/server/data/static/build/bundle.js
@@ -19,7 +19,7 @@ $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors
 
 $(BIN)/app: $(BUNDLE) $(BINDATA)
-	@go install -ldflags "-w -X main.buildstamp `date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag `git describe --tags` -X main.githash `git rev-parse HEAD`" app
+	@go install -ldflags "-w -X main.buildstamp `date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag `git describe --tags || true` -X main.githash `git rev-parse HEAD || true`" app
 
 kill:
 	@kill `cat $(PID)` || true
@@ -42,6 +42,6 @@ $(BINDATA):
 	$(BIN)/go-bindata $(BINDATA_FLAGS) -o=$@ src/app/server/data/...
 
 lint:
-	@eslint src/app/client
+	@eslint src/app/client || true
+	@golint $(filter-out src/app/main.go, $(GO_FILES)) || true
 	@golint -min_confidence=1 app
-	@golint -min_confidence=1 app/server
