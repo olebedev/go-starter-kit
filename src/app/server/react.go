@@ -125,13 +125,28 @@ func (r *React) Handle(c *gin.Context) {
 			c.Writer.Write([]byte(re.Error))
 			c.Abort()
 		}
-	case <-time.After(5 * time.Second):
+	case <-time.After(2 * time.Second):
 		// release duktape context
 		r.drop(vm)
 		UUID := c.MustGet("uuid").(*uuid.UUID)
 		c.Writer.WriteHeader(http.StatusInternalServerError)
-		c.Writer.Header().Add("Content-Type", "text/plain")
-		c.Writer.Write([]byte(fmt.Sprintf("req uuid: %s\ntime is out", UUID)))
+		c.Writer.Header().Add("Content-Type", "text/html")
+		c.Writer.Write([]byte(fmt.Sprintf(`
+			<!DOCTYPE html>
+			<html>
+				<head>
+					<meta charset=charset"UTF-8">
+					<link rel="stylesheet" href="/static/build/bundle.css">
+					<title>Internal Server Error</title>
+				</head>
+				<body>
+					<h1>Internal Server Error</h1>
+					<p>uuid: %s</p>
+					<div id="app"></div>
+					<script async src="/static/build/bundle.js"></script>
+				</body>
+			</html>
+		`, UUID)))
 		c.Abort()
 	}
 }

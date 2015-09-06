@@ -2,8 +2,10 @@ import React from 'react';
 import Router from 'react-router';
 import FluxComponent from 'flummox/component';
 import Flux from '../flux';
+import Helmet from 'react-helmet';
 import routes from './routes';
 import loadProps from '#app/utils/loadProps';
+import html from './html';
 
 /**
  * Handle HTTP request at Golang server
@@ -51,11 +53,13 @@ export default function (options, cbk) {
       router.run((Handler, state) => {
         const routeHandlerInfo = { flux, state };
         loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
-          result.body = React.renderToString(
+          const app = React.renderToString(
             <FluxComponent flux={flux}>
               <Handler />
             </FluxComponent>
           );
+          const head = Helmet.rewind();
+          result.body = html({app, head});
           cbk(result);
         });
       });
