@@ -36,8 +36,7 @@ if (process.env.NODE_ENV === 'production') {
 
 var config  = {
   entry: {
-    bundle: path.join(__dirname, 'src/app/client/entry.js'),
-    '../../bundle.server': path.join(__dirname, 'src/app/client/entry.js')
+    bundle: path.join(__dirname, 'src/app/client/entry.js')
   },
   output: {
     path: path.join(__dirname, 'src/app/server/data/static/build'),

@@ -24,6 +24,6 @@ production:
   api:
     prefix: /api
   duktape:
-    path: bundle.server.js
+    path: static/build/bundle.js
 
 `
