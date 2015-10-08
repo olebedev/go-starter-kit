@@ -1,5 +1,7 @@
 # go-starter-kit
 
+[![Join the chat at https://gitter.im/olebedev/go-starter-kit](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/olebedev/go-starter-kit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This project contains a quick starter kit for **Facebook React** Single Page Apps with **Golang** server side render and also with a set of useful features for rapid development of efficient applications.
 
 ## What it contains?
