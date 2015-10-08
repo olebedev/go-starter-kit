@@ -46,7 +46,7 @@ $ npm i
 Install Golang dependencies:
 
 ```
-$ export GOPATH=`pwd`
+$ export GOPATH=`pwd` # the most important step, ensure that you do it
 $ go get app/...
 $ go get github.com/jteeuwen/go-bindata/...
 ```
