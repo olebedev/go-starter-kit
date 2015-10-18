@@ -9,8 +9,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nu7hatch/gouuid"
-	"github.com/olebedev/go-duktape"
-	"github.com/olebedev/go-duktape-fetch"
+	"gopkg.in/olebedev/go-duktape.v1"
+	"gopkg.in/olebedev/go-duktape-fetch.v1"
 )
 
 // NewReact initialized React struct
