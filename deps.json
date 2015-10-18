@@ -3,7 +3,7 @@
     "type": "git",
     "name": "github.com/codegangsta/cli",
     "remote": "https://github.com/codegangsta/cli",
-    "commit": "a65b733b303f0055f8d324d805f393cd3e7a7904"
+    "commit": "aba946908353f5182d9bf71b6fdfd814ceae31d0"
   },
   "github.com/elazarl/go-bindata-assetfs": {
     "type": "git",
@@ -15,13 +15,7 @@
     "type": "git",
     "name": "github.com/gin-gonic/gin",
     "remote": "https://github.com/gin-gonic/gin",
-    "commit": "704d690ac0e25fcd060ff82f75f913e879e65a3c"
-  },
-  "github.com/jteeuwen/go-bindata": {
-    "type": "git",
-    "name": "github.com/jteeuwen/go-bindata",
-    "remote": "https://github.com/jteeuwen/go-bindata",
-    "commit": "bfe36d3254337b7cc18024805dfab2106613abdf"
+    "commit": "52fcc5dbf6e94df33ad313858fb94b713e9d1b4a"
   },
   "github.com/manucorporat/sse": {
     "type": "git",
@@ -47,40 +41,40 @@
     "remote": "https://github.com/olebedev/config",
     "commit": "ed583f7fafbccbd73013b0379ab29943ab0da34b"
   },
-  "github.com/olebedev/go-duktape": {
-    "type": "git",
-    "name": "github.com/olebedev/go-duktape",
-    "remote": "https://github.com/olebedev/go-duktape",
-    "commit": "2766ef48563457e8d269036bb7e2f3a02472a15b"
-  },
-  "github.com/olebedev/go-duktape-fetch": {
-    "type": "git",
-    "name": "github.com/olebedev/go-duktape-fetch",
-    "remote": "https://github.com/olebedev/go-duktape-fetch",
-    "commit": "169731eb855e3839585d2cf44711c9dac3434a73"
-  },
   "github.com/parnurzeal/gorequest": {
     "type": "git",
     "name": "github.com/parnurzeal/gorequest",
     "remote": "https://github.com/parnurzeal/gorequest",
-    "commit": "1f4e8242ff000cfd0614a19da3b655be4e347f92"
+    "commit": "21a6e64ff1eafbfd8a1f8de5c1fe1d39bb7a63d7"
   },
   "golang.org/x/net": {
     "type": "git",
     "name": "golang.org/x/net",
     "remote": "https://go.googlesource.com/net",
-    "commit": "db8e4de5b2d6653f66aea53094624468caad15d2"
+    "commit": "cd8c2701a5e10f044db915e65eac68f738399d22"
   },
   "gopkg.in/bluesuncorp/validator.v5": {
     "type": "git",
     "name": "gopkg.in/bluesuncorp/validator.v5",
     "remote": "https://gopkg.in/bluesuncorp/validator.v5",
-    "commit": "98121ac23ff3d764f525d18d8de944d150e3c0fe"
+    "commit": "d5acf1dac43705f8bfbb71d878e290e2bed3950b"
+  },
+  "gopkg.in/olebedev/go-duktape-fetch.v1": {
+    "type": "git",
+    "name": "gopkg.in/olebedev/go-duktape-fetch.v1",
+    "remote": "https://gopkg.in/olebedev/go-duktape-fetch.v1",
+    "commit": "2e214c1cb61effe374d165f7c6db11a9f1014351"
+  },
+  "gopkg.in/olebedev/go-duktape.v1": {
+    "type": "git",
+    "name": "gopkg.in/olebedev/go-duktape.v1",
+    "remote": "https://gopkg.in/olebedev/go-duktape.v1",
+    "commit": "e2ae92f01e4a94d11f503c2260934c6cc7d3d6e9"
   },
   "gopkg.in/yaml.v2": {
     "type": "git",
     "name": "gopkg.in/yaml.v2",
     "remote": "https://gopkg.in/yaml.v2",
-    "commit": "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
+    "commit": "53feefa2559fb8dfa8d81baad31be332c97d6c77"
   }
 }
