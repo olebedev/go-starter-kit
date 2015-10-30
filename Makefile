@@ -27,7 +27,7 @@ kill:
 serve: clean $(BUNDLE)
 	@make restart
 	@$(NODE_BIN)/webpack-dev-server --config webpack.hot.config.js $$! > $(PID)_wds &
-	@ANYBAR_WEBPACK=yep $(NODE_BIN)/webpack --progress --colors --watch $$! > $(PID)_wp &
+	@ANYBAR_WEBPACK=yep  NODE_ENV=disable-hmr-plugin-at-server $(NODE_BIN)/webpack --progress --colors --watch $$! > $(PID)_wp &
 	@fswatch $(GO_FILES) | xargs -n1 -I{} make restart || make kill
 	@kill `cat $(PID)_wp` || true
 	@kill `cat $(PID)_wds` || true

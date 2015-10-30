@@ -13,8 +13,6 @@ config.plugins.push(
   new webpack.HotModuleReplacementPlugin()
 );
 
-config.module.loaders[config.module.loaders.length-1].loaders.unshift('react-hot');
-
 config.devServer = {
   hot: true,
   port: 5001,
@@ -25,6 +23,6 @@ config.devServer = {
   proxy: {'*': 'http://localhost:5000/'}
 }
 
-config.devtool = 'eval'
+config.devtool = 'cheap-module-eval-source-map'
 
 module.exports = config;
