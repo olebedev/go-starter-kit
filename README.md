@@ -63,11 +63,10 @@ that's it. Open [http://localhost:5001/](http://localhost:5001/) at your browser
 
 Install dependencies and just type `NODE_ENV=production make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`.
 
+## TODO
 
-
-
-
-
-
-
-
+- [x] add react-transform-hmr instead react-hot-loader
+- [ ] update react to 0.14.x
+- [ ] update react-router to 1.x
+- [ ] add redux and drop flummox
+- [ ]  (?)add postcss and drop stylus
