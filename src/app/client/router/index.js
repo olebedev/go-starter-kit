@@ -1,9 +1,10 @@
 import React from 'react';
+import { render } from 'react-dom';
 import Router from 'react-router';
+import { createHistory } from 'history';
 import FluxComponent from 'flummox/component';
 import Flux from '../flux';
 import RenderToString from './RenderToString';
-import loadProps from '#app/utils/loadProps';
 import { Promise } from 'when';
 
 
@@ -24,24 +25,21 @@ export function run() {
     return r.json();
   }).then((conf) => {
 
-    flux.getStore('app').setAppConfig(conf);
     if (process.env.NODE_ENV !== 'production'){
       flux.on('dispatch', (action) => {
         const {actionId, body} = action;
         console.log('%c[FLUX] %c%s', 'color: green', 'color: grey', actionId, body);
       });
     }
-    Router.run(routes, Router.HistoryLocation, (Handler, state) => {
-      const routeHandlerInfo = { flux, state };
-      loadProps(state.routes, 'loadProps', routeHandlerInfo).then(()=> {
-        React.render(
-          <FluxComponent flux={flux}>
-            <Handler />
-          </FluxComponent>,
-          document.getElementById('app')
-        );
-      });
-    });
+
+    flux.getStore('app').setAppConfig(conf);
+
+    render(
+      <FluxComponent flux={flux}>
+        <Router history={createHistory()}>{routes}</Router>
+      </FluxComponent>,
+      document.getElementById('app')
+    );
 
   });
 }

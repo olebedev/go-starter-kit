@@ -5,11 +5,6 @@ import { example, p, link } from './styles';
 
 export default class Homepage extends Component {
 
-  static loadProps({/* flux, state */}) {
-    // Load all needed data and do what you want
-    // flux.getActions('app').doSomething();
-  }
-
   render() {
     return <div>
       <Helmet

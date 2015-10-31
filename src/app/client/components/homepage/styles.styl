@@ -3,23 +3,24 @@
   font-size px(40)
   font-weight 500
 .link
-  color mainColor
+  color yellow
   position relative
   &:before
     content ''
     position absolute
     top px(23)
-    bottom px(-1)
-    transition 300ms
+    bottom px(-3)
+    // transition 300ms
     background-color yellow
-    right px(2)
+    right px(-1)
     left @right
 
   &:hover
-    color yellow
+    color red
     &:before
-      left px(-2)
-      right px(-2)
+      background-color red // #ff897a
+    //   left px(-2)
+    //   right px(-2)
 
 .p
   color mainColor
