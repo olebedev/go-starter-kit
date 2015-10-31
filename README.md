@@ -66,8 +66,8 @@ Install dependencies and just type `NODE_ENV=production make build`. This rule i
 ## TODO
 
 - [x] add react-transform-hmr instead react-hot-loader
-- [ ] update react to 0.14.x
-- [ ] update react-router to 1.x
+- [x] update react to 0.14.x
+- [x] update react-router to 1.x
 - [ ] add redux and drop flummox
 - [ ] add postcss and drop stylus (?)
 - [ ] improve README and write an article to describe the project
