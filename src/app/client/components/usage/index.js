@@ -6,6 +6,13 @@ import { example, p, link } from '../homepage/styles';
 
 export default class Usage extends Component {
 
+  static onEnter({nextState, replaceState, callback}) {
+    setTimeout(() => {
+      console.warn('Fake data loading... Edit it here --->');
+      callback()
+    }, 500);
+  }
+
   render() {
     return <div className={usage}>
       <Helmet title='Usage' />

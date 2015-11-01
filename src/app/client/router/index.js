@@ -31,7 +31,7 @@ export function run() {
 
   render(
     <FluxComponent flux={flux}>
-      <Router history={createHistory()}>{routes}</Router>
+      <Router history={createHistory()}>{routes({flux, first: { time: true }})}</Router>
     </FluxComponent>,
     document.getElementById('app')
   );

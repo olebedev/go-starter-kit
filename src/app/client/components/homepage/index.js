@@ -5,11 +5,9 @@ import { example, p, link } from './styles';
 
 export default class Homepage extends Component {
 
-  static onEnter(nextState, replaceState, callback) {
-    callback()
-    // setTimeout(() => {
-    //   callback()
-    // }, 1)
+  static onEnter({flux, nextState, replaceState, callback}) {
+    // Load here any data
+    callback(); // this call is important, don't forget it
   }
 
   render() {

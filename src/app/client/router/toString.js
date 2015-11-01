@@ -33,7 +33,7 @@ export default function (options, cbk) {
     const flux = new Flux();
     flux.getStore('app').setAppConfig(conf);
 
-    match({ routes, location: options.url }, (error, redirectLocation, renderProps) => {
+    match({ routes: routes({flux, first: { time: false }}), location: options.url }, (error, redirectLocation, renderProps) => {
       if (error) {
         result.error = error;
 
