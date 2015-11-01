@@ -145,11 +145,11 @@ type resp struct {
 	Initial  string `json:"initial"`
 }
 
-func (r resp) HtmlApp() template.HTML {
+func (r resp) HTMLApp() template.HTML {
 	return template.HTML(r.App)
 }
 
-func (r resp) HtmlMeta() template.HTML {
+func (r resp) HTMLMeta() template.HTML {
 	return template.HTML(r.Meta)
 }
 

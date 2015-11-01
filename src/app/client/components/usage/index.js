@@ -6,12 +6,14 @@ import { example, p, link } from '../homepage/styles';
 
 export default class Usage extends Component {
 
-  static onEnter({nextState, replaceState, callback}) {
+  /*eslint-disable */
+  static onEnter({flux, nextState, replaceState, callback}) {
     setTimeout(() => {
-      console.warn('Fake data loading... Edit it here --->');
-      callback()
+      console.warn( 'Fake data loading... Edit it here --->');
+      callback();
     }, 500);
   }
+  /*eslint-enable */
 
   render() {
     return <div className={usage}>

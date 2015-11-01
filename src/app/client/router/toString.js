@@ -45,7 +45,7 @@ export default function (options, cbk) {
         try {
           result.initial = flux.serialize();
         } catch (e) {
-          result.error = 'serialization error: ' + e
+          result.error = 'serialization error: ' + e;
         }
 
         result.app = renderToString(

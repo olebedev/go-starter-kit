@@ -15,7 +15,7 @@ import NotFound from '#app/components/not-found';
 export default ({flux, first}) => {
 
   // Closure to skip firts request
-  function W(loader) {
+  function w(loader) {
     return (nextState, replaceState, callback) => {
       if (first.time) {
         first.time = false;
@@ -26,10 +26,10 @@ export default ({flux, first}) => {
   }
 
   return <Route path="/" component={App}>
-    <IndexRoute component={Homepage} onEnter={W(Homepage.onEnter)}/>
-    <Route path="/usage" component={Usage} onEnter={W(Usage.onEnter)}/>
+    <IndexRoute component={Homepage} onEnter={w(Homepage.onEnter)}/>
+    <Route path="/usage" component={Usage} onEnter={w(Usage.onEnter)}/>
     {/* Server redirect in action */}
     <Redirect from="/docs" to="/usage" />
-    <Route path="*" component={NotFound} onEnter={W(NotFound.onEnter)}/>
+    <Route path="*" component={NotFound} onEnter={w(NotFound.onEnter)}/>
   </Route>;
-}
+};

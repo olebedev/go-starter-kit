@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/build/bundle.css">
     <title>{{ .Title }}</title>
-    {{ .HtmlMeta }}
+    {{ .HTMLMeta }}
   </head>
   <body>
     {{if .Error}}
@@ -32,7 +32,7 @@
         <pre style="font-size: 14px;">{{ .Error }}</pre>
       </div>
     {{end}}
-    <div id="app">{{ .HtmlApp }}</div>
+    <div id="app">{{ .HTMLApp }}</div>
     <script onload="this.parentElement.removeChild(this)">window['--app-initial'] = "{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}";</script>
     <script async defer src="/static/build/bundle.js"></script>
   </body>
