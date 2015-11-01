@@ -1,10 +1,11 @@
 import React from 'react';
+import { Provider } from 'react-redux'
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { renderToString } from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
-import FluxComponent from 'flummox/component';
-import Flux from '../flux';
 import Helmet from 'react-helmet';
-import routes from './routes';
+import createRoutes from './routes';
+import { createStore } from '../store';
 
 /**
  * Handle HTTP request at Golang server
@@ -14,52 +15,50 @@ import routes from './routes';
  */
 export default function (options, cbk) {
 
-  // server side fetch polyfill in action
-  fetch('/api/v1/conf').then((r) => {
-    return r.json();
-  }).then((conf) => {
+  let result = {
+    uuid: options.uuid,
+    app: null,
+    title: null,
+    meta: null,
+    initial: null,
+    error: null,
+    redirect: null
+  };
 
-    let result = {
-      uuid: options.uuid,
-      app: null,
-      title: null,
-      meta: null,
-      initial: null,
-      error: null,
-      redirect: null
-    };
+  const store = createStore();
 
+  try {
+    match({ routes: createRoutes({store, first: { time: false }}), location: options.url }, (error, redirectLocation, renderProps) => {
+      try {
+        if (error) {
+          result.error = error;
 
-    const flux = new Flux();
-    flux.getStore('app').setAppConfig(conf);
+        } else if (redirectLocation) {
+          result.redirect = redirectLocation.pathname + redirectLocation.search;
 
-    match({ routes: routes({flux, first: { time: false }}), location: options.url }, (error, redirectLocation, renderProps) => {
-      if (error) {
-        result.error = error;
-
-      } else if (redirectLocation) {
-        result.redirect = redirectLocation.pathname + redirectLocation.search;
-
-      } else {
-        // load data into the flux instance
-        try {
-          result.initial = flux.serialize();
-        } catch (e) {
-          result.error = 'serialization error: ' + e;
+        } else {
+          result.app = renderToString(
+            <span>
+              <Provider store={store}>
+                <RoutingContext {...renderProps} />
+              </Provider>
+              {process.env.NODE_ENV !== 'production' && <DebugPanel top right bottom>
+                <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false}/>
+              </DebugPanel>}
+            </span>
+          );
+          const { title, meta } = Helmet.rewind();
+          result.title = title;
+          result.meta = meta;
+          result.initial = JSON.stringify(store.getState());
         }
-
-        result.app = renderToString(
-          <FluxComponent flux={flux}>
-            <RoutingContext {...renderProps} />
-          </FluxComponent>
-        );
-        const { title, meta } = Helmet.rewind();
-        result.title = title;
-        result.meta = meta;
+      } catch (e) {
+        result.error = e;
       }
-
-      cbk(result);
-
+      return cbk(result)
     });
-  });
+  } catch (e) {
+    result.error = e;
+    return cbk(result)
+  };
 }

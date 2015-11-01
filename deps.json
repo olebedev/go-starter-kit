@@ -3,7 +3,7 @@
     "type": "git",
     "name": "github.com/codegangsta/cli",
     "remote": "https://github.com/codegangsta/cli",
-    "commit": "aba946908353f5182d9bf71b6fdfd814ceae31d0"
+    "commit": "70e3fa51ebed95df8c0fbe1519c1c1f9bc16bb13"
   },
   "github.com/elazarl/go-bindata-assetfs": {
     "type": "git",
@@ -16,6 +16,18 @@
     "name": "github.com/gin-gonic/gin",
     "remote": "https://github.com/gin-gonic/gin",
     "commit": "52fcc5dbf6e94df33ad313858fb94b713e9d1b4a"
+  },
+  "github.com/itsjamie/go-bindata-templates": {
+    "type": "git",
+    "name": "github.com/itsjamie/go-bindata-templates",
+    "remote": "https://github.com/itsjamie/go-bindata-templates",
+    "commit": "65d795d0c74021e19b2ebadf3c83c01a8290a405"
+  },
+  "github.com/jteeuwen/go-bindata": {
+    "type": "git",
+    "name": "github.com/jteeuwen/go-bindata",
+    "remote": "https://github.com/jteeuwen/go-bindata",
+    "commit": "a0ff2567cfb70903282db057e799fd826784d41d"
   },
   "github.com/manucorporat/sse": {
     "type": "git",
@@ -45,13 +57,13 @@
     "type": "git",
     "name": "github.com/parnurzeal/gorequest",
     "remote": "https://github.com/parnurzeal/gorequest",
-    "commit": "21a6e64ff1eafbfd8a1f8de5c1fe1d39bb7a63d7"
+    "commit": "8fe8e16b3c50b6cc37399ee385b15f62a20bf584"
   },
   "golang.org/x/net": {
     "type": "git",
     "name": "golang.org/x/net",
     "remote": "https://go.googlesource.com/net",
-    "commit": "cd8c2701a5e10f044db915e65eac68f738399d22"
+    "commit": "c95266fa704a83c2716406ae957772a273e1380d"
   },
   "gopkg.in/bluesuncorp/validator.v5": {
     "type": "git",

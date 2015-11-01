@@ -7,7 +7,7 @@ var cssLoader = ExtractTextPlugin.extract(
   'css-loader?module&localIdentName=[name]__[local]___[hash:base64:5]' +
     '&disableStructuralMinification' +
   '!autoprefixer-loader!' +
-  'stylus-loader?paths=src/app/client/styles/&import=./ctx'
+  'stylus-loader?paths=src/app/client/css/&import=./ctx'
 );
 
 var plugins = [
@@ -30,13 +30,13 @@ if (process.env.NODE_ENV === 'production') {
     'style-loader',
     'css-loader?module&disableStructuralMinification' +
       '!autoprefixer-loader' +
-      '!stylus-loader?paths=src/app/client/styles/&import=./ctx'
+      '!stylus-loader?paths=src/app/client/css/&import=./ctx'
   );
 };
 
 var config  = {
   entry: {
-    bundle: path.join(__dirname, 'src/app/client/entry.js')
+    bundle: path.join(__dirname, 'src/app/client/index.js')
   },
   output: {
     path: path.join(__dirname, 'src/app/server/data/static/build'),
@@ -63,8 +63,7 @@ var config  = {
     alias: {
       '#app': path.join(__dirname, '/src/app/client'),
       '#c': path.join(__dirname, '/src/app/client/components'),
-      '#s': path.join(__dirname, '/src/app/client/stores'),
-      '#a': path.join(__dirname, '/src/app/client/actions')
+      '#css': path.join(__dirname, '/src/app/client/css')
     }
   },
   svgo1: {

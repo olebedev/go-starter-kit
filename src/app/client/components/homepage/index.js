@@ -5,7 +5,7 @@ import { example, p, link } from './styles';
 
 export default class Homepage extends Component {
   /*eslint-disable */
-  static onEnter({flux, nextState, replaceState, callback}) {
+  static onEnter({store, nextState, replaceState, callback}) {
     // Load here any data.
     callback(); // this call is important, don't forget it
   }
@@ -18,12 +18,12 @@ export default class Homepage extends Component {
         meta={[
           {
             property: 'og:title',
-            content: 'Golang Isomorphic React/Hot Reloadable/Flummox/Css-Modules Starter Kit'
+            content: 'Golang Isomorphic React/Hot Reloadable/Redux/Css-Modules Starter Kit'
           }
         ]} />
       <h1 className={example}>
         Hot Reloadable <br />
-        Golang + React + Flummox + Css-Modules
+        Golang + React + Redux + Css-Modules
         <br />Isomorphic Starter Kit</h1>
       <br />
       <p className={p}>
