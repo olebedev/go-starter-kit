@@ -27,8 +27,8 @@ kill:
 
 serve: clean $(BUNDLE)
 	@make restart
-	@node hot.proxy &
-	@NODE_ENV=disable-hmr-plugin-at-duktape-server-to-avoid-an-error $(NODE_BIN)/webpack --watch &
+	@BABEL_ENV=dev node hot.proxy &
+	@$(NODE_BIN)/webpack --watch &
 	@fswatch $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
