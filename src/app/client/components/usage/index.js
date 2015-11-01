@@ -26,7 +26,7 @@ class Usage extends Component {
       <div className={p}>
         <span className={todo}>// TODO: write an article</span>
         <pre className={todo}>config:
-          {JSON.stringify(this.props.config, null ,2)}</pre>
+          {JSON.stringify(this.props.config, null, 2)}</pre>
       </div>
       <br />
       go <IndexLink to='/' className={link}>home</IndexLink>

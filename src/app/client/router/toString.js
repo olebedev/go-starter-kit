@@ -1,5 +1,5 @@
 import React from 'react';
-import { Provider } from 'react-redux'
+import { Provider } from 'react-redux';
 import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { renderToString } from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
@@ -55,10 +55,10 @@ export default function (options, cbk) {
       } catch (e) {
         result.error = e;
       }
-      return cbk(result)
+      return cbk(result);
     });
   } catch (e) {
     result.error = e;
-    return cbk(result)
-  };
+    return cbk(result);
+  }
 }
