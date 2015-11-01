@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+	"github.com/itsjamie/go-bindata-templates"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 )
@@ -65,6 +66,11 @@ func NewApp(opts ...AppOptions) *App {
 		AssetDir: AssetDir,
 		Prefix:   "static",
 	})
+
+	// Load embedded templates
+	app.Engine.SetHTMLTemplate(
+		binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
+	)
 
 	// Map app struct to access from request handlers
 	// and middlewares

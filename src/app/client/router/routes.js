@@ -7,7 +7,7 @@ import NotFound from '#app/components/not-found';
 
 
 export default <Route path="/" component={App}>
-  <IndexRoute component={Homepage} />
+  <IndexRoute component={Homepage} onEnter={Homepage.onEnter}/>
   <Route path="/usage" component={Usage} />
   {/* Server redirect in action */}
   <Redirect from="/docs" to="/usage" />

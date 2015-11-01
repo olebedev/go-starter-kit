@@ -5,7 +5,6 @@ import FluxComponent from 'flummox/component';
 import Flux from '../flux';
 import Helmet from 'react-helmet';
 import routes from './routes';
-import html from './html';
 
 /**
  * Handle HTTP request at Golang server
@@ -21,8 +20,12 @@ export default function (options, cbk) {
   }).then((conf) => {
 
     let result = {
+      uuid: options.uuid,
+      app: null,
+      title: null,
+      meta: null,
+      initial: null,
       error: null,
-      body: null,
       redirect: null
     };
 
@@ -38,13 +41,21 @@ export default function (options, cbk) {
         result.redirect = redirectLocation.pathname + redirectLocation.search;
 
       } else {
-        const app = renderToString(
+        // load data into the flux instance
+        try {
+          result.initial = flux.serialize();
+        } catch (e) {
+          result.error = 'serialization error: ' + e
+        }
+
+        result.app = renderToString(
           <FluxComponent flux={flux}>
             <RoutingContext {...renderProps} />
           </FluxComponent>
         );
-        const head = Helmet.rewind();
-        result.body = html({app, head});
+        const { title, meta } = Helmet.rewind();
+        result.title = title;
+        result.meta = meta;
       }
 
       cbk(result);

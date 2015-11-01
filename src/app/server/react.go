@@ -3,14 +3,15 @@ package server
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"runtime"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nu7hatch/gouuid"
-	"gopkg.in/olebedev/go-duktape.v1"
 	"gopkg.in/olebedev/go-duktape-fetch.v1"
+	"gopkg.in/olebedev/go-duktape.v1"
 )
 
 // NewReact initialized React struct
@@ -47,13 +48,13 @@ type React struct {
 // have no been caught via static file
 // handler or other middlewares.
 func (r *React) Handle(c *gin.Context) {
+	UUID := c.MustGet("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
-			UUID := c.MustGet("uuid").(*uuid.UUID)
-			c.Writer.WriteHeader(http.StatusInternalServerError)
-			c.Writer.Header().Add("Content-Type", "text/plain")
-			c.Writer.Write([]byte(fmt.Sprintf("req uuid: %s\n%#v", UUID, r)))
-			c.Abort()
+			c.HTML(http.StatusInternalServerError, "react.html", resp{
+				UUID:  UUID.String(),
+				Error: r.(string),
+			})
 		}
 	}()
 
@@ -68,6 +69,7 @@ func (r *React) Handle(c *gin.Context) {
 		b, _ := json.Marshal(map[string]interface{}{
 			"url":     c.Request.URL.String(),
 			"headers": c.Request.Header,
+			"uuid":    UUID.String(),
 		})
 		return string(b)
 	}()
@@ -107,56 +109,48 @@ func (r *React) Handle(c *gin.Context) {
 		vm.Unlock()
 		// Return vm back to the pool
 		r.put(vm)
-
 		// Handle the response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
-			// If no redirection and no error
-			c.Writer.WriteHeader(http.StatusOK)
-			c.Writer.Header().Add("Content-Type", "text/html")
-			c.Writer.Write([]byte("<!doctype html>\n" + re.Body))
-			c.Abort()
+			// If no redirection and no errors
+			c.HTML(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {
 			c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
-			c.Writer.WriteHeader(http.StatusInternalServerError)
-			c.Writer.Header().Add("Content-Type", "text/plain")
-			c.Writer.Write([]byte(re.Error))
-			c.Abort()
+			c.HTML(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
 		// release duktape context
 		r.drop(vm)
-		UUID := c.MustGet("uuid").(*uuid.UUID)
-		c.Writer.WriteHeader(http.StatusInternalServerError)
-		c.Writer.Header().Add("Content-Type", "text/html")
-		c.Writer.Write([]byte(fmt.Sprintf(`
-			<!DOCTYPE html>
-			<html>
-				<head>
-					<meta charset=charset"UTF-8">
-					<link rel="stylesheet" href="/static/build/bundle.css">
-					<title>Internal Server Error</title>
-				</head>
-				<body>
-					<h1>Internal Server Error</h1>
-					<p>uuid: %s</p>
-					<div id="app"></div>
-					<script async src="/static/build/bundle.js"></script>
-				</body>
-			</html>
-		`, UUID)))
-		c.Abort()
+		c.HTML(http.StatusInternalServerError, "react.html", resp{
+			UUID:  UUID.String(),
+			Error: "time is out",
+		})
 	}
 }
 
 // Resp is a struct for convinient
 // react app response parsing.
+// Feel free to add any other keys to this struct
+// and return value for this key at ecmascript side.
+// Keep it sync with: src/app/client/router/toString.js:23
 type resp struct {
+	UUID     string `json:"uuid"`
 	Error    string `json:"error"`
 	Redirect string `json:"redirect"`
-	Body     string `json:"body"`
+	App      string `json:"app"`
+	Title    string `json:"title"`
+	Meta     string `json:"meta"`
+	Initial  string `json:"initial"`
+}
+
+func (r resp) HtmlApp() template.HTML {
+	return template.HTML(r.App)
+}
+
+func (r resp) HtmlMeta() template.HTML {
+	return template.HTML(r.Meta)
 }
 
 // Interface to serve React app on demand or from prepared pool.
@@ -212,6 +206,8 @@ func (f *onDemandPool) get() *duktape.Context {
 }
 
 func (f onDemandPool) put(c *duktape.Context) {
+	c.Lock()
+	c.ResetTimers()
 	c.Gc(0)
 	c.DestroyHeap()
 }
@@ -236,6 +232,8 @@ func (o *duktapePool) put(ot *duktape.Context) {
 }
 
 func (o *duktapePool) drop(ot *duktape.Context) {
+	ot.Lock()
+	ot.ResetTimers()
 	ot.DestroyHeap()
 	ot = nil
 	o.ch <- newDuktapeContext(o.path, o.engine)

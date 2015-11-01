@@ -14,4 +14,12 @@ export default class AppStore extends Store {
     this.setState({config: config});
   }
 
+  static serialize(it) {
+    return JSON.stringify(it);
+  }
+
+  static deserialize(it) {
+    return JSON.parse(it);
+  }
+
 }

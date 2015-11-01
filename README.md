@@ -68,7 +68,7 @@ Install dependencies and just type `NODE_ENV=production make build`. This rule i
 - [x] add react-transform-hmr instead react-hot-loader
 - [x] update react to 0.14.x
 - [x] update react-router to 1.x
-- [ ] render final HTML markup at Golang side
+- [x] render final HTML markup at Golang side
 - [ ] add redux and drop flummox
 - [ ] add postcss and drop stylus (?)
 - [ ] improve README and write an article to describe the project

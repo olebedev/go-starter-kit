@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html data-uuid="{{ .UUID }}">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/static/build/bundle.css">
+    <title>{{ .Title }}</title>
+    {{ .HtmlMeta }}
+  </head>
+  <body>
+    {{if .Error}}
+      <div
+        class="error"
+        style="
+          width: 50%;
+          position: absolute;
+          top: 10px;
+          opacity: .5;
+          color: #666;
+          right: 10px;
+          border: 2px solid #ccc;
+          background: rgba(0,0,0,.2);
+          padding: 10px;
+          pointer-events: none;"
+        >
+          <button
+            style="pointer-events: auto;"
+            onclick="this.parentElement.parentElement.removeChild(this.parentElement)"
+          >
+            Error: {{ .UUID }}
+          </button>
+        <hr />
+        <pre style="font-size: 14px;">{{ .Error }}</pre>
+      </div>
+    {{end}}
+    <div id="app">{{ .HtmlApp }}</div>
+    <script onload="this.parentElement.removeChild(this)">window['--app-initial'] = "{{if .Initial}}{{ .Initial }}{{else}}{}{{end}}";</script>
+    <script async defer src="/static/build/bundle.js"></script>
+  </body>
+</html>

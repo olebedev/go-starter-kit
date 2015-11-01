@@ -2,6 +2,7 @@ BIN = $(GOPATH)/bin
 NODE_BIN = $(shell npm bin)
 PID = .pid
 GO_FILES = $(filter-out src/app/server/bindata.go, $(shell find src/app -type f -name "*.go"))
+TEMPLATES = $(wildcard src/app/server/data/templates/*.html)
 BINDATA = src/app/server/bindata.go
 BINDATA_FLAGS = -pkg=server -prefix=src/app/server/data
 BUNDLE = src/app/server/data/static/build/bundle.js
@@ -27,8 +28,8 @@ kill:
 serve: clean $(BUNDLE)
 	@make restart
 	@node hot.proxy &
-	@NODE_ENV=disable-hmr-plugin-at-duktape-server $(NODE_BIN)/webpack --watch &
-	@fswatch $(GO_FILES) | xargs -n1 -I{} make restart || make kill
+	@NODE_ENV=disable-hmr-plugin-at-duktape-server-to-avoid-an-error $(NODE_BIN)/webpack --watch &
+	@fswatch $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
 restart: $(BINDATA)
