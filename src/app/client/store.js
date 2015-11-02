@@ -13,9 +13,7 @@ if (process.env.NODE_ENV === 'production') {
     )(reduxCreateStore).bind(null, goStarterKit);
     console.log('dev tools added');
   } catch (e) {
-    finalCreateStore = compose(
-      devTools()
-    )(reduxCreateStore).bind(null, goStarterKit);
+    finalCreateStore = reduxCreateStore.bind(null, goStarterKit);
   }
 }
 

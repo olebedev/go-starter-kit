@@ -7,14 +7,14 @@ import NotFound from '#app/components/not-found';
 
 /**
  * Returns configured routes for different
- * environments. `W` - wrapper that helps skip
+ * environments. `w` - wrapper that helps skip
  * data fetching with onEnter hook at first time.
  * @param {Object} - any data for static loaders and first-time-loading marker
  * @returns {Object} - configured routes
  */
 export default ({store, first}) => {
 
-  // Closure to skip firts request
+  // Make a closure to skip first request
   function w(loader) {
     return (nextState, replaceState, callback) => {
       if (first.time) {

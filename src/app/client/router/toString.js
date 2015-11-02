@@ -1,6 +1,5 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { renderToString } from 'react-dom/server';
 import { match, RoutingContext } from 'react-router';
 import Helmet from 'react-helmet';
@@ -38,14 +37,9 @@ export default function (options, cbk) {
 
         } else {
           result.app = renderToString(
-            <span>
-              <Provider store={store}>
-                <RoutingContext {...renderProps} />
-              </Provider>
-              {process.env.NODE_ENV !== 'production' && <DebugPanel top right bottom>
-                <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false}/>
-              </DebugPanel>}
-            </span>
+            <Provider store={store}>
+              <RoutingContext {...renderProps} />
+            </Provider>
           );
           const { title, meta } = Helmet.rewind();
           result.title = title;

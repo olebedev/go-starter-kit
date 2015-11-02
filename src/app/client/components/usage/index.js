@@ -14,6 +14,7 @@ class Usage extends Component {
       return r.json();
     }).then((conf) => {
       store.dispatch(setConfig(conf));
+      console.warn('Faked connection latency! Please, take a look ---> `src/app/server/api.go:22`');
       callback();
     });
   }

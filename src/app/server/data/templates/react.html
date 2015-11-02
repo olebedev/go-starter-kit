@@ -14,22 +14,27 @@
           width: 50%;
           position: absolute;
           top: 10px;
+          left: 10px;
           opacity: .5;
           color: #666;
-          right: 10px;
-          border: 2px solid #ccc;
-          background: rgba(0,0,0,.2);
-          padding: 10px;
+          border: 2px solid #fb2c10;
+          background: rgba(0,0,0,.1);
+          font-family:monaco, Consolas, Lucida Console, monospace;
           pointer-events: none;"
         >
           <button
-            style="pointer-events: auto;"
+            style="padding: 10px 10px 0 10px;pointer-events: auto; font-size: 16px"
             onclick="this.parentElement.parentElement.removeChild(this.parentElement)"
           >
-            Error: {{ .UUID }}
+            Server Error: {{ .UUID }}
           </button>
-        <hr />
-        <pre style="font-size: 14px;">{{ .Error }}</pre>
+        <hr style="
+          height: 0px;
+          border: none;
+          border-bottom: 2px solid #fb2c10;
+        "/>
+        <pre style="font-family:monaco, Consolas, Lucida Console, monospace;
+          font-size: 14px; padding: 0 10px 10px; margin: 0">{{ .Error }}</pre>
       </div>
     {{end}}
     <div id="app">{{ .HTMLApp }}</div>

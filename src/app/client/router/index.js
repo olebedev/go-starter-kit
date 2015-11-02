@@ -20,22 +20,27 @@ export function run() {
 
   if (process.env.NODE_ENV !== 'production'){
     store.subscribe(() => {
-      console.log('%c[REDUX]', 'color: green', store.getState());
+      console.log('%c[STORE]', 'color: green', store.getState());
     });
   }
 
   render(
-    <span>
-      <Provider store={store} >
-        <Router history={createHistory()}>{createRoutes({store, first: { time: true }})}</Router>
-      </Provider>
-      {process.env.NODE_ENV !== 'production' && <DebugPanel top right bottom>
-        <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false}/>
-      </DebugPanel>}
-    </span>,
+    <Provider store={store} >
+      <Router history={createHistory()}>{createRoutes({store, first: { time: true }})}</Router>
+    </Provider>,
     document.getElementById('app')
   );
 
+  if (process.env.NODE_ENV !== 'production'){
+    const node = document.createElement('div');
+    document.body.appendChild(node);
+    render(
+      <DebugPanel top right bottom>
+        <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false}/>
+      </DebugPanel>,
+      node
+    );
+  }
 }
 
 // Export it to render on the Golang sever, keep the name sync with -
