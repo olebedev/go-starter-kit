@@ -32,6 +32,8 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
 
+Note that probably not works at windows.
+
 ## Install
 
 Clone the repo:
@@ -72,8 +74,3 @@ Install dependencies and just type `NODE_ENV=production make build`. This rule i
 - [x] add redux and drop flummox
 - [ ] add postcss and drop stylus (?)
 - [ ] improve README and write an article to describe the project
-
-## Misc
-
-> - Note that probably not works at windows.
-> - Note: there are some warnings related to devtools html markup checksums. It's only devtools related warnings, don't worry. In production build it skipped.
