@@ -10,8 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/nu7hatch/gouuid"
-	"gopkg.in/olebedev/go-duktape-fetch.v1"
-	"gopkg.in/olebedev/go-duktape.v1"
+	"gopkg.in/olebedev/go-duktape-fetch.v2"
+	"gopkg.in/olebedev/go-duktape.v2"
 )
 
 // NewReact initialized React struct
@@ -104,7 +104,7 @@ func (r *React) Handle(c *gin.Context) {
 		vm.PopN(vm.GetTop())
 
 		// Drop any futured async calls
-		vm.ResetTimers()
+		vm.FlushTimers()
 		// Release the context
 		vm.Unlock()
 		// Return vm back to the pool
@@ -181,7 +181,7 @@ func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool
 func newDuktapeContext(filePath string, engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
-	fetch.Define(vm, engine)
+	fetch.PushGlobal(vm, engine)
 	app, err := Asset(filePath)
 	Must(err)
 	fmt.Printf("%s loaded\n", filePath)
@@ -207,7 +207,7 @@ func (f *onDemandPool) get() *duktape.Context {
 
 func (f onDemandPool) put(c *duktape.Context) {
 	c.Lock()
-	c.ResetTimers()
+	c.FlushTimers()
 	c.Gc(0)
 	c.DestroyHeap()
 }
@@ -233,7 +233,7 @@ func (o *duktapePool) put(ot *duktape.Context) {
 
 func (o *duktapePool) drop(ot *duktape.Context) {
 	ot.Lock()
-	ot.ResetTimers()
+	ot.FlushTimers()
 	ot.DestroyHeap()
 	ot = nil
 	o.ch <- newDuktapeContext(o.path, o.engine)

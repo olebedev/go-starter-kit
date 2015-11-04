@@ -71,17 +71,17 @@
     "remote": "https://gopkg.in/bluesuncorp/validator.v5",
     "commit": "d5acf1dac43705f8bfbb71d878e290e2bed3950b"
   },
-  "gopkg.in/olebedev/go-duktape-fetch.v1": {
+  "gopkg.in/olebedev/go-duktape-fetch.v2": {
     "type": "git",
-    "name": "gopkg.in/olebedev/go-duktape-fetch.v1",
-    "remote": "https://gopkg.in/olebedev/go-duktape-fetch.v1",
-    "commit": "2e214c1cb61effe374d165f7c6db11a9f1014351"
+    "name": "gopkg.in/olebedev/go-duktape-fetch.v2",
+    "remote": "https://gopkg.in/olebedev/go-duktape-fetch.v2",
+    "commit": "8a8e07b00d129d7b0875ae65948d4677b4f93902"
   },
-  "gopkg.in/olebedev/go-duktape.v1": {
+  "gopkg.in/olebedev/go-duktape.v2": {
     "type": "git",
-    "name": "gopkg.in/olebedev/go-duktape.v1",
-    "remote": "https://gopkg.in/olebedev/go-duktape.v1",
-    "commit": "e2ae92f01e4a94d11f503c2260934c6cc7d3d6e9"
+    "name": "gopkg.in/olebedev/go-duktape.v2",
+    "remote": "https://gopkg.in/olebedev/go-duktape.v2",
+    "commit": "de3e8f7b4117bcfbced956b0b6dd2d4fccf1f7c5"
   },
   "gopkg.in/yaml.v2": {
     "type": "git",
