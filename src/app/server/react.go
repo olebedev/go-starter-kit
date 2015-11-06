@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v1"
 	"gopkg.in/olebedev/go-duktape.v1"
@@ -47,8 +47,8 @@ type React struct {
 // Handle handles all HTTP requests which
 // have no been caught via static file
 // handler or other middlewares.
-func (r *React) Handle(c *gin.Context) {
-	UUID := c.MustGet("uuid").(*uuid.UUID)
+func (r *React) Handle(c *echo.Context) error {
+	UUID := c.Get("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
 			c.HTML(http.StatusInternalServerError, "react.html", resp{
@@ -67,8 +67,8 @@ func (r *React) Handle(c *gin.Context) {
 
 	req := func() string {
 		b, _ := json.Marshal(map[string]interface{}{
-			"url":     c.Request.URL.String(),
-			"headers": c.Request.Header,
+			"url":     c.Request().URL.String(),
+			"headers": c.Request().Header,
 			"uuid":    UUID.String(),
 		})
 		return string(b)
@@ -112,22 +112,23 @@ func (r *React) Handle(c *gin.Context) {
 		// Handle the response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
-			c.HTML(http.StatusOK, "react.html", re)
+			return c.HTML(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {
-			c.Redirect(http.StatusMovedPermanently, re.Redirect)
+			return c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
-			c.HTML(http.StatusInternalServerError, "react.html", re)
+			return c.HTML(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
 		// release duktape context
 		r.drop(vm)
-		c.HTML(http.StatusInternalServerError, "react.html", resp{
+		return c.HTML(http.StatusInternalServerError, "react.html", resp{
 			UUID:  UUID.String(),
 			Error: "time is out",
 		})
 	}
+	return nil
 }
 
 // Resp is a struct for convinient
@@ -182,7 +183,7 @@ func newDuktapeContext(filePath string, engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
 	fetch.Define(vm, engine)
-	app, err := Asset(filePath)
+	app, err := fetch.Asset(filePath)
 	Must(err)
 	fmt.Printf("%s loaded\n", filePath)
 	if err := vm.PevalString(string(app)); err != nil {
