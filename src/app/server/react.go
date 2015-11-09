@@ -183,7 +183,7 @@ func newDuktapeContext(filePath string, engine http.Handler) *duktape.Context {
 	vm := duktape.New()
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
 	fetch.Define(vm, engine)
-	app, err := fetch.Asset(filePath)
+	app, err := Asset(filePath)
 	Must(err)
 	fmt.Printf("%s loaded\n", filePath)
 	if err := vm.PevalString(string(app)); err != nil {

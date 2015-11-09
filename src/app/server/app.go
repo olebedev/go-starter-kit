@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
@@ -103,8 +105,11 @@ func NewApp(opts ...AppOptions) *App {
 	)
 
 	// Handle all not found routes via react app
-	//notFoundHandler is not visible!
-	//app.Engine.notFoundHandler = app.React.Handle
+	app.Engine.SetHTTPErrorHandler(func(err error, c *echo.Context) {
+		if err.Error() == http.StatusText(http.StatusNotFound) {
+			app.React.Handle(c)
+		}
+	})
 
 	return app
 }
