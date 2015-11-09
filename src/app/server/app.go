@@ -1,9 +1,13 @@
 package server
 
 import (
-	"github.com/elazarl/go-bindata-assetfs"
-	"github.com/gin-gonic/gin"
+	"io"
+	"net/http"
+
 	"github.com/itsjamie/go-bindata-templates"
+
+	"github.com/labstack/echo"
+	mw "github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 )
@@ -13,7 +17,7 @@ import (
 // all variables defined locally inside
 // this struct.
 type App struct {
-	Engine *gin.Engine
+	Engine *echo.Echo
 	Conf   *config.Config
 	React  *React
 	API    *API
@@ -40,13 +44,17 @@ func NewApp(opts ...AppOptions) *App {
 	// in config constants
 	conf.Env()
 
-	// Set up gin
+	// Make an engine
+	engine := echo.New()
+
+	// Set up echo
 	if !conf.UBool("debug") {
-		gin.SetMode(gin.ReleaseMode)
+		engine.SetDebug(true)
 	}
 
-	// Make an engine
-	engine := gin.Default()
+	// Middlewares
+	engine.Use(mw.Logger())
+	engine.Use(mw.Recover())
 
 	// Initialize the application
 	app := &App{
@@ -60,51 +68,68 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	}
 
-	// Define routes and middlewares
-	app.Engine.StaticFS("/static", &assetfs.AssetFS{
-		Asset:    Asset,
-		AssetDir: AssetDir,
-		Prefix:   "static",
-	})
+	// Define static dir
+	app.Engine.Static("/static", "/client")
 
-	// Load embedded templates
-	app.Engine.SetHTMLTemplate(
-		binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
-	)
+	// Load embedded templates MISSING
+	app.Engine.SetRenderer(echoRenderer{})
 
 	// Map app struct to access from request handlers
 	// and middlewares
-	app.Engine.Use(func(c *gin.Context) {
+	var contextSetterMiddleware func(c *echo.Context) error
+	contextSetterMiddleware = func(c *echo.Context) error {
 		c.Set("app", app)
-	})
+		return nil
+	}
+
+	app.Engine.Use(contextSetterMiddleware)
+
+	var requestIDMiddleware func(c *echo.Context) error
+	requestIDMiddleware = func(c *echo.Context) error {
+		id, _ := uuid.NewV4()
+		c.Set("uuid", id)
+		return nil
+	}
+
+	// Map uuid for every requests
+	app.Engine.Use(requestIDMiddleware)
 
 	// Avoid favicon react handling
-	app.Engine.GET("/favicon.ico", func(c *gin.Context) {
+	app.Engine.Get("/favicon.ico", func(c *echo.Context) error {
 		c.Redirect(301, "/static/images/favicon.ico")
+		return nil
+	})
+
+	//Force handle index to React
+	app.Engine.Get("/", func(c *echo.Context) error {
+		return app.React.Handle(c)
 	})
 
 	// Bind api hadling for URL api.prefix
 	app.API.Bind(
-		app.Engine.Group(
-			app.Conf.UString("api.prefix"),
-		),
+		app.Engine.Group(app.Conf.UString("api.prefix")),
 	)
 
-	// Map uuid for every requests
-	app.Engine.Use(func(c *gin.Context) {
-		id, _ := uuid.NewV4()
-		c.Set("uuid", id)
-	})
-
 	// Handle all not found routes via react app
-	app.Engine.NoRoute(app.React.Handle)
+	app.Engine.SetHTTPErrorHandler(func(err error, c *echo.Context) {
+		if err.Error() == http.StatusText(http.StatusNotFound) {
+			app.React.Handle(c)
+		}
+	})
 
 	return app
 }
 
 // Run runs the app
 func (app *App) Run() {
-	Must(app.Engine.Run(":" + app.Conf.UString("port")))
+	app.Engine.Run(":" + app.Conf.UString("port"))
+}
+
+type echoRenderer struct{}
+
+func (er echoRenderer) Render(w io.Writer, name string, data interface{}) error {
+	template := binhtml.New(Asset, AssetDir).MustLoadDirectory("templates")
+	return template.Execute(w, data)
 }
 
 // AppOptions is options struct
