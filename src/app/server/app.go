@@ -100,6 +100,11 @@ func NewApp(opts ...AppOptions) *App {
 		return nil
 	})
 
+	//Force handle index to React
+	app.Engine.Get("/", func(c *echo.Context) error {
+		return app.React.Handle(c)
+	})
+
 	// Bind api hadling for URL api.prefix
 	app.API.Bind(
 		app.Engine.Group(app.Conf.UString("api.prefix")),
