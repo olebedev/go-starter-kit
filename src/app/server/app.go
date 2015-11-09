@@ -1,7 +1,10 @@
 package server
 
 import (
+	"io"
 	"net/http"
+
+	"github.com/itsjamie/go-bindata-templates"
 
 	"github.com/labstack/echo"
 	mw "github.com/labstack/echo/middleware"
@@ -69,9 +72,7 @@ func NewApp(opts ...AppOptions) *App {
 	app.Engine.Static("/static", "/client")
 
 	// Load embedded templates MISSING
-	//app.Engine.SetHTMLTemplate(
-	//binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
-	//)
+	app.Engine.SetRenderer(echoRenderer{})
 
 	// Map app struct to access from request handlers
 	// and middlewares
@@ -117,6 +118,13 @@ func NewApp(opts ...AppOptions) *App {
 // Run runs the app
 func (app *App) Run() {
 	app.Engine.Run(":" + app.Conf.UString("port"))
+}
+
+type echoRenderer struct{}
+
+func (er echoRenderer) Render(w io.Writer, name string, data interface{}) error {
+	template := binhtml.New(Asset, AssetDir).MustLoadDirectory("templates")
+	return template.Execute(w, data)
 }
 
 // AppOptions is options struct

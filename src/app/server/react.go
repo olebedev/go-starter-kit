@@ -51,7 +51,7 @@ func (r *React) Handle(c *echo.Context) error {
 	UUID := c.Get("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
-			c.HTML(http.StatusInternalServerError, "react.html", resp{
+			c.Render(http.StatusInternalServerError, "react.html", resp{
 				UUID:  UUID.String(),
 				Error: r.(string),
 			})
@@ -112,18 +112,18 @@ func (r *React) Handle(c *echo.Context) error {
 		// Handle the response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
-			return c.HTML(http.StatusOK, "react.html", re)
+			return c.Render(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {
 			return c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
-			return c.HTML(http.StatusInternalServerError, "react.html", re)
+			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
 		// release duktape context
 		r.drop(vm)
-		return c.HTML(http.StatusInternalServerError, "react.html", resp{
+		return c.Render(http.StatusInternalServerError, "react.html", resp{
 			UUID:  UUID.String(),
 			Error: "time is out",
 		})
