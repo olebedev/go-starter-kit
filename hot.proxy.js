@@ -4,9 +4,11 @@ var webpackHotMiddleware = require('webpack-hot-middleware');
 var proxy = require('proxy-middleware');
 var config = require('./webpack.config');
 
+var port = +(process.env.PORT || 5000) + 1;
+
 config.entry = {
   bundle: [
-    'webpack-hot-middleware/client?http://localhost:5001',
+    'webpack-hot-middleware/client?http://localhost:' + port,
     config.entry.bundle
   ]
 };
@@ -20,12 +22,11 @@ config.plugins.push(
 config.devtool = 'cheap-module-eval-source-map';
 
 var app = new require('express')();
-var port = 5001;
 
 var compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
 app.use(webpackHotMiddleware(compiler));
-app.use(proxy('http://localhost:5000'));
+app.use(proxy('http://localhost:' + (port - 1)));
 
 app.listen(port, function(error) {
   if (error) {
