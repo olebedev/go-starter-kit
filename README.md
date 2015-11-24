@@ -11,7 +11,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * title, Open Graph and other domain-specific meta tags render for each page at the server and at the client
 * server side redirect
 * embedding static files into artefact via bindata
-* high performance [gin](https://github.com/gin-gonic/gin/) framework
+* high performance [echo](https://github.com/labstack/echo) framework
 * advanced cli via [cli](https://github.com/codegangsta/cli)
 * Makefile based project
 * one(!) terminal window process for development
@@ -59,7 +59,7 @@ Start dev server:
 ```
 $ make serve
 ```
-that's it. Open [http://localhost:5001/](http://localhost:5001/) at your browser. Now you ready to start coding your awesome project.
+that's it. Open [http://localhost:5001/](http://localhost:5001/)(if you use default port) at your browser. Now you ready to start coding your awesome project.
 
 ## Build
 
@@ -73,5 +73,5 @@ Install dependencies and just type `NODE_ENV=production make build`. This rule i
 - [x] render final HTML markup at Golang side
 - [x] migrate from Flummox to Redux
 - [ ] migrate from Stylus to PostCSS
-- [ ] migrate from Gin to Echo
+- [x] migrate from Gin to Echo
 - [ ] improve README and write an article to describe the project

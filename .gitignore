@@ -10,3 +10,4 @@ src/app/server/data/bundle.server.js
 .pid
 .pid_wds
 .pid_wp
+.DS_Store
