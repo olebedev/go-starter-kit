@@ -11,11 +11,11 @@
     "remote": "https://github.com/elazarl/go-bindata-assetfs",
     "commit": "d5cac425555ca5cf00694df246e04f05e6a55150"
   },
-  "github.com/gin-gonic/gin": {
+  "github.com/labstack/echo": {
     "type": "git",
-    "name": "github.com/gin-gonic/gin",
-    "remote": "https://github.com/gin-gonic/gin",
-    "commit": "52fcc5dbf6e94df33ad313858fb94b713e9d1b4a"
+    "name": "github.com/labstack/echo",
+    "remote": "https://github.com/labstack/echo.git",
+    "commit": "e48ebd342145c453437176624ea05424585473ce"
   },
   "github.com/itsjamie/go-bindata-templates": {
     "type": "git",

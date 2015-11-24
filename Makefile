@@ -20,7 +20,7 @@ $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors
 
 $(BIN)/app: $(BUNDLE) $(BINDATA)
-	@go install -ldflags "-w -X main.buildstamp `date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag `git describe --tags || true` -X main.githash `git rev-parse HEAD || true`" app
+	@go install -ldflags "-w -X main.buildstamp=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag=`git describe --tags || true` -X main.githash=`git rev-parse HEAD || true`" app
 
 kill:
 	@kill `cat $(PID)` || true
@@ -34,6 +34,7 @@ serve: clean $(BUNDLE)
 restart: BINDATA_FLAGS += -debug
 restart: $(BINDATA)
 	@make kill
+	@echo restart the app...
 	@go install app
 	@$(BIN)/app run & echo $$! > $(PID)
 

@@ -4,13 +4,11 @@ import (
 	"app/server"
 	"fmt"
 	"os"
-	"runtime"
 
 	"github.com/codegangsta/cli"
 )
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
 	Run(os.Args)
 }
 
