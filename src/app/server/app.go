@@ -3,13 +3,12 @@ package server
 import (
 	"io"
 	"net/http"
-	"regexp"
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
 
 	"github.com/labstack/echo"
-	mw "github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 )
@@ -52,9 +51,11 @@ func NewApp(opts ...AppOptions) *App {
 	// Set up echo
 	engine.SetDebug(conf.UBool("debug"))
 
-	// Middlewares
-	engine.Use(mw.Logger())
-	engine.Use(mw.Recover())
+	// Regular middlewares
+	engine.Use(
+		middleware.Logger(),
+		middleware.Recover(),
+	)
 
 	// Initialize the application
 	app := &App{
@@ -68,7 +69,7 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	}
 
-	// Load embedded templates MISSING
+	// Load embedded templates
 	app.Engine.SetRenderer(echoRenderer{})
 
 	// Map app struct to access from request handlers
@@ -85,31 +86,18 @@ func NewApp(opts ...AppOptions) *App {
 		return nil
 	})
 
-	var staticPathRegExp = regexp.MustCompile(`^/static/?.*`)
-
-	staticAsset := assetfs.AssetFS{
+	// Create file http server from bindata
+	fileServerHandler := http.FileServer(&assetfs.AssetFS{
 		Asset:    Asset,
 		AssetDir: AssetDir,
-		Prefix:   "",
-	}
+	})
 
-	fileServerHandler := http.FileServer(&staticAsset)
-
-	// Handle all not found routes via react app (except for static files)
-	app.Engine.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
-		return func(c *echo.Context) error {
-			err := h(c)
-			if err != nil && err.Error() == http.StatusText(http.StatusNotFound) {
-				if staticPathRegExp.MatchString(c.Request().URL.Path) {
-					// Handles static files with assetFs
-					fileServerHandler.ServeHTTP(c.Response(), c.Request())
-					return nil
-				}
-				//if not found and not a static file then serv with react.
-				return app.React.Handle(c)
-			}
-			return err
+	app.Engine.Get("/static/*", func(c *echo.Context) error {
+		if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
+			fileServerHandler.ServeHTTP(c.Response(), c.Request())
+			return nil
 		}
+		return echo.NewHTTPError(http.StatusNotFound)
 	})
 
 	// Avoid favicon react handling
@@ -118,13 +106,15 @@ func NewApp(opts ...AppOptions) *App {
 		return nil
 	})
 
-	//Force handle index to React otherwise it will throw Method not allowed.
-	app.Engine.Get("/", app.React.Handle)
-
 	// Bind api hadling for URL api.prefix
 	app.API.Bind(
-		app.Engine.Group(app.Conf.UString("api.prefix")),
+		app.Engine.Group(
+			app.Conf.UString("api.prefix"),
+		),
 	)
+
+	// Bind React app
+	app.Engine.Get("/*", app.React.Handle)
 	return app
 }
 
@@ -133,6 +123,7 @@ func (app *App) Run() {
 	app.Engine.Run(":" + app.Conf.UString("port"))
 }
 
+// Custom renderer for Echo, to render html from bindata
 type echoRenderer struct{}
 
 func (er echoRenderer) Render(w io.Writer, name string, data interface{}) error {
