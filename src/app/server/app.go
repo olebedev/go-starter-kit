@@ -1,6 +1,7 @@
 package server
 
 import (
+	"html/template"
 	"io"
 	"net/http"
 
@@ -52,10 +53,8 @@ func NewApp(opts ...AppOptions) *App {
 	engine.SetDebug(conf.UBool("debug"))
 
 	// Regular middlewares
-	engine.Use(
-		middleware.Logger(),
-		middleware.Recover(),
-	)
+	engine.Use(middleware.Logger())
+	engine.Use(middleware.Recover())
 
 	// Initialize the application
 	app := &App{
@@ -69,8 +68,8 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	}
 
-	// Load embedded templates
-	app.Engine.SetRenderer(echoRenderer{})
+	// Use precompiled embedded templates
+	app.Engine.SetRenderer(NewTemplate())
 
 	// Map app struct to access from request handlers
 	// and middlewares
@@ -86,20 +85,6 @@ func NewApp(opts ...AppOptions) *App {
 		return nil
 	})
 
-	// Create file http server from bindata
-	fileServerHandler := http.FileServer(&assetfs.AssetFS{
-		Asset:    Asset,
-		AssetDir: AssetDir,
-	})
-
-	app.Engine.Get("/static/*", func(c *echo.Context) error {
-		if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
-			fileServerHandler.ServeHTTP(c.Response(), c.Request())
-			return nil
-		}
-		return echo.NewHTTPError(http.StatusNotFound)
-	})
-
 	// Avoid favicon react handling
 	app.Engine.Get("/favicon.ico", func(c *echo.Context) error {
 		c.Redirect(301, "/static/images/favicon.ico")
@@ -113,8 +98,34 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	)
 
-	// Bind React app
-	app.Engine.Get("/*", app.React.Handle)
+	// Create file http server from bindata
+	fileServerHandler := http.FileServer(&assetfs.AssetFS{
+		Asset:    Asset,
+		AssetDir: AssetDir,
+	})
+
+	// Serve static via bindata and handle via react app
+	// in case when static file was not found
+	app.Engine.Use(func(h echo.HandlerFunc) echo.HandlerFunc {
+		return func(c *echo.Context) error {
+			// execute echo handlers chain
+			err := h(c)
+			// if page(handler) for url/method not found
+			if err != nil && err.Error() == http.StatusText(http.StatusNotFound) {
+				// check if file exists
+				// omit first `/`
+				if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
+					fileServerHandler.ServeHTTP(c.Response(), c.Request())
+					return nil
+				}
+				// if static file not found handle request via react application
+				return app.React.Handle(c)
+			}
+			// Move further if err is not `Not Found`
+			return err
+		}
+	})
+
 	return app
 }
 
@@ -124,11 +135,18 @@ func (app *App) Run() {
 }
 
 // Custom renderer for Echo, to render html from bindata
-type echoRenderer struct{}
+type Template struct {
+	templates *template.Template
+}
 
-func (er echoRenderer) Render(w io.Writer, name string, data interface{}) error {
-	template := binhtml.New(Asset, AssetDir).MustLoadDirectory("templates")
-	return template.Execute(w, data)
+func NewTemplate() *Template {
+	return &Template{
+		templates: binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
+	}
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}) error {
+	return t.templates.ExecuteTemplate(w, name, data)
 }
 
 // AppOptions is options struct
