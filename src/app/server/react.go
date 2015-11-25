@@ -14,6 +14,16 @@ import (
 	"gopkg.in/olebedev/go-duktape.v2"
 )
 
+// React struct is contains duktape
+// pool to serve HTTP requests and
+// separates some domain specific
+// resources.
+type React struct {
+	pool
+	debug bool
+	path  string
+}
+
 // NewReact initialized React struct
 func NewReact(filePath string, debug bool, server http.Handler) *React {
 	r := &React{
@@ -21,7 +31,7 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 		path:  filePath,
 	}
 	if !debug {
-		r.pool = newDuktapePool(filePath, runtime.NumCPU(), server)
+		r.pool = newDuktapePool(filePath, runtime.NumCPU()+1, server)
 	} else {
 		// Use onDemandPool to load full react
 		// app each time for any http requests.
@@ -32,16 +42,6 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 		}
 	}
 	return r
-}
-
-// React struct is contains duktape
-// pool to serve HTTP requests and
-// separates some domain specific
-// resources.
-type React struct {
-	pool
-	debug bool
-	path  string
 }
 
 // Handle handles all HTTP requests which
@@ -59,65 +59,28 @@ func (r *React) Handle(c *echo.Context) error {
 	}()
 
 	vm := r.get()
-	vm.Lock()
 
-	vm.PushGlobalObject()
-	vm.GetPropString(-1, "__router__")
-	vm.PushString("renderToString")
-
-	req := func() string {
-		b, _ := json.Marshal(map[string]interface{}{
-			"url":     c.Request().URL.String(),
-			"headers": c.Request().Header,
-			"uuid":    UUID.String(),
-		})
-		return string(b)
-	}()
-	vm.PushString(req)
-	vm.JsonDecode(-1)
-	ch := make(chan *resp, 1)
-	vm.PushGoFunction(func(ctx *duktape.Context) int {
-
-		// Getting response object via json
-		r := func() *resp {
-			var re resp
-			json.Unmarshal([]byte(vm.JsonEncode(-1)), &re)
-			return &re
-		}()
-
-		// Unlock handler
-		ch <- r
-		// Return nothing into duktape context
-		return 0
-	})
-	vm.PcallProp(1, 2)
-	vm.Unlock()
-
-	// Lock handler and wait for js app response
+	start := time.Now()
 	select {
-	case re := <-ch:
-		// Hold the context. This call is really important
-		// because async calls is possible. And we cannot
-		// allow to break the context stack.
-		vm.Lock()
-		// Clean duktape vm stack
-		vm.PopN(vm.GetTop())
-
-		// Drop any futured async calls
-		vm.FlushTimers()
-		// Release the context
-		vm.Unlock()
+	case re := <-vm.Handle(map[string]interface{}{
+		"url":     c.Request().URL.String(),
+		"headers": c.Request().Header,
+		"uuid":    UUID.String(),
+	}):
+		re.RenderTime = time.Since(start)
 		// Return vm back to the pool
 		r.put(vm)
 		// Handle the response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
+			c.Response().Header().Set("X-React-Render-Time", fmt.Sprintf("%s", re.RenderTime))
 			return c.Render(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {
 			return c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
+			c.Response().Header().Set("X-React-Render-Time", fmt.Sprintf("%s", re.RenderTime))
 			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
@@ -137,13 +100,14 @@ func (r *React) Handle(c *echo.Context) error {
 // and return value for this key at ecmascript side.
 // Keep it sync with: src/app/client/router/toString.js:23
 type resp struct {
-	UUID     string `json:"uuid"`
-	Error    string `json:"error"`
-	Redirect string `json:"redirect"`
-	App      string `json:"app"`
-	Title    string `json:"title"`
-	Meta     string `json:"meta"`
-	Initial  string `json:"initial"`
+	UUID       string        `json:"uuid"`
+	Error      string        `json:"error"`
+	Redirect   string        `json:"redirect"`
+	App        string        `json:"app"`
+	Title      string        `json:"title"`
+	Meta       string        `json:"meta"`
+	Initial    string        `json:"initial"`
+	RenderTime time.Duration `json:"-"`
 }
 
 func (r resp) HTMLApp() template.HTML {
@@ -156,43 +120,78 @@ func (r resp) HTMLMeta() template.HTML {
 
 // Interface to serve React app on demand or from prepared pool.
 type pool interface {
-	get() *duktape.Context
-	put(*duktape.Context)
-	drop(*duktape.Context)
+	get() *ReactVm
+	put(*ReactVm)
+	drop(*ReactVm)
 }
 
 // NewDuktapePool return new duktape contexts pool.
 func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool {
 	pool := &duktapePool{
 		path:   filePath,
-		ch:     make(chan *duktape.Context, size),
+		ch:     make(chan *ReactVm, size),
 		engine: engine,
 	}
 
 	go func() {
 		for i := 0; i < size; i++ {
-			pool.ch <- newDuktapeContext(filePath, engine)
+			pool.ch <- newReactVm(filePath, engine)
 		}
 	}()
 
 	return pool
 }
 
-// NewDuktapeContext loads bundle.js to context.
-func newDuktapeContext(filePath string, engine http.Handler) *duktape.Context {
-	vm := duktape.New()
+// newReactVm loads bundle.js to context.
+func newReactVm(filePath string, engine http.Handler) *ReactVm {
+
+	vm := &ReactVm{
+		Context: duktape.New(),
+		ch:      make(chan resp, 1),
+	}
+
 	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
-	fetch.PushGlobal(vm, engine)
+	fetch.PushGlobal(vm.Context, engine)
 	app, err := Asset(filePath)
 	Must(err)
+
+	// Reduce CGO calls
+	vm.PushGlobalGoFunction("__goServerCallback__", func(ctx *duktape.Context) int {
+		result := ctx.SafeToString(-1)
+		vm.ch <- func() resp {
+			var re resp
+			json.Unmarshal([]byte(result), &re)
+			return re
+		}()
+		return 0
+	})
+
 	fmt.Printf("%s loaded\n", filePath)
 	if err := vm.PevalString(string(app)); err != nil {
 		derr := err.(*duktape.Error)
-		fmt.Printf("\n\n\n%v\n%v\n\n\n", derr.FileName, derr.LineNumber)
 		panic(derr.Message)
 	}
 	vm.PopN(vm.GetTop())
 	return vm
+}
+
+// ReactVm wraps duktape.Context
+type ReactVm struct {
+	*duktape.Context
+	ch chan resp
+}
+
+func (r *ReactVm) Handle(req map[string]interface{}) <-chan resp {
+	b, err := json.Marshal(req)
+	Must(err)
+	// Keep it sync with `src/app/client/index.js:1`
+	r.PevalString(`__router__.renderToString(` + string(b) + `, __goServerCallback__)`)
+	return r.ch
+}
+
+func (r *ReactVm) DestroyHeap() {
+	close(r.ch)
+	r.Context.DestroyHeap()
 }
 
 // Pool's implementations
@@ -202,40 +201,44 @@ type onDemandPool struct {
 	engine http.Handler
 }
 
-func (f *onDemandPool) get() *duktape.Context {
-	return newDuktapeContext(f.path, f.engine)
+func (f *onDemandPool) get() *ReactVm {
+	return newReactVm(f.path, f.engine)
 }
 
-func (f onDemandPool) put(c *duktape.Context) {
+func (f onDemandPool) put(c *ReactVm) {
 	c.Lock()
 	c.FlushTimers()
 	c.Gc(0)
 	c.DestroyHeap()
 }
 
-func (f *onDemandPool) drop(c *duktape.Context) {
+func (f *onDemandPool) drop(c *ReactVm) {
 	f.put(c)
 }
 
 type duktapePool struct {
-	ch     chan *duktape.Context
+	ch     chan *ReactVm
 	path   string
 	engine http.Handler
 }
 
-func (o *duktapePool) get() *duktape.Context {
+func (o *duktapePool) get() *ReactVm {
 	return <-o.ch
 }
 
-func (o *duktapePool) put(ot *duktape.Context) {
-	ot.Gc(0)
+func (o *duktapePool) put(ot *ReactVm) {
+	// Drop any futured async calls
+	ot.Lock()
+	ot.FlushTimers()
+	ot.Unlock()
 	o.ch <- ot
 }
 
-func (o *duktapePool) drop(ot *duktape.Context) {
+func (o *duktapePool) drop(ot *ReactVm) {
 	ot.Lock()
 	ot.FlushTimers()
+	ot.Gc(0)
 	ot.DestroyHeap()
 	ot = nil
-	o.ch <- newDuktapeContext(o.path, o.engine)
+	o.ch <- newReactVm(o.path, o.engine)
 }

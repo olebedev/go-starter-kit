@@ -49,10 +49,10 @@ export default function (options, cbk) {
       } catch (e) {
         result.error = e;
       }
-      return cbk(result);
+      return cbk(JSON.stringify(result));
     });
   } catch (e) {
     result.error = e;
-    return cbk(result);
+    return cbk(JSON.stringify(result));
   }
 }
