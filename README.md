@@ -41,7 +41,7 @@ Clone the repo:
 ```
 $ git clone git@github.com:olebedev/go-starter-kit.git && cd go-starter-kit
 ```
-Install javscript dependencies:
+Install javascript dependencies:
 
 ```
 $ npm i
