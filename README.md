@@ -54,6 +54,16 @@ $ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
 $ go get app
 $ go get github.com/jteeuwen/go-bindata/...
 ```
+You will get this output after `go get app`, at the first time:
+
+```bash
+src/app/server/app.go:64: undefined: Asset
+src/app/server/app.go:65: undefined: AssetDir
+src/app/server/react.go:191: undefined: Asset
+```
+
+don't worry about this, see [this](https://github.com/olebedev/go-starter-kit/issues/5#issuecomment-142585756) comment.
+
 Start dev server:
 
 ```
