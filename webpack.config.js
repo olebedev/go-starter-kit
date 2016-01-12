@@ -7,7 +7,7 @@ var cssLoader = ExtractTextPlugin.extract(
   'css-loader?module&localIdentName=[name]__[local]___[hash:base64:5]' +
     '&disableStructuralMinification' +
   '!autoprefixer-loader!' +
-  'stylus-loader?paths=src/app/client/css/&import=./ctx'
+  'stylus-loader?paths=client/css/&import=./ctx'
 );
 
 var plugins = [
@@ -30,16 +30,16 @@ if (process.env.NODE_ENV === 'production') {
     'style-loader',
     'css-loader?module&disableStructuralMinification' +
       '!autoprefixer-loader' +
-      '!stylus-loader?paths=src/app/client/css/&import=./ctx'
+      '!stylus-loader?paths=client/css/&import=./ctx'
   );
 };
 
 var config  = {
   entry: {
-    bundle: path.join(__dirname, 'src/app/client/index.js')
+    bundle: path.join(__dirname, 'client/index.js')
   },
   output: {
-    path: path.join(__dirname, 'src/app/server/data/static/build'),
+    path: path.join(__dirname, 'server/data/static/build'),
     publicPath: "/static/build/",
     filename: '[name].js'
   },
@@ -53,7 +53,7 @@ var config  = {
       {test: /\.json$/, loader: 'json-loader'},
       {
         test: /\.jsx?$/,
-        include: path.join(__dirname, 'src/app/client'),
+        include: path.join(__dirname, 'client'),
         loaders: ['babel']
       }
     ]
@@ -61,9 +61,9 @@ var config  = {
   resolve: {
     extensions: ['', '.js', '.jsx', '.styl'],
     alias: {
-      '#app': path.join(__dirname, '/src/app/client'),
-      '#c': path.join(__dirname, '/src/app/client/components'),
-      '#css': path.join(__dirname, '/src/app/client/css')
+      '#app': path.join(__dirname, 'client'),
+      '#c': path.join(__dirname, 'client/components'),
+      '#css': path.join(__dirname, 'client/css')
     }
   },
   svgo1: {

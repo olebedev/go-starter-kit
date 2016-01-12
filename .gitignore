@@ -1,13 +1,9 @@
 /node_modules
 /bin
 /pkg
-/src/*
-!/src/app
-src/app/server/bindata.go
-src/app/server/data/static/build/
-src/app/server/data/bundle.server.js
+/src
+/server/bindata.go
+/server/data/static/build
 
 .pid
-.pid_wds
-.pid_wp
 .DS_Store

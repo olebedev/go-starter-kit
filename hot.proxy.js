@@ -4,7 +4,7 @@ var webpackHotMiddleware = require('webpack-hot-middleware');
 var proxy = require('proxy-middleware');
 var config = require('./webpack.config');
 
-var port = +(process.env.PORT || 5000) + 1;
+var port = +(process.env.PORT || 5000);
 
 config.entry = {
   bundle: [
@@ -26,7 +26,9 @@ var app = new require('express')();
 var compiler = webpack(config);
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }));
 app.use(webpackHotMiddleware(compiler));
-app.use(proxy('http://localhost:' + (port - 1)));
+app.use(proxy('http://localhost:' + port));
+
+port++
 
 app.listen(port, function(error) {
   if (error) {

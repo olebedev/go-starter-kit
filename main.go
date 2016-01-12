@@ -1,9 +1,10 @@
 package main
 
 import (
-	"app/server"
 	"fmt"
 	"os"
+
+	"./server"
 
 	"github.com/codegangsta/cli"
 )
@@ -20,19 +21,11 @@ func Run(args []string) {
 	app.Name = "app"
 	app.Usage = "React server application"
 
-	configFlag := cli.StringFlag{
-		Name:   "config, c",
-		Value:  "local",
-		Usage:  "configuration section name",
-		EnvVar: "CONFIG",
-	}
-
 	app.Commands = []cli.Command{
 		{
 			Name:   "run",
 			Usage:  "Runs server",
 			Action: RunServer,
-			Flags:  []cli.Flag{configFlag},
 		},
 		{
 			Name:    "version",
@@ -48,7 +41,7 @@ func Run(args []string) {
 // main server.App
 func RunServer(c *cli.Context) {
 	app := server.NewApp(server.AppOptions{
-		Config: c.String("config"),
+	// see server/app.go:150
 	})
 	app.Run()
 }

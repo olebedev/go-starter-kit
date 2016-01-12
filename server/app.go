@@ -38,9 +38,6 @@ func NewApp(opts ...AppOptions) *App {
 	// Parse config yaml string from ./conf.go
 	conf, err := config.ParseYaml(confString)
 	Must(err)
-	// Choise a config section by given string
-	conf, err = conf.Get(options.Config)
-	Must(err)
 
 	// Parse environ variables for defined
 	// in config constants
@@ -150,12 +147,6 @@ func (t *Template) Render(w io.Writer, name string, data interface{}) error {
 }
 
 // AppOptions is options struct
-type AppOptions struct {
-	Config string
-}
+type AppOptions struct{}
 
-func (ao *AppOptions) init() {
-	if ao.Config == "" {
-		ao.Config = "local"
-	}
-}
+func (ao *AppOptions) init() { /* write your own*/ }

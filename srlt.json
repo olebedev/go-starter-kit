@@ -3,19 +3,13 @@
     "type": "git",
     "name": "github.com/codegangsta/cli",
     "remote": "https://github.com/codegangsta/cli",
-    "commit": "70e3fa51ebed95df8c0fbe1519c1c1f9bc16bb13"
+    "commit": "c31a7975863e7810c92e2e288a9ab074f9a88f29"
   },
   "github.com/elazarl/go-bindata-assetfs": {
     "type": "git",
     "name": "github.com/elazarl/go-bindata-assetfs",
     "remote": "https://github.com/elazarl/go-bindata-assetfs",
-    "commit": "d5cac425555ca5cf00694df246e04f05e6a55150"
-  },
-  "github.com/labstack/echo": {
-    "type": "git",
-    "name": "github.com/labstack/echo",
-    "remote": "https://github.com/labstack/echo.git",
-    "commit": "e48ebd342145c453437176624ea05424585473ce"
+    "commit": "57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2"
   },
   "github.com/itsjamie/go-bindata-templates": {
     "type": "git",
@@ -29,17 +23,35 @@
     "remote": "https://github.com/jteeuwen/go-bindata",
     "commit": "a0ff2567cfb70903282db057e799fd826784d41d"
   },
-  "github.com/manucorporat/sse": {
+  "github.com/labstack/echo": {
     "type": "git",
-    "name": "github.com/manucorporat/sse",
-    "remote": "https://github.com/manucorporat/sse",
-    "commit": "fe6ea2c8e398672518ef204bf0fbd9af858d0e15"
+    "name": "github.com/labstack/echo",
+    "remote": "https://github.com/labstack/echo",
+    "commit": "4255f4bd4411f541ebcc76d6575af6ed35b3db1a"
+  },
+  "github.com/labstack/gommon": {
+    "type": "git",
+    "name": "github.com/labstack/gommon",
+    "remote": "https://github.com/labstack/gommon",
+    "commit": "0764305a9af697a66da7bda2ea52672b7eca5a06"
   },
   "github.com/mattn/go-colorable": {
     "type": "git",
     "name": "github.com/mattn/go-colorable",
     "remote": "https://github.com/mattn/go-colorable",
-    "commit": "40e4aedc8fabf8c23e040057540867186712faa5"
+    "commit": "3dac7b4f76f6e17fb39b768b89e3783d16e237fe"
+  },
+  "github.com/mattn/go-isatty": {
+    "type": "git",
+    "name": "github.com/mattn/go-isatty",
+    "remote": "https://github.com/mattn/go-isatty",
+    "commit": "56b76bdf51f7708750eac80fa38b952bb9f32639"
+  },
+  "github.com/moul/http2curl": {
+    "type": "git",
+    "name": "github.com/moul/http2curl",
+    "remote": "https://github.com/moul/http2curl",
+    "commit": "b0342e01ef01008cc313e64847a3b80b96e1f9bf"
   },
   "github.com/nu7hatch/gouuid": {
     "type": "git",
@@ -51,42 +63,36 @@
     "type": "git",
     "name": "github.com/olebedev/config",
     "remote": "https://github.com/olebedev/config",
-    "commit": "ed583f7fafbccbd73013b0379ab29943ab0da34b"
+    "commit": "e3edea7d68b76222b5118cc2e1cf3825e30abb80"
   },
   "github.com/parnurzeal/gorequest": {
     "type": "git",
     "name": "github.com/parnurzeal/gorequest",
     "remote": "https://github.com/parnurzeal/gorequest",
-    "commit": "8fe8e16b3c50b6cc37399ee385b15f62a20bf584"
+    "commit": "c73179dd31355d86bd7692de9b47623d6d0fa696"
   },
   "golang.org/x/net": {
     "type": "git",
     "name": "golang.org/x/net",
     "remote": "https://go.googlesource.com/net",
-    "commit": "c95266fa704a83c2716406ae957772a273e1380d"
-  },
-  "gopkg.in/bluesuncorp/validator.v5": {
-    "type": "git",
-    "name": "gopkg.in/bluesuncorp/validator.v5",
-    "remote": "https://gopkg.in/bluesuncorp/validator.v5",
-    "commit": "d5acf1dac43705f8bfbb71d878e290e2bed3950b"
+    "commit": "5df5483e0518a11a6ef1e894c70236eb3f639557"
   },
   "gopkg.in/olebedev/go-duktape-fetch.v2": {
     "type": "git",
     "name": "gopkg.in/olebedev/go-duktape-fetch.v2",
     "remote": "https://gopkg.in/olebedev/go-duktape-fetch.v2",
-    "commit": "8a8e07b00d129d7b0875ae65948d4677b4f93902"
+    "commit": "2cb38c455cc667cf4db0e0547336b5df82913971"
   },
   "gopkg.in/olebedev/go-duktape.v2": {
     "type": "git",
     "name": "gopkg.in/olebedev/go-duktape.v2",
     "remote": "https://gopkg.in/olebedev/go-duktape.v2",
-    "commit": "de3e8f7b4117bcfbced956b0b6dd2d4fccf1f7c5"
+    "commit": "d2ff818345f8dcd5df3c5319e5073915586e8ab2"
   },
   "gopkg.in/yaml.v2": {
     "type": "git",
     "name": "gopkg.in/yaml.v2",
     "remote": "https://gopkg.in/yaml.v2",
-    "commit": "53feefa2559fb8dfa8d81baad31be332c97d6c77"
+    "commit": "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
   }
 }
