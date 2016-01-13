@@ -47,18 +47,23 @@ Install javascript dependencies:
 $ npm i
 ```
 
-There are two ways to install Golang dependencies:  
+Install Golang dependencies.
+
+```bash
+$ export GOPATH=`pwd` # the most important step, ensure that you do it
+$ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
+```
+
+There are two ways to do it:
 
 1. Traditional `go get`(__not recommended__).
 
   ```
-  $ export GOPATH=`pwd` # the most important step, ensure that you do it
-  $ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
   $ go get ./...
   $ go get github.com/jteeuwen/go-bindata/...
   ```
 
-2. Via revision locking tool - [srlt](https://github.com/olebedev/slrt).  
+2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt).  
 Make sure that you have srlt installed.
 
   ```bash

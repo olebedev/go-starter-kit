@@ -1,7 +1,7 @@
 BIN = $(GOPATH)/bin
 NODE_BIN = $(shell npm bin)
 PID = .pid
-GO_FILES = $(filter-out server/bindata.go, $(shell find . -type f -name "*.go"))
+GO_FILES = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go")) ./main.go
 TEMPLATES = $(wildcard server/data/templates/*.html)
 BINDATA = server/bindata.go
 BINDATA_FLAGS = -pkg=server -prefix=server/data
@@ -45,4 +45,4 @@ $(BINDATA):
 
 lint:
 	@eslint client || true
-	@golint $(filter-out main.go, $(GO_FILES)) || true
+	@golint $(filter-out ./main.go, $(GO_FILES)) || true
