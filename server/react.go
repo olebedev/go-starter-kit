@@ -184,8 +184,8 @@ type ReactVm struct {
 func (r *ReactVm) Handle(req map[string]interface{}) <-chan resp {
 	b, err := json.Marshal(req)
 	Must(err)
-	// Keep it sync with `src/app/client/index.js:1`
-	r.PevalString(`__router__.renderToString(` + string(b) + `, __goServerCallback__)`)
+	// Keep it sync with `src/app/client/index.js:4`
+	r.PevalString(`main(` + string(b) + `, __goServerCallback__)`)
 	return r.ch
 }
 

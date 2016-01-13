@@ -1,7 +1,6 @@
 package server
 
 import (
-	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -37,7 +36,6 @@ func NewApp(opts ...AppOptions) *App {
 
 	options.init()
 
-	fmt.Println("conf: ", confString())
 	// Parse config yaml string from ./conf.go
 	conf, err := config.ParseYaml(confString())
 	Must(err)
