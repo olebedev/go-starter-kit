@@ -48,27 +48,31 @@ $ npm i
 ```
 
 There are two ways to install Golang dependencies:  
+
 1. Traditional `go get`(__not recommended__).
 
-```
-$ export GOPATH=`pwd` # the most important step, ensure that you do it
-$ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
-$ go get ./...
-$ go get github.com/jteeuwen/go-bindata/...
-```
+  ```
+  $ export GOPATH=`pwd` # the most important step, ensure that you do it
+  $ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
+  $ go get ./...
+  $ go get github.com/jteeuwen/go-bindata/...
+  ```
 
 2. Via revision locking tool - [srlt](https://github.com/olebedev/slrt).  
 Make sure that you have srlt installed.
 
-```bash
-$ srlt r && srlt e go install {{.Name}}/...
-```
+  ```bash
+  $ srlt r && srlt e go install {{.Name}}/...
+  ```
+
+## Run development
 
 Start dev server:
 
 ```
 $ make serve
 ```
+
 that's it. Open [http://localhost:5001/](http://localhost:5001/)(if you use default port) at your browser. Now you ready to start coding your awesome project.
 
 ## Build
