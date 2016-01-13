@@ -37,8 +37,14 @@ func NewApp(opts ...AppOptions) *App {
 	options.init()
 
 	// Parse config yaml string from ./conf.go
-	conf, err := config.ParseYaml(confString())
+	conf, err := config.ParseYaml(confString)
 	Must(err)
+
+	// Set config variables delivered from main.go:11
+	// Variables defined as ./conf.go:3
+	conf.Set("debug", Debug)
+	conf.Set("commitHash", CommitHash)
+	conf.Set("buildTime", BuildTime)
 
 	// Parse environ variables for defined
 	// in config constants

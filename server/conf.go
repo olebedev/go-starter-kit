@@ -1,7 +1,5 @@
 package server
 
-import "fmt"
-
 var Debug, CommitHash, BuildTime string
 
 // Most easiest way to configure
@@ -10,20 +8,14 @@ var Debug, CommitHash, BuildTime string
 // map.
 // How it works see here:
 //     https://github.com/olebedev/config
-func confString() string {
-	return fmt.Sprintf(`
-debug: %s
-commit: %s
-buildTime: %s
+var confString = `
+debug: false
+commit: 0
+buildTime: now
 port: 5000
 title: Go Starter Kit
 api:
   prefix: /api
 duktape:
   path: static/build/bundle.js
-`,
-		Debug,
-		CommitHash,
-		BuildTime,
-	)
-}
+`
