@@ -1,0 +1,9 @@
+.todo {
+  width: px(400);
+  margin: 0 auto;
+  text-align: left;
+  display: block;
+  padding-top: px(26);
+  color: #bbb;
+}
+

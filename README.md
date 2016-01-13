@@ -91,6 +91,6 @@ Install dependencies and just type `NODE_ENV=production make build`. This rule i
 - [x] update react-router to 1.x
 - [x] render final HTML markup at Golang side
 - [x] migrate from Flummox to Redux
-- [ ] migrate from Stylus to PostCSS
+- [x] migrate from Stylus to PostCSS
 - [x] migrate from Gin to Echo
 - [ ] improve README and write an article to describe the project

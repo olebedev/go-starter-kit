@@ -1,9 +1,9 @@
-require('./normalize');
+require('normalize.css');
 require('./global');
 
 /**
  * Components.
- * Include all stylus files just if you need
+ * Include all css files just if you need
  * to hot reload it. And make sure that you
  * use `webpack.optimize.DedupePlugin`
  */

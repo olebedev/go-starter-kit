@@ -1,0 +1,44 @@
+.example {
+  color: $mainColor;
+  font-size: px(40);
+  font-weight: 500;
+  max-width: px(500);
+  margin: 0 auto;
+}
+
+.link {
+  color: $yellow;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    height: px(2);
+    bottom: px(0);
+    background-color: $yellow;
+    right: px(-1);
+    left: @right;
+  }
+
+  &:hover {
+    color: $red;
+    &:before {
+      background-color: $red;
+    }
+  }
+}
+
+.p {
+  color: $mainColor;
+}
+
+.button {
+  margin-top: px(50);
+  width: px(50);
+  height: @width;
+  color: #333;
+  font-size: px(30);
+  text-align: center;
+  background-color: $mainColor;
+  display: inline-block;
+  border-radius: px(3);
+}

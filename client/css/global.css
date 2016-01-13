@@ -1,0 +1,51 @@
+h1,h2,h3,h4,h5,h6,p,ul,ol,li,button,input,strong,small,em {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  font-style: inherit;
+}
+
+b {
+  font-weight: inherit;
+}
+
+i {
+  font-style: inherit;
+}
+
+ul,ol,li {
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button, input, textarea {
+  border: none;
+  background: none;
+  outline: none;
+}
+
+html {
+  font-family: Helvetica;
+}
+
+body {
+  font-size: 16px;
+}
+
+
+html, body {
+  height: 100%;
+}
+
+img {
+  max-width: 100%;
+}
+
+*, :before, :after {
+  box-sizing: border-box;
+}

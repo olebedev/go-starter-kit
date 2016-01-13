@@ -1,14 +1,16 @@
 var path = require('path');
 var webpack = require('webpack');
+var autoprefixer = require('autoprefixer');
+var precss = require('precss');
+var functions = require('postcss-functions');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var cssLoader = ExtractTextPlugin.extract(
-  'style-loader',
-  'css-loader?module&localIdentName=[name]__[local]___[hash:base64:5]' +
-    '&disableStructuralMinification' +
-  '!autoprefixer-loader!' +
-  'stylus-loader?paths=client/css/&import=./ctx'
-);
+var postCssLoader = [
+  'css-loader?module',
+  '&localIdentName=[name]__[local]___[hash:base64:5]',
+  '&disableStructuralMinification',
+  '!postcss-loader'
+];
 
 var plugins = [
     new webpack.NoErrorsPlugin(),
@@ -26,12 +28,8 @@ if (process.env.NODE_ENV === 'production') {
       'process.env': {NODE_ENV: JSON.stringify('production')}
     })
   ]);
-  var cssLoader = ExtractTextPlugin.extract(
-    'style-loader',
-    'css-loader?module&disableStructuralMinification' +
-      '!autoprefixer-loader' +
-      '!stylus-loader?paths=client/css/&import=./ctx'
-  );
+
+  postCssLoader.splice(1, 1) // drop human readable names
 };
 
 var config  = {
@@ -46,7 +44,7 @@ var config  = {
   plugins: plugins,
   module: {
     loaders: [
-      {test: /\.styl$/, loader: cssLoader},
+      {test: /\.css/, loader: ExtractTextPlugin.extract('style-loader', postCssLoader.join(''))},
       {test: /\.(png|gif)$/, loader: 'url-loader?name=[name]@[hash].[ext]&limit=5000'},
       {test: /\.svg$/, loader: 'url-loader?name=[name]@[hash].[ext]&limit=5000!svgo-loader?useConfig=svgo1'},
       {test: /\.(pdf|ico|jpg|eot|otf|woff|ttf|mp4|webm)$/, loader: 'file-loader?name=[name]@[hash].[ext]'},
@@ -59,7 +57,7 @@ var config  = {
     ]
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.styl'],
+    extensions: ['', '.js', '.jsx', '.css'],
     alias: {
       '#app': path.join(__dirname, 'client'),
       '#c': path.join(__dirname, 'client/components'),
@@ -83,6 +81,15 @@ var config  = {
       {removeTitle: true},
       {removeDesc: true}
     ]
+  },
+  postcss: function() {
+    return [autoprefixer, precss({
+      variables: {
+        variables: require('./client/css/vars')
+      }
+    }), functions({
+      functions: require('./client/css/funcs')
+    })]
   }
 };
 
