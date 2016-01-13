@@ -7,8 +7,11 @@ BINDATA = server/bindata.go
 BINDATA_FLAGS = -pkg=server -prefix=server/data
 BUNDLE = server/data/static/build/bundle.js
 APP = $(shell find client -type f)
-LDFLAGS = "-w -X main.buildstamp=`date -u '+%Y-%m-%d_%I:%M:%S%p'` -X main.gittag=`git describe --tags || true` -X main.githash=`git rev-parse HEAD || true`" 
 TARGET = $(BIN)/app
+
+DATE = $(shell date -u '+%Y-%m-%d_%I:%M:%S%p')
+HASH = $(shell git rev-parse HEAD)
+LDFLAGS = -w -X main.buildTime=$(DATE) -X main.commitHash=$(HASH)
 
 build: clean $(TARGET)
 
@@ -22,7 +25,7 @@ $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors
 
 $(TARGET): $(BUNDLE) $(BINDATA)
-	@go build -ldflags $(LDFLAGS) -o $@
+	@go build -ldflags '$(LDFLAGS)' -o $@
 
 kill:
 	@kill `cat $(PID)` || true
@@ -34,10 +37,11 @@ serve: clean $(BUNDLE)
 	@fswatch $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
+restart: LDFLAGS += -X main.debug=true
 restart: $(BINDATA)
 	@make kill
 	@echo restart the app...
-	@go build -o $(TARGET)
+	@go build -ldflags '$(LDFLAGS)' -o $(TARGET)
 	@$(TARGET) run & echo $$! > $(PID)
 
 $(BINDATA):

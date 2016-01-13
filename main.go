@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"./server"
@@ -9,7 +8,17 @@ import (
 	"github.com/codegangsta/cli"
 )
 
+// declare vars to change it with ldflags
+var (
+	debug      = "false"
+	commitHash = "0"
+	buildTime  = "now"
+)
+
 func main() {
+	server.Debug = debug
+	server.CommitHash = commitHash
+	server.BuildTime = buildTime
 	Run(os.Args)
 }
 
@@ -27,12 +36,6 @@ func Run(args []string) {
 			Usage:  "Runs server",
 			Action: RunServer,
 		},
-		{
-			Name:    "version",
-			Aliases: []string{"v"},
-			Usage:   "Prints app's version",
-			Action:  Version,
-		},
 	}
 	app.Run(args)
 }
@@ -44,15 +47,4 @@ func RunServer(c *cli.Context) {
 	// see server/app.go:150
 	})
 	app.Run()
-}
-
-var githash, gittag, buildstamp string
-
-// Version prints git commit hash,
-// date time and vestion from tag
-func Version(c *cli.Context) {
-	fmt.Printf(`Git tag: %s
-Git Commit Hash: %s
-UTC Build Time: %s
-`, gittag, githash, buildstamp)
 }
