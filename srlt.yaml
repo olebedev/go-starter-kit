@@ -1,0 +1,92 @@
+base: ./src
+dependencies:
+  github.com/codegangsta/cli:
+    type: git
+    name: github.com/codegangsta/cli
+    remote: https://github.com/codegangsta/cli
+    commit: c31a7975863e7810c92e2e288a9ab074f9a88f29
+  github.com/elazarl/go-bindata-assetfs:
+    type: git
+    name: github.com/elazarl/go-bindata-assetfs
+    remote: https://github.com/elazarl/go-bindata-assetfs
+    commit: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
+  github.com/itsjamie/go-bindata-templates:
+    type: git
+    name: github.com/itsjamie/go-bindata-templates
+    remote: https://github.com/itsjamie/go-bindata-templates
+    commit: 65d795d0c74021e19b2ebadf3c83c01a8290a405
+  github.com/jteeuwen/go-bindata:
+    type: git
+    name: github.com/jteeuwen/go-bindata
+    remote: https://github.com/jteeuwen/go-bindata
+    commit: a0ff2567cfb70903282db057e799fd826784d41d
+  github.com/labstack/echo:
+    type: git
+    name: github.com/labstack/echo
+    remote: https://github.com/labstack/echo
+    commit: 4255f4bd4411f541ebcc76d6575af6ed35b3db1a
+  github.com/labstack/gommon:
+    type: git
+    name: github.com/labstack/gommon
+    remote: https://github.com/labstack/gommon
+    commit: 0764305a9af697a66da7bda2ea52672b7eca5a06
+  github.com/mattn/go-colorable:
+    type: git
+    name: github.com/mattn/go-colorable
+    remote: https://github.com/mattn/go-colorable
+    commit: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
+  github.com/mattn/go-isatty:
+    type: git
+    name: github.com/mattn/go-isatty
+    remote: https://github.com/mattn/go-isatty
+    commit: 56b76bdf51f7708750eac80fa38b952bb9f32639
+  github.com/moul/http2curl:
+    type: git
+    name: github.com/moul/http2curl
+    remote: https://github.com/moul/http2curl
+    commit: b0342e01ef01008cc313e64847a3b80b96e1f9bf
+  github.com/nu7hatch/gouuid:
+    type: git
+    name: github.com/nu7hatch/gouuid
+    remote: https://github.com/nu7hatch/gouuid
+    commit: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+  github.com/olebedev/config:
+    type: git
+    name: github.com/olebedev/config
+    remote: https://github.com/olebedev/config
+    commit: e3edea7d68b76222b5118cc2e1cf3825e30abb80
+  github.com/parnurzeal/gorequest:
+    type: git
+    name: github.com/parnurzeal/gorequest
+    remote: https://github.com/parnurzeal/gorequest
+    commit: c73179dd31355d86bd7692de9b47623d6d0fa696
+  golang.org/x/crypto:
+    type: git
+    name: golang.org/x/crypto
+    remote: https://go.googlesource.com/crypto
+    commit: d67eb63455fa4d6fca5802332d86f1f204017e00
+  golang.org/x/net:
+    type: git
+    name: golang.org/x/net
+    remote: https://go.googlesource.com/net
+    commit: 5df5483e0518a11a6ef1e894c70236eb3f639557
+  golang.org/x/text:
+    type: git
+    name: golang.org/x/text
+    remote: https://go.googlesource.com/text
+    commit: cf4986612c83df6c55578ba198316d1684a9a287
+  gopkg.in/olebedev/go-duktape-fetch.v2:
+    type: git
+    name: gopkg.in/olebedev/go-duktape-fetch.v2
+    remote: https://gopkg.in/olebedev/go-duktape-fetch.v2
+    commit: 2cb38c455cc667cf4db0e0547336b5df82913971
+  gopkg.in/olebedev/go-duktape.v2:
+    type: git
+    name: gopkg.in/olebedev/go-duktape.v2
+    remote: https://gopkg.in/olebedev/go-duktape.v2
+    commit: d2ff818345f8dcd5df3c5319e5073915586e8ab2
+  gopkg.in/yaml.v2:
+    type: git
+    name: gopkg.in/yaml.v2
+    remote: https://gopkg.in/yaml.v2
+    commit: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4

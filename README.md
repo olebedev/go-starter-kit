@@ -46,23 +46,23 @@ Install javascript dependencies:
 ```
 $ npm i
 ```
-Install Golang dependencies:
+
+There are two ways to install Golang dependencies:
+1. Traditional `go get`(__not recommended__).
 
 ```
 $ export GOPATH=`pwd` # the most important step, ensure that you do it
 $ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
-$ go get app
+$ go get ./...
 $ go get github.com/jteeuwen/go-bindata/...
 ```
-You will get this output after `go get app`, at the first time:
+
+2. Via revision locking tool - [srlt](https://github.com/olebedev/slrt).  
+Make sure that you have srlt installed.
 
 ```bash
-src/app/server/app.go:64: undefined: Asset
-src/app/server/app.go:65: undefined: AssetDir
-src/app/server/react.go:191: undefined: Asset
+$ srlt r && srlt e go install {{.Name}}/...
 ```
-
-don't worry about this, see [this](https://github.com/olebedev/go-starter-kit/issues/5#issuecomment-142585756) comment.
 
 Start dev server:
 
