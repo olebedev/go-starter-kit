@@ -47,7 +47,7 @@ Install javascript dependencies:
 $ npm i
 ```
 
-There are two ways to install Golang dependencies:
+There are two ways to install Golang dependencies:  
 1. Traditional `go get`(__not recommended__).
 
 ```
