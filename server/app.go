@@ -104,8 +104,9 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Create file http server from bindata
 	fileServerHandler := http.FileServer(&assetfs.AssetFS{
-		Asset:    Asset,
-		AssetDir: AssetDir,
+		Asset:     Asset,
+		AssetDir:  AssetDir,
+		AssetInfo: AssetInfo,
 	})
 
 	// Serve static via bindata and handle via react app

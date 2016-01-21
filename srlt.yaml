@@ -9,7 +9,7 @@ dependencies:
     type: git
     name: github.com/elazarl/go-bindata-assetfs
     remote: https://github.com/elazarl/go-bindata-assetfs
-    commit: d5cac425555ca5cf00694df246e04f05e6a55150
+    commit: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
   github.com/itsjamie/go-bindata-templates:
     type: git
     name: github.com/itsjamie/go-bindata-templates
