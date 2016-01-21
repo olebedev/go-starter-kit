@@ -49,7 +49,7 @@ $ npm i
 
 Install Golang dependencies.
 
-```bash
+```
 $ export GOPATH=`pwd` # the most important step, ensure that you do it
 $ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
 ```
@@ -66,7 +66,7 @@ There are two ways to do it:
 2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt).  
 Make sure that you have srlt installed.
 
-  ```bash
+  ```
   $ srlt r && srlt e go install {{.Name}}/...
   ```
 
