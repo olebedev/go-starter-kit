@@ -1,6 +1,11 @@
 package server
 
-var Debug, CommitHash, BuildTime string
+var (
+	// Debug var to switch mode from outside
+	Debug string
+	// CommitHash exported to assign it from main.go
+	CommitHash string
+)
 
 // Most easiest way to configure
 // an application is define config as
@@ -11,7 +16,6 @@ var Debug, CommitHash, BuildTime string
 var confString = `
 debug: false
 commit: 0
-buildTime: now
 port: 5000
 title: Go Starter Kit
 api:

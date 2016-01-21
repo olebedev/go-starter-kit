@@ -12,13 +12,11 @@ import (
 var (
 	debug      = "false"
 	commitHash = "0"
-	buildTime  = "now"
 )
 
 func main() {
 	server.Debug = debug
 	server.CommitHash = commitHash
-	server.BuildTime = buildTime
 	Run(os.Args)
 }
 

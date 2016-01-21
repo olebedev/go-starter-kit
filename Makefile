@@ -9,9 +9,8 @@ BUNDLE = server/data/static/build/bundle.js
 APP = $(shell find client -type f)
 TARGET = $(BIN)/app
 
-DATE = $(shell date -u '+%Y-%m-%d_%I:%M:%S%p')
-HASH = $(shell git rev-parse HEAD)
-LDFLAGS = -w -X main.buildTime=$(DATE) -X main.commitHash=$(HASH)
+GIT_HASH = $(shell git rev-parse HEAD)
+LDFLAGS = -w -X main.commitHash=$(GIT_HASH)
 
 build: clean $(TARGET)
 

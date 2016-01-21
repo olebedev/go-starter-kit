@@ -44,7 +44,6 @@ func NewApp(opts ...AppOptions) *App {
 	// Variables defined as ./conf.go:3
 	conf.Set("debug", Debug)
 	conf.Set("commitHash", CommitHash)
-	conf.Set("buildTime", BuildTime)
 
 	// Parse environ variables for defined
 	// in config constants
@@ -139,17 +138,19 @@ func (app *App) Run() {
 	app.Engine.Run(":" + app.Conf.UString("port"))
 }
 
-// Custom renderer for Echo, to render html from bindata
+// Template is custom renderer for Echo, to render html from bindata
 type Template struct {
 	templates *template.Template
 }
 
+// NewTemplate creates a new template
 func NewTemplate() *Template {
 	return &Template{
 		templates: binhtml.New(Asset, AssetDir).MustLoadDirectory("templates"),
 	}
 }
 
+// Render renders template
 func (t *Template) Render(w io.Writer, name string, data interface{}) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
