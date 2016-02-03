@@ -46,5 +46,72 @@
     "webpack-hot-middleware": "^2.4.1",
     "whatwg-fetch": "^0.9.0",
     "when": "^3.7.3"
+  },
+  "babel": {
+    "stage": 0,
+    "env": {
+      "dev": {
+        "plugins": [
+          "react-transform"
+        ],
+        "extra": {
+          "react-transform": {
+            "transforms": [
+              {
+                "transform": "react-transform-hmr",
+                "imports": [
+                  "react"
+                ],
+                "locals": [
+                  "module"
+                ]
+              },
+              {
+                "transform": "react-transform-catch-errors",
+                "imports": [
+                  "react",
+                  "redbox-react"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "eslintConfig": {
+    "rules": {
+      "indent": [
+        2,
+        2
+      ],
+      "quotes": [
+        2,
+        "single"
+      ],
+      "linebreak-style": [
+        2,
+        "unix"
+      ],
+      "semi": [
+        2,
+        "always"
+      ],
+      "react/jsx-uses-react": 2,
+      "react/jsx-uses-vars": 2,
+      "react/react-in-jsx-scope": 2
+    },
+    "env": {
+      "es6": true,
+      "browser": true,
+      "node": true
+    },
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    },
+    "plugins": [
+      "react"
+    ]
   }
 }
