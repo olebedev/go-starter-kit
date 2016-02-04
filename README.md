@@ -31,6 +31,8 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
+* [go-bindata](https://github.com/jteeuwen/go-bindata/)
+* [srlt](https://github.com/olebedev/srlt) - optional
 
 Note that probably not works at windows.
 
@@ -108,12 +110,7 @@ Install javascript dependencies:
 $ npm i
 ```
 
-Install Golang dependencies. 
-
-```
-$ go get github.com/jteeuwen/go-bindata/...
-```
-
+Install Golang dependencies.  
 There are two ways to do it:
 
 1. Traditional `go get`. It is __not recommended__ because it will install packages into `$GOPATH` and the packages versions are will not be under control.
@@ -127,7 +124,11 @@ There are two ways to do it:
   ```
   $ srlt restore
   ```
-This command will install dependencies into `./vendor/` folder located in root.    
+This command will install dependencies into `./vendor/` folder located in root.   
+Install 
+```
+$ go get github.com/jteeuwen/go-bindata/...
+```
 
 ## Run development
 
