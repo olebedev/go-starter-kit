@@ -104,14 +104,13 @@ Clone the repo:
 $ git clone git@github.com:olebedev/go-starter-kit.git $GOPATH/src/github.com/<username>/<project>
 $ cd $GOPATH/src/github.com/<username>/<project>
 ```
-Install javascript dependencies:
+Install JavaScript dependencies:
 
 ```
 $ npm i
 ```
 
-Install Golang dependencies.  
-There are two ways to do it:
+There are two ways to install Golang dependencies:
 
 1. Traditional `go get`. It is __not recommended__ because it will install packages into `$GOPATH` and the packages versions are will not be under control.
 
@@ -125,10 +124,6 @@ There are two ways to do it:
   $ srlt restore
   ```
 This command will install dependencies into `./vendor/` folder located in root.   
-Install 
-```
-$ go get github.com/jteeuwen/go-bindata/...
-```
 
 ## Run development
 
