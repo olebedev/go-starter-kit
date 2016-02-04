@@ -44,7 +44,7 @@ $ tree server
 server
 ├── api.go
 ├── app.go
-├── bindata.go
+├── bindata.go <-- this file is gitignored, it will appear at compile time
 ├── conf.go
 ├── data
 │   └── templates
