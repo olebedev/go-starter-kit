@@ -1,4 +1,4 @@
-package server
+package main
 
 // Must raises an error if it not nil
 func Must(e error) {

@@ -1,4 +1,4 @@
-package server
+package main
 
 import (
 	"html/template"
@@ -7,10 +7,10 @@ import (
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
+	"github.com/nu7hatch/gouuid"
 
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 )
 
@@ -42,8 +42,8 @@ func NewApp(opts ...AppOptions) *App {
 
 	// Set config variables delivered from main.go:11
 	// Variables defined as ./conf.go:3
-	conf.Set("debug", Debug)
-	conf.Set("commitHash", CommitHash)
+	conf.Set("debug", debug)
+	conf.Set("commitHash", commitHash)
 
 	// Parse environ variables for defined
 	// in config constants

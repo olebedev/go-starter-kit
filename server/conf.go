@@ -1,10 +1,10 @@
-package server
+package main
 
 var (
 	// Debug var to switch mode from outside
-	Debug string
+	debug string
 	// CommitHash exported to assign it from main.go
-	CommitHash string
+	commitHash string
 )
 
 // Most easiest way to configure

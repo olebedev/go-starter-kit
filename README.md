@@ -34,12 +34,73 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 
 Note that probably not works at windows.
 
+## Project structure
+
+##### The server's entry point
+```
+$ tree server
+server
+├── api.go
+├── app.go
+├── bindata.go
+├── conf.go
+├── data
+│   └── templates
+│       └── react.html
+├── main.go <-- main function declared here
+├── react.go
+└── utils.go
+```
+
+The `./server/` is flat golang package.
+
+##### The client's entry point
+
+It's simple React application 
+
+```
+$ tree client
+client
+├── actions.js
+├── components
+│   ├── app
+│   │   ├── favicon.ico
+│   │   ├── index.js
+│   │   └── styles.css
+│   ├── homepage
+│   │   ├── index.js
+│   │   └── styles.css
+│   ├── not-found
+│   │   ├── index.js
+│   │   └── styles.css
+│   └── usage
+│       ├── index.js
+│       └── styles.css
+├── css
+│   ├── funcs.js
+│   ├── global.css
+│   ├── index.js
+│   └── vars.js
+├── index.js <-- main function declared here
+├── reducers.js
+├── router
+│   ├── index.js
+│   ├── routes.js
+│   └── toString.js
+└── store.js
+```
+
+The client app will be compiled into `server/data/static/build/`.  Then it will be embedded into go package via _go-bindata_. After that the package will be compiled into binary.
+
+**Convention**: javascript app should declare [_main_](https://github.com/olebedev/go-starter-kit/blob/master/client/index.js#L4) function right in the global namespace. It will used to render the app at the server side. 
+
 ## Install
 
 Clone the repo:
 
 ```
-$ git clone git@github.com:olebedev/go-starter-kit.git && cd go-starter-kit
+$ git clone git@github.com:olebedev/go-starter-kit.git $GOPATH/src/github.com/<username>/<project>
+$ cd $GOPATH/src/github.com/<username>/<project>
 ```
 Install javascript dependencies:
 
@@ -47,28 +108,26 @@ Install javascript dependencies:
 $ npm i
 ```
 
-Install Golang dependencies.
+Install Golang dependencies. 
 
 ```
-$ export GOPATH=`pwd` # the most important step, ensure that you do it
-$ export GOBIN=$GOPATH/bin # optional, redefine, if it already was defined
+$ go get github.com/jteeuwen/go-bindata/...
 ```
 
 There are two ways to do it:
 
-1. Traditional `go get`(__not recommended__).
+1. Traditional `go get`. It is __not recommended__ because it will install packages into `$GOPATH` and the packages versions are will not be under control.
 
   ```
-  $ go get ./...
-  $ go get github.com/jteeuwen/go-bindata/...
+  $ go get ./server/...
   ```
 
-2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt).  
-Make sure that you have srlt installed.
+2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt). Make sure that you have srlt installed.
 
   ```
-  $ srlt r && srlt e go install {{.Name}}/...
+  $ srlt restore
   ```
+This command will install dependencies into `./vendor/` folder located in root.    
 
 ## Run development
 
@@ -82,18 +141,7 @@ that's it. Open [http://localhost:5001/](http://localhost:5001/)(if you use defa
 
 ## Build
 
-Install dependencies and just type `NODE_ENV=production make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`.
-
-## TODO
-
-- [x] migrate from react-hot-loader to react-transform-hmr
-- [x] update react to 0.14.x
-- [x] update react-router to 1.x
-- [x] render final HTML markup at Golang side
-- [x] migrate from Flummox to Redux
-- [x] migrate from Stylus to PostCSS
-- [x] migrate from Gin to Echo
-- [ ] improve README and write an article to describe the project
+Install dependencies and type `NODE_ENV=production make build`. This rule is producing webpack build and regular golang build after that. Result you can find at `$GOPATH/bin`. Note that the binary will be named as the current project directory.
 
 ## License
 MIT

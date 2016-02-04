@@ -1,4 +1,4 @@
-base: ./src
+base: ./vendor
 dependencies:
   github.com/codegangsta/cli:
     type: git
