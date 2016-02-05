@@ -47,6 +47,20 @@
     "whatwg-fetch": "^0.11.0",
     "when": "^3.7.3"
   },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ],
+    "env": {
+      "dev": {
+        "presets": [
+          "react-hmre"
+        ]
+      }
+    }
+  },
   "eslintConfig": {
     "rules": {
       "indent": [
