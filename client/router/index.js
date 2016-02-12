@@ -1,7 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Router, {browserHistory} from 'react-router';
+import Router from 'react-router';
 import { Provider } from 'react-redux';
+import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
+import { createHistory } from 'history';
 import toString from './toString';
 import { Promise } from 'when';
 import createRoutes from './routes';
@@ -24,10 +26,21 @@ export function run() {
 
   render(
     <Provider store={store} >
-      <Router history={browserHistory}>{createRoutes({store, first: { time: true }})}</Router>
+      <Router history={createHistory()}>{createRoutes({store, first: { time: true }})}</Router>
     </Provider>,
     document.getElementById('app')
   );
+
+  if (process.env.NODE_ENV !== 'production'){
+    const node = document.createElement('div');
+    document.body.appendChild(node);
+    render(
+      <DebugPanel top right bottom>
+        <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false}/>
+      </DebugPanel>,
+      node
+    );
+  }
 }
 
 // Export it to render on the Golang sever, keep the name sync with -
