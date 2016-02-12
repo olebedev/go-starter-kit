@@ -1,7 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
+import { match, RoutingContext } from 'react-router';
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
 import { createStore } from '../store';
@@ -38,7 +38,7 @@ export default function (options, cbk) {
         } else {
           result.app = renderToString(
             <Provider store={store}>
-              <RouterContext {...renderProps} />
+              <RoutingContext {...renderProps} />
             </Provider>
           );
           const { title, meta } = Helmet.rewind();
