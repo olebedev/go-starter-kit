@@ -1,11 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Router, {browserHistory} from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import toString from './toString';
 import { Promise } from 'when';
 import createRoutes from './routes';
 import { createStore } from '../store';
+import DevTools from '../components/dev-tools';
+
 
 export function run() {
   // init promise polyfill
@@ -16,11 +18,13 @@ export function run() {
 
   const store = createStore(window['--app-initial']);
 
+  /*
   if (process.env.NODE_ENV !== 'production'){
     store.subscribe(() => {
       console.log('%c[STORE]', 'color: green', store.getState());
     });
   }
+  */
 
   render(
     <Provider store={store} >
@@ -28,6 +32,15 @@ export function run() {
     </Provider>,
     document.getElementById('app')
   );
+
+  if (process.env.NODE_ENV !== 'production'){
+    const node = document.createElement('div');
+    document.body.appendChild(node);
+    render(
+      <DevTools store={store} />,
+      node
+    );
+  }
 }
 
 // Export it to render on the Golang sever, keep the name sync with -
