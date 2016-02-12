@@ -18,14 +18,6 @@ export function run() {
 
   const store = createStore(window['--app-initial']);
 
-  /*
-  if (process.env.NODE_ENV !== 'production'){
-    store.subscribe(() => {
-      console.log('%c[STORE]', 'color: green', store.getState());
-    });
-  }
-  */
-
   render(
     <Provider store={store} >
       <Router history={browserHistory}>{createRoutes({store, first: { time: true }})}</Router>

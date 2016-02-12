@@ -32,7 +32,7 @@ kill:
 serve: clean $(BUNDLE) restart
 	@BABEL_ENV=dev node hot.proxy &
 	@$(NODE_BIN)/webpack --watch &
-	@fswatch $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
+	@fswatch --event Updated $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
 restart: LDFLAGS += -X main.debug=true
