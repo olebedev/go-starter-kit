@@ -27,7 +27,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 
 ## Dependencies
 
-* [golang](http://golang.org/)
+* [golang](http://golang.org/) <= 1.5.3(waiting for Golang 1.6 migration for go-duktape, look at [this](https://github.com/olebedev/go-duktape/issues/34))
 * [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
@@ -112,10 +112,10 @@ $ npm i
 
 There are two ways to install Golang dependencies:
 
-1. Traditional `go get`. It is __not recommended__ because it will install packages into `$GOPATH` and the packages versions are will not be under control.
+1. Traditional `go get`. It is __not recommended__ because it will install packages into `$GOPATH` and the packages versions are will not be under control. This is OK for _Golang_ < 1.5.
 
   ```
-  $ go get ./server/...
+  $ go get ./server/.
   ```
 
 2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt). Make sure that you have srlt installed, environment variable `GO15VENDOREXPERIMENT=1` and _Golang_ >= 1.5.0.
