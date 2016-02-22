@@ -118,12 +118,13 @@ There are two ways to install Golang dependencies:
   $ go get ./server/...
   ```
 
-2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt). Make sure that you have srlt installed.
+2. Via revision locking tool - [srlt](https://github.com/olebedev/srlt). Make sure that you have srlt installed, environment variable `GO15VENDOREXPERIMENT=1` and _Golang_ >= 1.5.0.
 
   ```
   $ srlt restore
   ```
 This command will install dependencies into `./vendor/` folder located in root.   
+Then install `go-bindata` directly: `go install github.com/jteeuwen/go-bindata`
 
 ## Run development
 
