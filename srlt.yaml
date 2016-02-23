@@ -84,7 +84,7 @@ dependencies:
     type: git
     name: gopkg.in/olebedev/go-duktape.v2
     remote: https://gopkg.in/olebedev/go-duktape.v2
-    commit: d2ff818345f8dcd5df3c5319e5073915586e8ab2
+    commit: 1c5e9d0fb82296a24a63ab68b682c5b4d7a45cca
   gopkg.in/yaml.v2:
     type: git
     name: gopkg.in/yaml.v2

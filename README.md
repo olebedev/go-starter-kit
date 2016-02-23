@@ -27,7 +27,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 
 ## Dependencies
 
-* [golang](http://golang.org/) <= 1.5.3(waiting for Golang 1.6 migration for go-duktape, look at [this](https://github.com/olebedev/go-duktape/issues/34))
+* [golang](http://golang.org/)
 * [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
@@ -58,7 +58,7 @@ The `./server/` is flat golang package.
 
 ##### The client's entry point
 
-It's simple React application 
+It's simple React application
 
 ```
 $ tree client
@@ -94,7 +94,7 @@ client
 
 The client app will be compiled into `server/data/static/build/`.  Then it will be embedded into go package via _go-bindata_. After that the package will be compiled into binary.
 
-**Convention**: javascript app should declare [_main_](https://github.com/olebedev/go-starter-kit/blob/master/client/index.js#L4) function right in the global namespace. It will used to render the app at the server side. 
+**Convention**: javascript app should declare [_main_](https://github.com/olebedev/go-starter-kit/blob/master/client/index.js#L4) function right in the global namespace. It will used to render the app at the server side.
 
 ## Install
 
@@ -123,8 +123,7 @@ There are two ways to install Golang dependencies:
   ```
   $ srlt restore
   ```
-This command will install dependencies into `./vendor/` folder located in root.   
-
+This command will install dependencies into `./vendor/` folder located in root.
 
 Then install `go-bindata` directly: `go install github.com/jteeuwen/go-bindata`
 
