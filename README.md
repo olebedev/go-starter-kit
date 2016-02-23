@@ -124,6 +124,8 @@ There are two ways to install Golang dependencies:
   $ srlt restore
   ```
 This command will install dependencies into `./vendor/` folder located in root.   
+
+
 Then install `go-bindata` directly: `go install github.com/jteeuwen/go-bindata`
 
 ## Run development
