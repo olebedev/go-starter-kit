@@ -5,8 +5,7 @@ import { Provider } from 'react-redux';
 import toString from './toString';
 import { Promise } from 'when';
 import createRoutes from './routes';
-import { createStore } from '../store';
-import DevTools from '../components/dev-tools';
+import { createStore, setAsCurrentStore } from '../store';
 
 
 export function run() {
@@ -17,6 +16,7 @@ export function run() {
   require('whatwg-fetch');
 
   const store = createStore(window['--app-initial']);
+  setAsCurrentStore(store)
 
   render(
     <Provider store={store} >
@@ -25,14 +25,6 @@ export function run() {
     document.getElementById('app')
   );
 
-  if (process.env.NODE_ENV !== 'production'){
-    const node = document.createElement('div');
-    document.body.appendChild(node);
-    render(
-      <DevTools store={store} />,
-      node
-    );
-  }
 }
 
 // Export it to render on the Golang sever, keep the name sync with -

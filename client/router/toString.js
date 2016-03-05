@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import Helmet from 'react-helmet';
 import createRoutes from './routes';
-import { createStore } from '../store';
+import { createStore, setAsCurrentStore } from '../store';
 
 /**
  * Handle HTTP request at Golang server
@@ -25,6 +25,7 @@ export default function (options, cbk) {
   };
 
   const store = createStore();
+  setAsCurrentStore(store);
 
   try {
     match({ routes: createRoutes({store, first: { time: false }}), location: options.url }, (error, redirectLocation, renderProps) => {

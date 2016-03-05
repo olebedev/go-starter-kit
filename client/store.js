@@ -1,21 +1,27 @@
-import { compose, createStore as reduxCreateStore} from 'redux';
-import { persistState } from 'redux-devtools';
-import DevTools from './components/dev-tools';
-import goStarterKit from './reducers';
+import { applyMiddleware, createStore as reduxCreateStore } from 'redux';
+import reducers from './reducers';
 
-let finalCreateStore;
-if (process.env.NODE_ENV === 'production') {
-  finalCreateStore = reduxCreateStore.bind(null, goStarterKit);
-} else {
-  try {
-    finalCreateStore = compose(
-      DevTools.instrument(),
-      persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-    )(reduxCreateStore).bind(null, goStarterKit);
-    console.log('dev tools added');
-  } catch (e) {
-    finalCreateStore = reduxCreateStore.bind(null, goStarterKit);
-  }
+const middlewares = [];
+
+// Add state logger
+if (process.env.NODE_ENV !== 'production') {
+  middlewares.push(require('redux-logger')());
 }
 
-export const createStore = finalCreateStore;
+export function createStore(state) {
+  return reduxCreateStore(
+    reducers,
+    state,
+    applyMiddleware.apply(null, middlewares)
+  );
+}
+
+export let store = null;
+export function getStore() { return store }
+export function setAsCurrentStore(s) {
+  store = s;
+  if (process.env.NODE_ENV !== 'production'
+    && typeof window !== 'undefined') {
+    window.store = store;
+  }
+}
