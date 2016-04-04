@@ -8,10 +8,11 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/labstack/echo"
-	"github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
+
+	"github.com/labstack/echo"
+	"github.com/nu7hatch/gouuid"
 )
 
 // React struct is contains duktape
@@ -113,6 +114,11 @@ type Resp struct {
 // HTMLApp returns a application template
 func (r Resp) HTMLApp() template.HTML {
 	return template.HTML(r.App)
+}
+
+// HTMLTitle returns a title data
+func (r Resp) HTMLTitle() template.HTML {
+	return template.HTML(r.Title)
 }
 
 // HTMLMeta returns a meta data

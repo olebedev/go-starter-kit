@@ -43,8 +43,8 @@ export default function (options, cbk) {
             </Provider>
           );
           const { title, meta } = Helmet.rewind();
-          result.title = title;
-          result.meta = meta;
+          result.title = title.toString();
+          result.meta = meta.toString();
           result.initial = JSON.stringify(store.getState());
         }
       } catch (e) {
