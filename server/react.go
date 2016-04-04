@@ -116,6 +116,11 @@ func (r Resp) HTMLApp() template.HTML {
 	return template.HTML(r.App)
 }
 
+// HTMLTitle returns a title data
+func (r Resp) HTMLTitle() template.HTML {
+	return template.HTML(r.Title)
+}
+
 // HTMLMeta returns a meta data
 func (r Resp) HTMLMeta() template.HTML {
 	return template.HTML(r.Meta)
