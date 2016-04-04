@@ -79,7 +79,7 @@ dependencies:
     type: git
     name: gopkg.in/olebedev/go-duktape-fetch.v2
     remote: https://gopkg.in/olebedev/go-duktape-fetch.v2
-    commit: 2cb38c455cc667cf4db0e0547336b5df82913971
+    commit: 634a7ea4ba91939a6dc4d0274bd053b02aed234b
   gopkg.in/olebedev/go-duktape.v2:
     type: git
     name: gopkg.in/olebedev/go-duktape.v2
