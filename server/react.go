@@ -8,10 +8,11 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/labstack/echo"
-	"github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
+
+	"github.com/labstack/echo"
+	"github.com/nu7hatch/gouuid"
 )
 
 // React struct is contains duktape

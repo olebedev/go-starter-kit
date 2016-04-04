@@ -7,10 +7,9 @@ import (
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
-	"github.com/nu7hatch/gouuid"
-
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
 )
 
