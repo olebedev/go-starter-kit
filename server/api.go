@@ -3,7 +3,7 @@ package main
 import (
 	"time"
 
-	"github.com/labstack/echo"
+	"gopkg.in/labstack/echo.v1"
 )
 
 // API is a defined as struct bundle
