@@ -24,7 +24,7 @@ dependencies:
     type: git
     name: github.com/labstack/gommon
     remote: https://github.com/labstack/gommon
-    commit: 0764305a9af697a66da7bda2ea52672b7eca5a06
+    commit: 9c0a60557b6840125c331d8c8075119770aa2805
   github.com/mattn/go-colorable:
     type: git
     name: github.com/mattn/go-colorable
@@ -55,6 +55,11 @@ dependencies:
     name: github.com/parnurzeal/gorequest
     remote: https://github.com/parnurzeal/gorequest
     commit: c73179dd31355d86bd7692de9b47623d6d0fa696
+  github.com/valyala/fasttemplate:
+    type: git
+    name: github.com/valyala/fasttemplate
+    remote: https://github.com/valyala/fasttemplate
+    commit: 3b874956e03f1636d171bda64b130f9135f42cff
   golang.org/x/crypto:
     type: git
     name: golang.org/x/crypto
@@ -74,7 +79,7 @@ dependencies:
     type: git
     name: gopkg.in/labstack/echo.v1
     remote: https://gopkg.in/labstack/echo.v1
-    commit: 4255f4bd4411f541ebcc76d6575af6ed35b3db1a
+    commit: 18a78a34eb4481722eef1ac9034eada58e3cf909
   gopkg.in/olebedev/go-duktape-fetch.v2:
     type: git
     name: gopkg.in/olebedev/go-duktape-fetch.v2
