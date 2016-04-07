@@ -20,11 +20,6 @@ dependencies:
     name: github.com/jteeuwen/go-bindata
     remote: https://github.com/jteeuwen/go-bindata
     commit: a0ff2567cfb70903282db057e799fd826784d41d
-  github.com/labstack/echo:
-    type: git
-    name: github.com/labstack/echo
-    remote: https://github.com/labstack/echo
-    commit: 4255f4bd4411f541ebcc76d6575af6ed35b3db1a
   github.com/labstack/gommon:
     type: git
     name: github.com/labstack/gommon
@@ -75,6 +70,11 @@ dependencies:
     name: golang.org/x/text
     remote: https://go.googlesource.com/text
     commit: cf4986612c83df6c55578ba198316d1684a9a287
+  gopkg.in/labstack/echo.v1:
+    type: git
+    name: gopkg.in/labstack/echo.v1
+    remote: https://gopkg.in/labstack/echo.v1
+    commit: 4255f4bd4411f541ebcc76d6575af6ed35b3db1a
   gopkg.in/olebedev/go-duktape-fetch.v2:
     type: git
     name: gopkg.in/olebedev/go-duktape-fetch.v2
