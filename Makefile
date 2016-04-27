@@ -21,7 +21,7 @@ clean:
 	@rm -rf $(BINDATA)
 
 $(BUNDLE): $(APP)
-	@$(NODE_BIN)/webpack --progress --colors
+	@$(NODE_BIN)/webpack --progress --colors --bail
 
 $(TARGET): $(BUNDLE) $(BINDATA)
 	@go build -ldflags '$(LDFLAGS)' -o $@ $(IMPORT_PATH)/server

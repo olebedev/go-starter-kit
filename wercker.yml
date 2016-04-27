@@ -1,0 +1,18 @@
+box: toscale/golang-node:latest
+build:
+  steps:
+    - setup-go-workspace
+    - npm-install
+    - script:
+        name: install
+        code: |
+          go version
+          go get github.com/olebedev/srlt
+          go get github.com/jteeuwen/go-bindata/...
+          srlt --verbose r
+          ls -la $GOPATH/bin
+    - script:
+        name: build
+        code: |
+          make build
+          ls -la $GOPATH/bin
