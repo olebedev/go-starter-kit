@@ -13,9 +13,9 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * advanced cli via [cli](https://github.com/codegangsta/cli)
 * Makefile based project
 * one(!) terminal window process for development
-* routing via [react-router](https://github.com/rackt/react-router)
+* routing via [react-router](https://github.com/reactjs/react-router)
 * ES6 & JSX via [babel-loader](https://github.com/babel/babel-loader) with minimal runtime dependency footprint
-* [redux](http://rackt.org/redux/) as state container
+* [redux](https://rackt.org/redux/) as state container
 * [redux-devtools](https://github.com/gaearon/redux-devtools)
 * css styles without global namespace via PostCSS, [css-loader](https://github.com/webpack/css-loader) & css-modules
 * separate css file to avoid FOUC
@@ -25,7 +25,7 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 
 ## Dependencies
 
-* [golang](http://golang.org/)
+* [golang](https://golang.org/)
 * [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
 * [fswatch](https://github.com/emcrisostomo/fswatch/)
