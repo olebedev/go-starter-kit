@@ -7,8 +7,8 @@ BINDATA       = server/bindata.go
 BINDATA_FLAGS = -pkg=main -prefix=server/data
 BUNDLE        = server/data/static/build/bundle.js
 APP           = $(shell find client -type f)
-IMPORT_PATH   = $(shell echo `pwd` | sed "s|^$(GOPATH)/src/||g")
-APP_NAME      = $(shell echo $(IMPORT_PATH) | sed 's:.*/::')
+IMPORT_PATH   = $(shell pwd | sed "s|^$(GOPATH)/src/||g")
+APP_NAME      = $(shell pwd | sed 's:.*/::')
 TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
