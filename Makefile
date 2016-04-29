@@ -1,6 +1,6 @@
 BIN           = $(GOPATH)/bin
-ON            = $(GOPATH)/on
-GO_BINDATA    = $(GOPATH)/go-bindata
+ON            = $(BIN)/on
+GO_BINDATA    = $(BIN)/go-bindata
 NODE_BIN      = $(shell npm bin)
 PID           = .pid
 GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go"))
@@ -23,10 +23,10 @@ clean:
 	@rm -rf $(BINDATA)
 
 $(ON):
-	@go install $(IMPORT_PATH)/vendor/github.com/olebedev/on
+	go install $(IMPORT_PATH)/vendor/github.com/olebedev/on
 
 $(GO_BINDATA):
-	@go install $(IMPORT_PATH)/vendor/github.com/jteeuwen/go-bindata/...
+	go install $(IMPORT_PATH)/vendor/github.com/jteeuwen/go-bindata/...
 
 $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors --bail

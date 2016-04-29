@@ -8,7 +8,6 @@ build:
         code: |
           go version
           go get github.com/olebedev/srlt
-          go get github.com/jteeuwen/go-bindata/...
           srlt --verbose r
           ls -la $GOPATH/bin
     - script:
