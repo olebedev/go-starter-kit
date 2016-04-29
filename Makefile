@@ -40,7 +40,7 @@ kill:
 serve: $(ON) $(GO_BINDATA) clean $(BUNDLE) restart
 	@BABEL_ENV=dev node hot.proxy &
 	@$(NODE_BIN)/webpack --watch &
-	@on -m 2 $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
+	@$(ON) -m 2 $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
 restart: LDFLAGS += -X main.debug=true
@@ -49,7 +49,7 @@ restart: $(BINDATA) kill $(TARGET)
 	@$(TARGET) run & echo $$! > $(PID)
 
 $(BINDATA):
-	$(BIN)/go-bindata $(BINDATA_FLAGS) -o=$@ server/data/...
+	$(GO_BINDATA) $(BINDATA_FLAGS) -o=$@ server/data/...
 
 lint:
 	@eslint client || true
