@@ -28,9 +28,6 @@ This project contains a quick starter kit for **Facebook React** Single Page App
 * [golang](http://golang.org/)
 * [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
 * [GNU make](https://www.gnu.org/software/make/)
-* [fswatch](https://github.com/emcrisostomo/fswatch/)
-* [go-bindata](https://github.com/jteeuwen/go-bindata/)
-* [srlt](https://github.com/olebedev/srlt)
 
 Note that probably not works at windows.
 
@@ -115,8 +112,6 @@ $ srlt restore
 ```
 
 This command will install dependencies into `./vendor/` folder located in root.
-
-Then install `go-bindata` directly: `go install github.com/jteeuwen/go-bindata`
 
 ## Run development
 

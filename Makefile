@@ -1,7 +1,9 @@
 BIN           = $(GOPATH)/bin
+ON            = $(GOPATH)/on
+GO_BINDATA    = $(GOPATH)/go-bindata
 NODE_BIN      = $(shell npm bin)
 PID           = .pid
-GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go")) ./main.go
+GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go"))
 TEMPLATES     = $(wildcard server/data/templates/*.html)
 BINDATA       = server/bindata.go
 BINDATA_FLAGS = -pkg=main -prefix=server/data
@@ -13,12 +15,18 @@ TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
 
-build: clean $(TARGET)
+build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
 clean:
 	@rm -rf server/data/static/build/*
 	@rm -rf server/data/bundle.server.js
 	@rm -rf $(BINDATA)
+
+$(ON):
+	@go install $(IMPORT_PATH)/vendor/github.com/olebedev/on
+
+$(GO_BINDATA):
+	@go install $(IMPORT_PATH)/vendor/github.com/jteeuwen/go-bindata/...
 
 $(BUNDLE): $(APP)
 	@$(NODE_BIN)/webpack --progress --colors --bail
@@ -29,10 +37,10 @@ $(TARGET): $(BUNDLE) $(BINDATA)
 kill:
 	@kill `cat $(PID)` || true
 
-serve: clean $(BUNDLE) restart
+serve: $(ON) $(GO_BINDATA) clean $(BUNDLE) restart
 	@BABEL_ENV=dev node hot.proxy &
 	@$(NODE_BIN)/webpack --watch &
-	@fswatch --event Updated $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
+	@on -m 2 $(GO_FILES) $(TEMPLATES) | xargs -n1 -I{} make restart || make kill
 
 restart: BINDATA_FLAGS += -debug
 restart: LDFLAGS += -X main.debug=true
