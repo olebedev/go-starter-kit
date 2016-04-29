@@ -16,7 +16,7 @@ export function run() {
   require('whatwg-fetch');
 
   const store = createStore(window['--app-initial']);
-  setAsCurrentStore(store)
+  setAsCurrentStore(store);
 
   render(
     <Provider store={store} >

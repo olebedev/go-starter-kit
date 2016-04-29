@@ -17,7 +17,7 @@ export function createStore(state) {
 }
 
 export let store = null;
-export function getStore() { return store }
+export function getStore() { return store; }
 export function setAsCurrentStore(s) {
   store = s;
   if (process.env.NODE_ENV !== 'production'
