@@ -54,7 +54,7 @@ dependencies:
     type: git
     name: github.com/olebedev/on
     remote: https://github.com/olebedev/on
-    commit: ff2ecb5c56772191a0b8b1e46010c1f6c824f346
+    commit: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
   github.com/parnurzeal/gorequest:
     type: git
     name: github.com/parnurzeal/gorequest
