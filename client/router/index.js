@@ -15,7 +15,7 @@ export function run() {
   window.self = window;
   require('whatwg-fetch');
 
-  const store = createStore(window['--app-initial']);
+  const store = createStore(window.devToolsExtension && window.devToolsExtension());
   setAsCurrentStore(store);
 
   render(
