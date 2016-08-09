@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"io"
 	"net/http"
+	"path/filepath"
 
 	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
@@ -35,8 +36,9 @@ func NewApp(opts ...AppOptions) *App {
 
 	options.init()
 
-	// Parse config yaml string from ./conf.go
-	conf, err := config.ParseYaml(confString)
+	// Parse config yaml file from config.yaml
+	configPath, _ := filepath.Abs("config.yaml")
+	conf, err := config.ParseYamlFile(configPath)
 	Must(err)
 
 	// Set config variables delivered from main.go:11
