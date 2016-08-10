@@ -9,21 +9,23 @@ import { createStore, setAsCurrentStore } from '../store';
 
 
 export function run() {
-  // init promise polyfill
-  window.Promise = window.Promise || Promise;
-  // init fetch polyfill
-  window.self = window;
-  require('whatwg-fetch');
+    // init promise polyfill
+    window.Promise = window.Promise || Promise;
+    // init fetch polyfill
+    window.self = window;
+    require('whatwg-fetch');
 
-  const store = createStore(window.devToolsExtension && window.devToolsExtension());
-  setAsCurrentStore(store);
+    const store = createStore(window.devToolsExtension && window.devToolsExtension());
+    setAsCurrentStore(store);
 
-  render(
-    <Provider store={store} >
-      <Router history={browserHistory}>{createRoutes({store, first: { time: true }})}</Router>
-    </Provider>,
-    document.getElementById('app')
-  );
+    // Change first.time to 'true' to make onEnter functions not to fire on the initial request
+
+    render(
+        <Provider store={store} >
+            <Router history={browserHistory}>{createRoutes({store, first: { time: false }})}</Router>
+        </Provider>,
+        document.getElementById('app')
+    );
 
 }
 
@@ -35,13 +37,13 @@ require('../css');
 
 // Style live reloading
 if (module.hot) {
-  let c = 0;
-  module.hot.accept('../css', () => {
-    require('../css');
-    const a = document.createElement('a');
-    const link = document.querySelector('link[rel="stylesheet"]');
-    a.href = link.href;
-    a.search = '?' + c++;
-    link.href = a.href;
-  });
+    let c = 0;
+    module.hot.accept('../css', () => {
+        require('../css');
+        const a = document.createElement('a');
+        const link = document.querySelector('link[rel="stylesheet"]');
+        a.href = link.href;
+        a.search = '?' + c++;
+        link.href = a.href;
+    });
 }
