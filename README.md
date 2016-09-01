@@ -113,6 +113,12 @@ $ srlt restore
 
 This command will install dependencies into `./vendor/` folder located in root.
 
+You can also install all dependencies at once by running:
+
+```
+$ make install
+```
+
 ## Run development
 
 Start dev server:
