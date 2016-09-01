@@ -5,6 +5,11 @@ dependencies:
     name: github.com/codegangsta/cli
     remote: https://github.com/codegangsta/cli
     commit: c31a7975863e7810c92e2e288a9ab074f9a88f29
+  github.com/dgrijalva/jwt-go:
+    type: git
+    name: github.com/dgrijalva/jwt-go
+    remote: https://github.com/dgrijalva/jwt-go.git
+    commit: 24c63f56522a87ec5339cc3567883f1039378fdb
   github.com/elazarl/go-bindata-assetfs:
     type: git
     name: github.com/elazarl/go-bindata-assetfs
@@ -20,11 +25,16 @@ dependencies:
     name: github.com/jteeuwen/go-bindata
     remote: https://github.com/jteeuwen/go-bindata
     commit: a0ff2567cfb70903282db057e799fd826784d41d
+  github.com/labstack/echo:
+    type: git
+    name: github.com/labstack/echo
+    remote: https://github.com/labstack/echo
+    commit: 245c05330a465e3f3f3471df4b1b1acd250749d2
   github.com/labstack/gommon:
     type: git
     name: github.com/labstack/gommon
     remote: https://github.com/labstack/gommon
-    commit: 9c0a60557b6840125c331d8c8075119770aa2805
+    commit: 431777a5117c8de4352a400dad1e2a55f484b189
   github.com/mattn/go-colorable:
     type: git
     name: github.com/mattn/go-colorable
@@ -80,11 +90,6 @@ dependencies:
     name: golang.org/x/text
     remote: https://go.googlesource.com/text
     commit: cf4986612c83df6c55578ba198316d1684a9a287
-  gopkg.in/labstack/echo.v1:
-    type: git
-    name: gopkg.in/labstack/echo.v1
-    remote: https://gopkg.in/labstack/echo.v1
-    commit: 18a78a34eb4481722eef1ac9034eada58e3cf909
   gopkg.in/olebedev/go-duktape-fetch.v2:
     type: git
     name: gopkg.in/olebedev/go-duktape-fetch.v2
