@@ -14,6 +14,7 @@ APP_NAME      = $(shell pwd | sed 's:.*/::')
 TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
+SRLT         := $(shell command -v srlt 2> /dev/null)
 
 build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
@@ -54,3 +55,12 @@ $(BINDATA):
 lint:
 	@eslint client || true
 	@golint $(GO_FILES) || true
+
+install:
+	@npm install
+
+ifdef SRLT
+	@srlt restore
+else
+	$(warning "Skipping installation of Go dependencies: srlt is not installed")
+endif
