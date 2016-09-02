@@ -10,9 +10,9 @@ import (
 
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
-
+	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
-	"gopkg.in/labstack/echo.v1"
 )
 
 // React struct is contains duktape
@@ -48,7 +48,8 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 // Handle handles all HTTP requests which
 // have no been caught via static file
 // handler or other middlewares.
-func (r *React) Handle(c *echo.Context) error {
+func (r *React) Handle(c echo.Context) error {
+
 	UUID := c.Get("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
@@ -64,8 +65,8 @@ func (r *React) Handle(c *echo.Context) error {
 	start := time.Now()
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
-		"url":     c.Request().URL.String(),
-		"headers": c.Request().Header,
+		"url":     c.Request().(*standard.Request).URI(),
+		"headers": c.Request().(*standard.Request).Request.Header,
 		"uuid":    UUID.String(),
 	}):
 		re.RenderTime = time.Since(start)
