@@ -1,0 +1,17 @@
+base: ./vendor
+dependencies:
+  github.com/codegangsta/cli:
+    type: git
+    name: github.com/codegangsta/cli
+    remote: https://github.com/codegangsta/cli
+    commit: 222ec6fb7eb8a3da24cfa4017694ba45e3f1f516
+  golang.org/x/sys:
+    type: git
+    name: golang.org/x/sys
+    remote: https://github.com/golang/sys
+    commit: c8bc69bc2db9c57ccf979550bc69655df5039a8a
+  gopkg.in/fsnotify.v1:
+    type: git
+    name: gopkg.in/fsnotify.v1
+    remote: https://gopkg.in/fsnotify.v1
+    commit: 30411dbcefb7a1da7e84f75530ad3abe4011b4f8

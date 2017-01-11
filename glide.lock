@@ -1,0 +1,53 @@
+hash: b2e351a6ebdf32670ebfd2ac874108e1a7ccc34e494be7396efd5f01a4845849
+updated: 2017-01-11T21:22:12.281149672+05:00
+imports:
+- name: github.com/codegangsta/cli
+  version: c31a7975863e7810c92e2e288a9ab074f9a88f29
+- name: github.com/elazarl/go-bindata-assetfs
+  version: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
+- name: github.com/itsjamie/go-bindata-templates
+  version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
+- name: github.com/jteeuwen/go-bindata
+  version: a0ff2567cfb70903282db057e799fd826784d41d
+- name: github.com/labstack/gommon
+  version: 9c0a60557b6840125c331d8c8075119770aa2805
+  subpackages:
+  - color
+  - log
+- name: github.com/mattn/go-colorable
+  version: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
+- name: github.com/mattn/go-isatty
+  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
+- name: github.com/moul/http2curl
+  version: b0342e01ef01008cc313e64847a3b80b96e1f9bf
+- name: github.com/nu7hatch/gouuid
+  version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
+- name: github.com/olebedev/config
+  version: e3edea7d68b76222b5118cc2e1cf3825e30abb80
+- name: github.com/olebedev/on
+  version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
+- name: github.com/parnurzeal/gorequest
+  version: c73179dd31355d86bd7692de9b47623d6d0fa696
+- name: github.com/valyala/fasttemplate
+  version: 3b874956e03f1636d171bda64b130f9135f42cff
+- name: golang.org/x/net
+  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
+  subpackages:
+  - context
+  - publicsuffix
+  - websocket
+- name: golang.org/x/sys
+  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  subpackages:
+  - unix
+- name: gopkg.in/labstack/echo.v1
+  version: 18a78a34eb4481722eef1ac9034eada58e3cf909
+  subpackages:
+  - middleware
+- name: gopkg.in/olebedev/go-duktape-fetch.v2
+  version: 634a7ea4ba91939a6dc4d0274bd053b02aed234b
+- name: gopkg.in/olebedev/go-duktape.v2
+  version: 1c5e9d0fb82296a24a63ab68b682c5b4d7a45cca
+- name: gopkg.in/yaml.v2
+  version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
+testImports: []

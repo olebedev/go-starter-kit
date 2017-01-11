@@ -2,7 +2,6 @@
 /bin
 /pkg
 /src
-/vendor
 /server/bindata.go
 /server/data/static/build
 

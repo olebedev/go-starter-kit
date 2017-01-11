@@ -14,7 +14,7 @@ APP_NAME      = $(shell pwd | sed 's:.*/::')
 TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
-SRLT         := $(shell command -v srlt 2> /dev/null)
+GLIDE         := $(shell command -v glide 2> /dev/null)
 
 build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
@@ -59,8 +59,8 @@ lint:
 install:
 	@npm install
 
-ifdef SRLT
-	@srlt restore
+ifdef GLIDE
+	@glide install
 else
-	$(warning "Skipping installation of Go dependencies: srlt is not installed")
+	$(warning "Skipping installation of Go dependencies: glide is not installed")
 endif
