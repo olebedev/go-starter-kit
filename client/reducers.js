@@ -3,10 +3,10 @@ import { SET_CONFIG } from './actions';
 
 function config(state = {}, action) {
   switch (action.type) {
-    case SET_CONFIG:
-      return action.config;
-    default:
-      return state;
+  case SET_CONFIG:
+    return action.config;
+  default:
+    return state;
   }
 }
 

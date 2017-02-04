@@ -19,6 +19,7 @@
     "babel-preset-stage-0": "6.5.0",
     "css-loader": "^0.23.1",
     "cssrecipes-defaults": "^0.5.0",
+    "eslint": "^3.15.0",
     "eslint-plugin-react": "^3.16.1",
     "expose-loader": "^0.7.1",
     "express": "^4.13.4",
@@ -87,9 +88,12 @@
       "browser": true,
       "node": true
     },
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
+    "parserOptions": {
+      "ecmaFeatures": {
+        "jsx": true,
+        "modules": true
+      },
+      "sourceType": "module"
     },
     "plugins": [
       "react"
