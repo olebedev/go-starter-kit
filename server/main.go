@@ -13,7 +13,6 @@ func main() {
 // Run creates, configures and runs
 // main cli.App
 func Run(args []string) {
-
 	app := cli.NewApp()
 	app.Name = "app"
 	app.Usage = "React server application"

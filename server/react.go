@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
-	"github.com/labstack/echo/engine/standard"
 	"github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
@@ -49,7 +48,6 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 // have no been caught via static file
 // handler or other middlewares.
 func (r *React) Handle(c echo.Context) error {
-
 	UUID := c.Get("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
@@ -65,8 +63,8 @@ func (r *React) Handle(c echo.Context) error {
 	start := time.Now()
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
-		"url":     c.Request().(*standard.Request).URI(),
-		"headers": c.Request().(*standard.Request).Request.Header,
+		"url":     c.Request().URL.Path,
+		"headers": c.Request().Header,
 		"uuid":    UUID.String(),
 	}):
 		re.RenderTime = time.Since(start)
@@ -153,7 +151,6 @@ func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool
 
 // newReactVM loads bundle.js to context.
 func newReactVM(filePath string, engine http.Handler) *ReactVM {
-
 	vm := &ReactVM{
 		Context: duktape.New(),
 		ch:      make(chan Resp, 1),

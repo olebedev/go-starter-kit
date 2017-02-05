@@ -7,7 +7,8 @@ import:
 - package: github.com/olebedev/config
 - package: github.com/labstack/echo
   subpackage:
-    - middleware
+  - middleware
+  version: ^3.0.0
 - package: gopkg.in/olebedev/go-duktape-fetch.v2
 - package: gopkg.in/olebedev/go-duktape.v2
 - package: github.com/olebedev/on
