@@ -45,7 +45,7 @@ func NewEncoder(w io.Writer) *Encoder {
 
 // WriteField encodes f into a single Write to e's underlying Writer.
 // This function may also produce bytes for "Header Table Size Update"
-// if necessary.  If produced, it is done before encoding f.
+// if necessary. If produced, it is done before encoding f.
 func (e *Encoder) WriteField(f HeaderField) error {
 	e.buf = e.buf[:0]
 
@@ -144,7 +144,7 @@ func (e *Encoder) SetMaxDynamicTableSizeLimit(v uint32) {
 
 // shouldIndex reports whether f should be indexed.
 func (e *Encoder) shouldIndex(f HeaderField) bool {
-	return !f.Sensitive && f.size() <= e.dynTab.maxSize
+	return !f.Sensitive && f.Size() <= e.dynTab.maxSize
 }
 
 // appendIndexed appends index i, as encoded in "Indexed Header Field"

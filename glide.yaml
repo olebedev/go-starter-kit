@@ -5,9 +5,9 @@ import:
 - package: github.com/itsjamie/go-bindata-templates
 - package: github.com/nu7hatch/gouuid
 - package: github.com/olebedev/config
-- package: gopkg.in/labstack/echo.v1
-  subpackages:
-  - middleware
+- package: github.com/labstack/echo
+  subpackage:
+    - middleware
 - package: gopkg.in/olebedev/go-duktape-fetch.v2
 - package: gopkg.in/olebedev/go-duktape.v2
 - package: github.com/olebedev/on

@@ -12,6 +12,7 @@ Sending request would never been fun and easier than this. It comes with lots of
 * Get/Post/Put/Head/Delete/Patch/Options
 * Set - simple header setting
 * JSON - made it simple with JSON string as a parameter
+* Multipart-Support - send data and files as multipart request
 * Proxy - sending request via proxy
 * Timeout - setting timeout for a request
 * TLSClientConfig - taking control over tls where at least you can disable security check for https
@@ -89,6 +90,7 @@ resp, body, errs := request.Post("http://example.com").End()
 // PUT -> request.Put("http://example.com").End()
 // DELETE -> request.Delete("http://example.com").End()
 // HEAD -> request.Head("http://example.com").End()
+// ANYTHING -> request.CustomMethod("TRACE", "http://example.com").End()
 ```
 
 ### JSON
@@ -148,6 +150,32 @@ func printStatus(resp gorequest.Response, body string, errs []error){
 gorequest.New().Get("http://example.com").End(printStatus)
 ```
 
+## Multipart/Form-Data
+
+You can specify the content-type of the request to type `multipart` to send all data as `multipart/form-data`. This feature also allows you to send (multiple) files! Check the examples below!
+
+```go
+gorequest.New().Post("http://example.com/").
+  Type("multipart").
+  Send(`{"query1":"test"}`).
+  End()
+```
+
+The `SendFile` function accepts `strings` as path to a file, `[]byte` slice or even a `os.File`! You can also combine them to send multiple files with either custom name and/or custom fieldname:
+
+```go
+          f, _ := filepath.Abs("./file2.txt")
+bytesOfFile, _ := ioutil.ReadFile(f)
+    
+gorequest.New().Post("http://example.com/").
+  Type("multipart").
+  SendFile("./file1.txt").
+  SendFile(bytesOfFile, "file2.txt", "my_file_fieldname").
+  End()
+```
+
+Check the docs for `SendFile` to get more information about the types of arguments.
+
 ## Proxy
 
 In the case when you are behind proxy, GoRequest can handle it easily with Proxy func:
@@ -156,7 +184,7 @@ In the case when you are behind proxy, GoRequest can handle it easily with Proxy
 request := gorequest.New().Proxy("http://proxy:999")
 resp, body, errs := request.Get("http://example-proxy.com").End()
 // To reuse same client with no_proxy, use empty string:
-resp, body, errs = request.Proxy("").("http://example-no-proxy.com").End()
+resp, body, errs = request.Proxy("").Get("http://example-no-proxy.com").End()
 ```
 
 ## Basic Authentication
@@ -189,11 +217,62 @@ The callbacks work the same way as with `End`, except that a byte array is used 
 resp, bodyBytes, errs := gorequest.New().Get("http://example.com/").EndBytes()
 ```
 
+## EndStruct
+
+We now have EndStruct to use when you want the body as struct.
+
+The callbacks work the same way as with `End`, except that a struct is used instead of a string.
+
+Supposing the URL **http://example.com/** returns the body `{"hey":"you"}`
+
+```go
+heyYou struct {
+  Hey string `json:"hey"`
+}
+
+var heyYou heyYou
+
+resp, _, errs := gorequest.New().Get("http://example.com/").EndStruct(&heyYou)
+```
+
+## Retry 
+
+Supposing you need retry 3 times, with 5 seconds between each attempt when gets a BadRequest or a InternalServerError
+
+```go
+request := gorequest.New()
+resp, body, errs := request.Get("http://example.com/").
+                    Retry(3, 5 * time.seconds, http.StatusBadRequest, http.StatusInternalServerError).
+                    End()
+```
+
+## Handling Redirects
+
+Redirects can be handled with RedirectPolicy which behaves similarly to
+net/http Client's [CheckRedirect
+function](https://golang.org/pkg/net/http#Client). Simply specify a function
+which takes the Request about to be made and a slice of previous Requests in
+order of oldest first. When this function returns an error, the Request is not
+made.
+
+For example to redirect only to https endpoints:
+
+```go
+request := gorequest.New()
+resp, body, errs := request.Get("http://example.com/").
+                    RedirectPolicy(func(req Request, via []*Request) error {
+                      if req.URL.Scheme != "https" {
+                        return http.ErrUseLastResponse
+                      }
+                    }).
+                    End()
+```
+
 ## Debug
 
 For debugging, GoRequest leverages `httputil` to dump details of every request/response. (Thanks to @dafang)
 
-You can just use `SetDebug` to enable/disable debug mode and `SetLogger` to set your own choice of logger.
+You can just use `SetDebug` or environment variable `GOREQUEST_DEBUG=0|1` to enable/disable debug mode and `SetLogger` to set your own choice of logger.
 
 Thanks to @QuentinPerez, we can see even how gorequest is compared to CURL by using `SetCurlCommand`.
 
@@ -206,7 +285,29 @@ If you find any improvement or issue you want to fix, feel free to send me a pul
 
 Thanks to all contributors thus far:
 
-@kemadz, @austinov, @figlief, @dickeyxxx, @killix, @jaytaylor, @na-ga, @dafang, @alaingilbert, @6david9, @pencil001, @QuentinPerez, @smallnest, @piotrmiskiewicz and @coderhaoxin.
+
+|   Contributors                        |
+|---------------------------------------|
+| https://github.com/kemadz             |
+| https://github.com/austinov           |
+| https://github.com/figlief            |
+| https://github.com/dickeyxxx          |
+| https://github.com/killix             |
+| https://github.com/jaytaylor          |
+| https://github.com/na-ga              |
+| https://github.com/dafang             |
+| https://github.com/alaingilbert       |
+| https://github.com/6david9            |
+| https://github.com/pencil001          |
+| https://github.com/QuentinPerez       |
+| https://github.com/smallnest          |
+| https://github.com/piotrmiskiewicz    |
+| https://github.com/coderhaoxin        |
+| https://github.com/WaveCutz           |
+| https://github.com/fraenky8           |
+| https://github.com/franciscocpg       |
+| https://github.com/quangbuule         |
+
 
 Also, co-maintainer is needed here. If anyone is interested, please email me (parnurzeal at gmail.com)
 

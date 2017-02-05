@@ -1,6 +1,7 @@
 # Bytes
 
-Format bytes to string
+- Format bytes integer to human readable bytes string.
+- Parse human readable bytes string to bytes integer.
 
 ## Installation
 
@@ -10,30 +11,19 @@ go get github.com/labstack/gommon/bytes
 
 ## [Usage](https://github.com/labstack/gommon/blob/master/bytes/bytes_test.go)
 
-```sh
-import github.com/labstack/gommon/bytes
-```
-
-### Decimal prefix
+### Format
 
 ```go
-fmt.Println(bytes.Format(1323))
+println(bytes.Format(13231323))
 ```
 
-`1.32 KB`
+`12.62MB`
 
-### Binary prefix
+### Parse
 
 ```go
-bytes.SetBinaryPrefix(true)
-fmt.Println(bytes.Format(1323))
+b, _ = Parse("2M")
+println(b)
 ```
 
-`1.29 KiB`
-
-### New instance
-
-```go
-g := New()
-fmt.Println(g.Format(13231323))
-```
+`2097152`

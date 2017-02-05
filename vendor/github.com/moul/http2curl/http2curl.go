@@ -22,20 +22,16 @@ func (c *CurlCommand) append(newSlice ...string) {
 
 // String returns a ready to copy/paste command
 func (c *CurlCommand) String() string {
-	slice := make([]string, len(c.slice))
-	copy(slice, c.slice)
-	for i := range slice {
-		quoted := fmt.Sprintf("%q", slice[i])
-		if strings.Contains(slice[i], " ") || len(quoted) != len(slice[i])+2 {
-			slice[i] = quoted
-		}
-	}
-	return strings.Join(slice, " ")
+	return strings.Join(c.slice, " ")
 }
 
 // nopCloser is used to create a new io.ReadCloser for req.Body
 type nopCloser struct {
 	io.Reader
+}
+
+func bashEscape(str string) string {
+	return `'` + strings.Replace(str, `'`, `'\''`, -1) + `'`
 }
 
 func (nopCloser) Close() error { return nil }
@@ -46,7 +42,7 @@ func GetCurlCommand(req *http.Request) (*CurlCommand, error) {
 
 	command.append("curl")
 
-	command.append("-X", req.Method)
+	command.append("-X", bashEscape(req.Method))
 
 	if req.Body != nil {
 		body, err := ioutil.ReadAll(req.Body)
@@ -54,7 +50,8 @@ func GetCurlCommand(req *http.Request) (*CurlCommand, error) {
 			return nil, err
 		}
 		req.Body = nopCloser{bytes.NewBuffer(body)}
-		command.append("-d", fmt.Sprintf("%s", bytes.Trim(body, "\n")))
+		bodyEscaped := bashEscape(string(body))
+		command.append("-d", bodyEscaped)
 	}
 
 	var keys []string
@@ -65,10 +62,10 @@ func GetCurlCommand(req *http.Request) (*CurlCommand, error) {
 	sort.Strings(keys)
 
 	for _, k := range keys {
-		command.append("-H", fmt.Sprintf("%s: %s", k, strings.Join(req.Header[k], " ")))
+		command.append("-H", bashEscape(fmt.Sprintf("%s: %s", k, strings.Join(req.Header[k], " "))))
 	}
 
-	command.append(req.URL.String())
+	command.append(bashEscape(req.URL.String()))
 
 	return &command, nil
 }

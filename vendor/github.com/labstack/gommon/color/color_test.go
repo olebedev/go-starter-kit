@@ -1,56 +1,55 @@
 package color
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestText(t *testing.T) {
-	fmt.Println("*** colored text ***")
-	fmt.Println(Black("black"))
-	fmt.Println(Red("red"))
-	fmt.Println(Green("green"))
-	fmt.Println(Yellow("yellow"))
-	fmt.Println(Blue("blue"))
-	fmt.Println(Magenta("magenta"))
-	fmt.Println(Cyan("cyan"))
-	fmt.Println(White("white"))
-	fmt.Println(Grey("grey"))
+	Println("*** colored text ***")
+	Println(Black("black"))
+	Println(Red("red"))
+	Println(Green("green"))
+	Println(Yellow("yellow"))
+	Println(Blue("blue"))
+	Println(Magenta("magenta"))
+	Println(Cyan("cyan"))
+	Println(White("white"))
+	Println(Grey("grey"))
 }
 
 func TestBackground(t *testing.T) {
-	fmt.Println("*** colored background ***")
-	fmt.Println(BlackBg("black background", Wht))
-	fmt.Println(RedBg("red background"))
-	fmt.Println(GreenBg("green background"))
-	fmt.Println(YellowBg("yellow background"))
-	fmt.Println(BlueBg("blue background"))
-	fmt.Println(MagentaBg("magenta background"))
-	fmt.Println(CyanBg("cyan background"))
-	fmt.Println(WhiteBg("white background"))
+	Println("*** colored background ***")
+	Println(BlackBg("black background", Wht))
+	Println(RedBg("red background"))
+	Println(GreenBg("green background"))
+	Println(YellowBg("yellow background"))
+	Println(BlueBg("blue background"))
+	Println(MagentaBg("magenta background"))
+	Println(CyanBg("cyan background"))
+	Println(WhiteBg("white background"))
 }
 
 func TestEmphasis(t *testing.T) {
-	fmt.Println("*** emphasis ***")
-	fmt.Println(Reset("reset"))
-	fmt.Println(Bold("bold"))
-	fmt.Println(Dim("dim"))
-	fmt.Println(Italic("italic"))
-	fmt.Println(Underline("underline"))
-	fmt.Println(Inverse("inverse"))
-	fmt.Println(Hidden("hidden"))
-	fmt.Println(Strikeout("strikeout"))
+	Println("*** emphasis ***")
+	Println(Reset("reset"))
+	Println(Bold("bold"))
+	Println(Dim("dim"))
+	Println(Italic("italic"))
+	Println(Underline("underline"))
+	Println(Inverse("inverse"))
+	Println(Hidden("hidden"))
+	Println(Strikeout("strikeout"))
 }
 
 func TestMixMatch(t *testing.T) {
-	fmt.Println("*** mix and match ***")
-	fmt.Println(Green("bold green with white background", B, WhtBg))
-	fmt.Println(Red("underline red", U))
-	fmt.Println(Yellow("dim yellow", D))
-	fmt.Println(Cyan("inverse cyan", In))
-	fmt.Println(Blue("bold underline dim blue", B, U, D))
+	Println("*** mix and match ***")
+	Println(Green("bold green with white background", B, WhtBg))
+	Println(Red("underline red", U))
+	Println(Yellow("dim yellow", D))
+	Println(Cyan("inverse cyan", In))
+	Println(Blue("bold underline dim blue", B, U, D))
 }
 
 func TestEnableDisable(t *testing.T) {
