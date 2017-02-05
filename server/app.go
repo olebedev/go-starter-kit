@@ -5,14 +5,14 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/itsjamie/go-bindata-templates"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/engine"
+	"github.com/labstack/echo/engine/standard"
+	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
-	"github.com/labstack/echo/engine/standard"
-	"github.com/elazarl/go-bindata-assetfs"
-	"github.com/labstack/echo/engine"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 )
 
 // App struct.
@@ -80,7 +80,6 @@ func NewApp(opts ...AppOptions) *App {
 			std,
 		),
 	}
-
 
 	// Use precompiled embedded templates
 	app.Engine.SetRenderer(NewTemplate())
@@ -162,7 +161,7 @@ func NewTemplate() *Template {
 }
 
 // Render renders template
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context ) error {
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
