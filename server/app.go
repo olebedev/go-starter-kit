@@ -49,31 +49,31 @@ func NewApp(opts ...AppOptions) *App {
 	conf.Env()
 
 	// Make an engine
-	e := echo.New()
+	engine := echo.New()
 
 	// Use precompiled embedded templates
-	e.Renderer = NewTemplate()
+	engine.Renderer = NewTemplate()
 
 	// Set up echo debug level
-	e.Debug = conf.UBool("debug")
+	engine.Debug = conf.UBool("debug")
 
 	// Regular middlewares
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
+	engine.Use(middleware.Logger())
+	engine.Use(middleware.Recover())
 
-	e.GET("/favicon.ico", func(c echo.Context) error {
+	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
 	// Initialize the application
 	app := &App{
 		Conf:   conf,
-		Engine: e,
+		Engine: engine,
 		API:    &API{},
 		React: NewReact(
 			conf.UString("duktape.path"),
 			conf.UBool("debug"),
-			e,
+			engine,
 		),
 	}
 
