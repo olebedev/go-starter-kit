@@ -60,7 +60,6 @@ func NewApp(opts ...AppOptions) *App {
 	// Regular middlewares
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middleware.Gzip())
 
 	e.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
