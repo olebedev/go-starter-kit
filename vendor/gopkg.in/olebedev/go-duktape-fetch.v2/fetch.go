@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"net/textproto"
 	"strings"
 
 	"github.com/parnurzeal/gorequest"
@@ -49,6 +50,15 @@ func goFetchSync(server http.Handler) func(*duktape.Context) int {
 		}
 		err := json.Unmarshal([]byte(c.JsonEncode(1)), &opts)
 		must(err)
+
+		// Normalize headers' keys.
+		// It could be in lower-case, which is invalid.
+		// For more details see: https://golang.org/pkg/net/textproto/#CanonicalMIMEHeaderKey.
+		prev := opts.Headers
+		opts.Headers = http.Header{}
+		for k, v := range prev {
+			opts.Headers[textproto.CanonicalMIMEHeaderKey(k)] = v
+		}
 
 		var resp response
 		if strings.HasPrefix(url, "http") || strings.HasPrefix(url, "//") {

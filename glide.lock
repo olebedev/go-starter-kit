@@ -1,53 +1,64 @@
-hash: b2e351a6ebdf32670ebfd2ac874108e1a7ccc34e494be7396efd5f01a4845849
-updated: 2017-01-11T21:22:12.281149672+05:00
+hash: 80ff718c1f3ece42c1321f2d50a91dad98e39e4869f2e55a6c25c1148b5aaa1c
+updated: 2017-02-05T19:58:52.627974285Z
 imports:
 - name: github.com/codegangsta/cli
-  version: c31a7975863e7810c92e2e288a9ab074f9a88f29
+  version: 347a9884a87374d000eec7e6445a34487c1f4a2b
+- name: github.com/dgrijalva/jwt-go
+  version: 2268707a8f0843315e2004ee4f1d021dc08baedf
 - name: github.com/elazarl/go-bindata-assetfs
-  version: 57eb5e1fc594ad4b0b1dbea7b286d299e0cb43c2
+  version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/itsjamie/go-bindata-templates
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
 - name: github.com/jteeuwen/go-bindata
   version: a0ff2567cfb70903282db057e799fd826784d41d
-- name: github.com/labstack/gommon
-  version: 9c0a60557b6840125c331d8c8075119770aa2805
+- name: github.com/labstack/echo
+  version: a8b6864be328fcb5c2d96d32c75b750f84e0e4be
   subpackages:
+  - middleware
+- name: github.com/labstack/gommon
+  version: f72d3c883f8ea180da8f085dd320804c41332ad1
+  subpackages:
+  - bytes
   - color
   - log
+  - random
 - name: github.com/mattn/go-colorable
-  version: 3dac7b4f76f6e17fb39b768b89e3783d16e237fe
+  version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
-  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
+  version: 30a891c33c7cde7b02a981314b4228ec99380cca
 - name: github.com/moul/http2curl
-  version: b0342e01ef01008cc313e64847a3b80b96e1f9bf
+  version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
 - name: github.com/nu7hatch/gouuid
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
-  version: e3edea7d68b76222b5118cc2e1cf3825e30abb80
+  version: afea898d27c7d17376ecc60c7c2e73c76b40060e
 - name: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
 - name: github.com/parnurzeal/gorequest
-  version: c73179dd31355d86bd7692de9b47623d6d0fa696
+  version: f441e24175ffc865a6354b65375e537201c51382
+- name: github.com/valyala/bytebufferpool
+  version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
-  version: 3b874956e03f1636d171bda64b130f9135f42cff
+  version: d090d65668a286d9a180d43a19dfdc5dcad8fe88
+- name: golang.org/x/crypto
+  version: bed12803fa9663d7aa2c2346b0c634ad2dcd43b7
+  subpackages:
+  - acme
+  - acme/autocert
 - name: golang.org/x/net
-  version: 5df5483e0518a11a6ef1e894c70236eb3f639557
+  version: 41bba8d80bbfab43231ffdf4c210037baae5f6a3
   subpackages:
   - context
+  - context/ctxhttp
   - publicsuffix
-  - websocket
 - name: golang.org/x/sys
-  version: d75a52659825e75fff6158388dddc6a5b04f9ba5
+  version: 7a6e5648d140666db5d920909e082ca00a87ba2c
   subpackages:
   - unix
-- name: gopkg.in/labstack/echo.v1
-  version: 18a78a34eb4481722eef1ac9034eada58e3cf909
-  subpackages:
-  - middleware
 - name: gopkg.in/olebedev/go-duktape-fetch.v2
-  version: 634a7ea4ba91939a6dc4d0274bd053b02aed234b
+  version: a4ba37699f8bae499586df39f367460ab7566f1b
 - name: gopkg.in/olebedev/go-duktape.v2
-  version: 1c5e9d0fb82296a24a63ab68b682c5b4d7a45cca
+  version: 7da705daddc2f0181fc46c9a5d192f8b4e116212
 - name: gopkg.in/yaml.v2
-  version: f7716cbe52baa25d2e9b0d0da546fcf909fc16b4
+  version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 testImports: []

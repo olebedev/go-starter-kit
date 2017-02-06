@@ -39,9 +39,19 @@ func (cfg *Config) Set(path string, val interface{}) error {
 
 // Fetch data from system env, based on existing config keys.
 func (cfg *Config) Env() *Config {
+	return cfg.EnvPrefix("")
+}
+
+// Fetch data from system env using prefix, based on existing config keys.
+func (cfg *Config) EnvPrefix(prefix string) *Config {
+	if prefix != "" {
+		prefix = strings.ToUpper(prefix) + "_"
+	}
+
 	keys := getKeys(cfg.Root)
 	for _, key := range keys {
-		if val, exist := syscall.Getenv(strings.ToUpper(strings.Join(key, "_"))); exist {
+		k := strings.ToUpper(strings.Join(key, "_"))
+		if val, exist := syscall.Getenv(prefix + k); exist {
 			cfg.Set(strings.Join(key, "."), val)
 		}
 	}
@@ -72,18 +82,27 @@ func (cfg *Config) Flag() *Config {
 // Get all keys for given interface
 func getKeys(source interface{}, base ...string) [][]string {
 	acc := [][]string{}
+
+	// Copy "base" so that underlying slice array is not
+	// modified in recursive calls
+	nextBase := make([]string, len(base))
+	copy(nextBase, base)
+
 	switch c := source.(type) {
 	case map[string]interface{}:
 		for k, v := range c {
-			acc = append(acc, getKeys(v, append(base, k)...)...)
+			keys := getKeys(v, append(nextBase, k)...)
+			acc = append(acc, keys...)
 		}
 	case []interface{}:
 		for i, v := range c {
 			k := strconv.Itoa(i)
-			acc = append(acc, getKeys(v, append(base, k)...)...)
+			keys := getKeys(v, append(nextBase, k)...)
+			acc = append(acc, keys...)
 		}
 	default:
-		acc = append(acc, base)
+		acc = append(acc, nextBase)
+		return acc
 	}
 	return acc
 }
@@ -103,7 +122,7 @@ func (cfg *Config) Bool(path string) (bool, error) {
 	return false, typeMismatch("bool or string", n)
 }
 
-// UBool retirns a bool according to a dotted path or default value or false.
+// UBool returns a bool according to a dotted path or default value or false.
 func (c *Config) UBool(path string, defaults ...bool) bool {
 	value, err := c.Bool(path)
 

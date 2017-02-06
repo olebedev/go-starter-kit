@@ -626,7 +626,7 @@ func (d *Context) IsCFunction(index int) bool {
 
 // See: http://duktape.org/api.html#duk_is_callable
 func (d *Context) IsCallable(index int) bool {
-	return int(C.duk_is_callable(d.duk_context, C.duk_idx_t(index))) == 1
+	return int(C.duk_is_function(d.duk_context, C.duk_idx_t(index))) == 1
 }
 
 // See: http://duktape.org/api.html#duk_is_constructor_call
@@ -1584,4 +1584,7 @@ func (d *Context) PushExternalBuffer() {
  * GetBufferData see: http://duktape.org/api.html#duk_get_buffer_data
  * StealBuffer see: http://duktape.org/api.html#duk_steal_buffer
  * RequireBufferData see: http://duktape.org/api.html#duk_require_buffer_data
+ * IsEvalError see: http://duktape.org/api.html#duk_is_eval_error
+ * RequireFunction see: http://duktape.org/api.html#duk_require_function
+ * RequireCallable see: http://duktape.org/api.html#duk_require_callable
  */

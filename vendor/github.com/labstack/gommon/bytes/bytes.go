@@ -2,18 +2,28 @@ package bytes
 
 import (
 	"fmt"
-	"math"
+	"regexp"
 	"strconv"
-)
-
-var (
-	global = New()
 )
 
 type (
 	Bytes struct {
-		iec bool
 	}
+)
+
+const (
+	B = 1 << (10 * iota)
+	KB
+	MB
+	GB
+	TB
+	PB
+	EB
+)
+
+var (
+	pattern = regexp.MustCompile(`(?i)^(-?\d+)([KMGTP]B?|B)$`)
+	global  = New()
 )
 
 // New creates a Bytes instance.
@@ -21,41 +31,76 @@ func New() *Bytes {
 	return &Bytes{}
 }
 
-// SetBinaryPrefix sets binary prefix format.
-func (g *Bytes) SetBinaryPrefix(on bool) {
-	g.iec = on
+// Format formats bytes integer to human readable string.
+// For example, 31323 bytes will return 30.59KB.
+func (*Bytes) Format(b int64) string {
+	multiple := ""
+	value := float64(b)
+
+	switch {
+	case b < KB:
+		return strconv.FormatInt(b, 10) + "B"
+	case b < MB:
+		value /= KB
+		multiple = "KB"
+	case b < MB:
+		value /= KB
+		multiple = "KB"
+	case b < GB:
+		value /= MB
+		multiple = "MB"
+	case b < TB:
+		value /= GB
+		multiple = "GB"
+	case b < PB:
+		value /= TB
+		multiple = "TB"
+	case b < EB:
+		value /= PB
+		multiple = "PB"
+	}
+
+	return fmt.Sprintf("%.02f%s", value, multiple)
 }
 
-// Format formats bytes to string. For example, 1323 bytes will return 1.32 KB.
-// If binary prefix is set, it will return 1.29 KiB.
-func (g *Bytes) Format(b uint64) string {
-	unit := uint64(1000)
-	if g.iec {
-		unit = 1024
+// Parse parses human readable bytes string to bytes integer.
+// For example, 6GB (6G is also valid) will return 6442450944.
+func (*Bytes) Parse(value string) (i int64, err error) {
+	parts := pattern.FindStringSubmatch(value)
+	if len(parts) < 3 {
+		return 0, fmt.Errorf("error parsing value=%s", value)
 	}
-	if b < unit {
-		return strconv.FormatUint(b, 10) + " B"
+	bytesString := parts[1]
+	multiple := parts[2]
+	bytes, err := strconv.ParseInt(bytesString, 10, 64)
+	if err != nil {
+		return
 	}
-	bb := float64(b)
-	uunit := float64(unit)
-	x := math.Floor(math.Log(bb) / math.Log(uunit))
-	pre := make([]byte, 1, 2)
-	pre[0] = "KMGTPE"[uint8(x)-1]
-	if g.iec {
-		pre = pre[:2]
-		pre[1] = 'i'
-	}
-	// TODO: Improve performance?
-	return fmt.Sprintf("%.02f %sB", bb/math.Pow(uunit, x), pre)
 
-}
+	switch multiple {
+	case "B":
+		return bytes * B, nil
+	case "K", "KB":
+		return bytes * KB, nil
+	case "M", "MB":
+		return bytes * MB, nil
+	case "G", "GB":
+		return bytes * GB, nil
+	case "T", "TB":
+		return bytes * TB, nil
+	case "P", "PB":
+		return bytes * PB, nil
+	}
 
-// BinaryPrefix wraps global Bytes's BinaryPrefix function.
-func BinaryPrefix(on bool) {
-	global.SetBinaryPrefix(on)
+	return
 }
 
 // Format wraps global Bytes's Format function.
-func Format(b uint64) string {
+func Format(b int64) string {
 	return global.Format(b)
+}
+
+// Parse wraps global Bytes's Parse function.
+func Parse(val string) (int64, error) {
+	return global.Parse(val)
 }

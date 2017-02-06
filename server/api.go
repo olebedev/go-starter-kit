@@ -1,9 +1,7 @@
 package main
 
 import (
-	"time"
-
-	"gopkg.in/labstack/echo.v1"
+	"github.com/labstack/echo"
 )
 
 // API is a defined as struct bundle
@@ -13,13 +11,11 @@ type API struct{}
 
 // Bind attaches api routes
 func (api *API) Bind(group *echo.Group) {
-	group.Get("/v1/conf", api.ConfHandler)
+	group.GET("/v1/conf", api.ConfHandler)
 }
 
 // ConfHandler handle the app config, for example
-func (api *API) ConfHandler(c *echo.Context) error {
+func (api *API) ConfHandler(c echo.Context) error {
 	app := c.Get("app").(*App)
-	<-time.After(time.Millisecond * 500)
-	c.JSON(200, app.Conf.Root)
-	return nil
+	return c.JSON(200, app.Conf.Root)
 }

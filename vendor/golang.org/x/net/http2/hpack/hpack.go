@@ -41,6 +41,14 @@ type HeaderField struct {
 	Sensitive bool
 }
 
+// IsPseudo reports whether the header field is an http2 pseudo header.
+// That is, it reports whether it starts with a colon.
+// It is not otherwise guaranteed to be a valid pseudo header field,
+// though.
+func (hf HeaderField) IsPseudo() bool {
+	return len(hf.Name) != 0 && hf.Name[0] == ':'
+}
+
 func (hf HeaderField) String() string {
 	var suffix string
 	if hf.Sensitive {
@@ -49,10 +57,11 @@ func (hf HeaderField) String() string {
 	return fmt.Sprintf("header field %q = %q%s", hf.Name, hf.Value, suffix)
 }
 
-func (hf *HeaderField) size() uint32 {
+// Size returns the size of an entry per RFC 7541 section 4.1.
+func (hf HeaderField) Size() uint32 {
 	// http://http2.github.io/http2-spec/compression.html#rfc.section.4.1
 	// "The size of the dynamic table is the sum of the size of
-	// its entries.  The size of an entry is the sum of its name's
+	// its entries. The size of an entry is the sum of its name's
 	// length in octets (as defined in Section 5.2), its value's
 	// length in octets (see Section 5.2), plus 32.  The size of
 	// an entry is calculated using the length of the name and
@@ -171,7 +180,7 @@ func (dt *dynamicTable) setMaxSize(v uint32) {
 
 func (dt *dynamicTable) add(f HeaderField) {
 	dt.ents = append(dt.ents, f)
-	dt.size += f.size()
+	dt.size += f.Size()
 	dt.evict()
 }
 
@@ -179,7 +188,7 @@ func (dt *dynamicTable) add(f HeaderField) {
 func (dt *dynamicTable) evict() {
 	base := dt.ents // keep base pointer of slice
 	for dt.size > dt.maxSize {
-		dt.size -= dt.ents[0].size()
+		dt.size -= dt.ents[0].Size()
 		dt.ents = dt.ents[1:]
 	}
 
@@ -298,7 +307,7 @@ func (d *Decoder) Write(p []byte) (n int, err error) {
 		err = d.parseHeaderFieldRepr()
 		if err == errNeedMore {
 			// Extra paranoia, making sure saveBuf won't
-			// get too large.  All the varint and string
+			// get too large. All the varint and string
 			// reading code earlier should already catch
 			// overlong things and return ErrStringLength,
 			// but keep this as a last resort.

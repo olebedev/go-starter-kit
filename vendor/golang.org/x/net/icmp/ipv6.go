@@ -1,4 +1,4 @@
-// Copyright 2013 The Go Authors.  All rights reserved.
+// Copyright 2013 The Go Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -12,7 +12,7 @@ import (
 
 const ipv6PseudoHeaderLen = 2*net.IPv6len + 8
 
-// IPv6PseudoHeader returns an IPv6 pseudo header for checkusm
+// IPv6PseudoHeader returns an IPv6 pseudo header for checksum
 // calculation.
 func IPv6PseudoHeader(src, dst net.IP) []byte {
 	b := make([]byte, ipv6PseudoHeaderLen)

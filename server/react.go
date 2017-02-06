@@ -8,11 +8,10 @@ import (
 	"runtime"
 	"time"
 
+	"github.com/labstack/echo"
+	"github.com/nu7hatch/gouuid"
 	"gopkg.in/olebedev/go-duktape-fetch.v2"
 	"gopkg.in/olebedev/go-duktape.v2"
-
-	"github.com/nu7hatch/gouuid"
-	"gopkg.in/labstack/echo.v1"
 )
 
 // React struct is contains duktape
@@ -46,9 +45,9 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 }
 
 // Handle handles all HTTP requests which
-// have no been caught via static file
+// have not been caught via static file
 // handler or other middlewares.
-func (r *React) Handle(c *echo.Context) error {
+func (r *React) Handle(c echo.Context) error {
 	UUID := c.Get("uuid").(*uuid.UUID)
 	defer func() {
 		if r := recover(); r != nil {
@@ -152,7 +151,6 @@ func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool
 
 // newReactVM loads bundle.js to context.
 func newReactVM(filePath string, engine http.Handler) *ReactVM {
-
 	vm := &ReactVM{
 		Context: duktape.New(),
 		ch:      make(chan Resp, 1),

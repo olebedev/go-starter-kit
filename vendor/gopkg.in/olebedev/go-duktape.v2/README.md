@@ -1,4 +1,4 @@
-# Duktape bindings for Go(Golang) [![wercker status](https://app.wercker.com/status/3a5bb2e639a4b4efaf4c8bf7cab7442d/s "wercker status")](https://app.wercker.com/project/bykey/3a5bb2e639a4b4efaf4c8bf7cab7442d)
+# Duktape bindings for Go(Golang) [![wercker status](https://app.wercker.com/status/3a5bb2e639a4b4efaf4c8bf7cab7442d/s "wercker status")](https://app.wercker.com/project/bykey/3a5bb2e639a4b4efaf4c8bf7cab7442d) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/olebedev/go-duktape?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [Duktape](http://duktape.org/index.html) is a thin, embeddable javascript engine.
 Most of the [api](http://duktape.org/api.html) is implemented.
 The exceptions are listed [here](https://github.com/olebedev/go-duktape/blob/master/api.go#L1566).
@@ -17,10 +17,13 @@ import "gopkg.in/olebedev/go-duktape.v2"
 
 func main() {
   ctx := duktape.New()
-  ctx.EvalString(`2 + 3`)
+  ctx.PevalString(`2 + 3`)
   result := ctx.GetNumber(-1)
   ctx.Pop()
   fmt.Println("result is:", result)
+  // To prevent memory leaks, don't forget to clean up after 
+  // yourself when you're done using a context.
+  ctx.DestroyHeap()
 }
 ```
 
@@ -40,7 +43,7 @@ func main() {
     fmt.Println(c.SafeToString(-1))
     return 0
   })
-  ctx.EvalString(`log('Go lang Go!')`)
+  ctx.PevalString(`log('Go lang Go!')`)
 }
 ```
 then run it.
@@ -111,7 +114,5 @@ The package is not fully tested, so be careful.
 
 ### Contribution
 
-Pull requests are welcome!  
+Pull requests are welcome! Also, if you want to discuss something send a pull request with proposal and changes.
 __Convention:__ fork the repository and make changes on your fork in a feature branch.
-
-### Chat [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/olebedev/go-duktape?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
