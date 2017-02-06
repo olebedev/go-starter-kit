@@ -45,7 +45,7 @@ func NewReact(filePath string, debug bool, server http.Handler) *React {
 }
 
 // Handle handles all HTTP requests which
-// have no been caught via static file
+// have not been caught via static file
 // handler or other middlewares.
 func (r *React) Handle(c echo.Context) error {
 	UUID := c.Get("uuid").(*uuid.UUID)
@@ -63,7 +63,7 @@ func (r *React) Handle(c echo.Context) error {
 	start := time.Now()
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
-		"url":     c.Request().URL.Path,
+		"url":     c.Request().URL.String(),
 		"headers": c.Request().Header,
 		"uuid":    UUID.String(),
 	}):
