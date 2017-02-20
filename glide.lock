@@ -1,18 +1,32 @@
-hash: 246a26224c195a9d9b6f74fbf6c3173f40feed776dd8ce70dfb0063d7952ab9f
-updated: 2017-02-19T14:22:45.265083325+05:00
+hash: 589d3fd1ab15d306a78ae118c3e64c287e9f2bb3446e8a58b86ef29d796f8dfa
+updated: 2017-02-20T11:13:26.192169592+05:00
 imports:
 - name: github.com/codegangsta/cli
   version: 347a9884a87374d000eec7e6445a34487c1f4a2b
 - name: github.com/dgrijalva/jwt-go
   version: 2268707a8f0843315e2004ee4f1d021dc08baedf
+- name: github.com/dlclark/regexp2
+  version: 3f97b6a39134e6bd88a72d1388d1632e60d83ef6
+  subpackages:
+  - syntax
 - name: github.com/dop251/goja
   version: d9f9d94853c32b86a7c1c15ac8194bfb15019f7a
+  subpackages:
+  - ast
+  - file
+  - parser
+  - token
 - name: github.com/dop251/goja_nodejs
   version: 2fc1e6bbfc494e36dd9a0b3e735a4babc538f51f
   subpackages:
+  - console
   - eventloop
+  - require
+  - util
 - name: github.com/elazarl/go-bindata-assetfs
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
+- name: github.com/fatih/structs
+  version: a720dfa8df582c51dee1b36feabb906bde1588bd
 - name: github.com/itsjamie/go-bindata-templates
   version: 65d795d0c74021e19b2ebadf3c83c01a8290a405
 - name: github.com/jteeuwen/go-bindata
@@ -32,8 +46,6 @@ imports:
   version: d228849504861217f796da67fae4f6e347643f15
 - name: github.com/mattn/go-isatty
   version: 30a891c33c7cde7b02a981314b4228ec99380cca
-- name: github.com/moul/http2curl
-  version: 4e24498b31dba4683efb9d35c1c8a91e2eda28c8
 - name: github.com/nu7hatch/gouuid
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
@@ -42,10 +54,11 @@ imports:
   version: 3f3d6d6b5dd1132373d5d75de823ef4ff188ef18
   subpackages:
   - fetch
+  - fetch/internal/data
 - name: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
-- name: github.com/parnurzeal/gorequest
-  version: f441e24175ffc865a6354b65375e537201c51382
+- name: github.com/pkg/errors
+  version: 248dadf4e9068a0b3e79f02ed0a610d935de5302
 - name: github.com/valyala/bytebufferpool
   version: e746df99fe4a3986f4d4f79e13c1e0117ce9c2f7
 - name: github.com/valyala/fasttemplate
@@ -60,11 +73,21 @@ imports:
   subpackages:
   - context
   - context/ctxhttp
-  - publicsuffix
 - name: golang.org/x/sys
   version: 7a6e5648d140666db5d920909e082ca00a87ba2c
   subpackages:
   - unix
+- name: golang.org/x/text
+  version: 44f4f658a783b0cee41fe0a23b8fc91d9c120558
+  subpackages:
+  - cases
+  - collate
+  - internal
+  - internal/colltab
+  - internal/tag
+  - language
+  - transform
+  - unicode/norm
 - name: gopkg.in/yaml.v2
   version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 testImports: []
