@@ -64,9 +64,9 @@ func NewApp(opts ...AppOptions) *App {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
 
-	// engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
-	// 	Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
-	// }))
+	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
+	}))
 
 	// Initialize the application
 	app := &App{
