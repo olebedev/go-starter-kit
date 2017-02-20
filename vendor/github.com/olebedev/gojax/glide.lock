@@ -1,0 +1,50 @@
+hash: 4f444b392586aca72d384ca3deb3ce64a8a41ec9741d21db9327df04536531a6
+updated: 2017-02-19T01:25:24.504447961+05:00
+imports:
+- name: github.com/dlclark/regexp2
+  version: b93eddc7b8da68cfc103f431cbc54476817cdf4a
+  subpackages:
+  - syntax
+- name: github.com/dop251/goja
+  version: d9f9d94853c32b86a7c1c15ac8194bfb15019f7a
+  subpackages:
+  - ast
+  - file
+  - parser
+  - token
+- name: github.com/dop251/goja_nodejs
+  version: 2fc1e6bbfc494e36dd9a0b3e735a4babc538f51f
+  subpackages:
+  - console
+  - eventloop
+  - require
+  - util
+- name: github.com/pkg/errors
+  version: 248dadf4e9068a0b3e79f02ed0a610d935de5302
+- name: golang.org/x/text
+  version: 44f4f658a783b0cee41fe0a23b8fc91d9c120558
+  subpackages:
+  - cases
+  - collate
+  - internal
+  - internal/colltab
+  - internal/tag
+  - language
+  - transform
+  - unicode/norm
+testImports:
+- name: github.com/davecgh/go-spew
+  version: 04cdfd42973bb9c8589fd6a731800cf222fde1a9
+  subpackages:
+  - spew
+- name: github.com/pmezard/go-difflib
+  version: d8ed2627bdf02c080bf22230dbb337003b7aba2d
+  subpackages:
+  - difflib
+- name: github.com/stretchr/testify
+  version: 2402e8e7a02fc811447d11f881aa9746cdc57983
+  subpackages:
+  - assert
+  - require
+- name: gopkg.in/elazarl/goproxy.v1
+  version: 0a5b8bdb09049ae4ae68e75437ded0b7a2e324e3

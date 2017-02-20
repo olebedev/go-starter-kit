@@ -1,10 +1,16 @@
-hash: 80ff718c1f3ece42c1321f2d50a91dad98e39e4869f2e55a6c25c1148b5aaa1c
-updated: 2017-02-05T19:58:52.627974285Z
+hash: 246a26224c195a9d9b6f74fbf6c3173f40feed776dd8ce70dfb0063d7952ab9f
+updated: 2017-02-19T14:22:45.265083325+05:00
 imports:
 - name: github.com/codegangsta/cli
   version: 347a9884a87374d000eec7e6445a34487c1f4a2b
 - name: github.com/dgrijalva/jwt-go
   version: 2268707a8f0843315e2004ee4f1d021dc08baedf
+- name: github.com/dop251/goja
+  version: d9f9d94853c32b86a7c1c15ac8194bfb15019f7a
+- name: github.com/dop251/goja_nodejs
+  version: 2fc1e6bbfc494e36dd9a0b3e735a4babc538f51f
+  subpackages:
+  - eventloop
 - name: github.com/elazarl/go-bindata-assetfs
   version: 9a6736ed45b44bf3835afeebb3034b57ed329f3e
 - name: github.com/itsjamie/go-bindata-templates
@@ -32,6 +38,10 @@ imports:
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
   version: afea898d27c7d17376ecc60c7c2e73c76b40060e
+- name: github.com/olebedev/gojax
+  version: 3f3d6d6b5dd1132373d5d75de823ef4ff188ef18
+  subpackages:
+  - fetch
 - name: github.com/olebedev/on
   version: f65b7c9823a4c30797e9ad3c51d559a36ff8d542
 - name: github.com/parnurzeal/gorequest
@@ -55,10 +65,6 @@ imports:
   version: 7a6e5648d140666db5d920909e082ca00a87ba2c
   subpackages:
   - unix
-- name: gopkg.in/olebedev/go-duktape-fetch.v2
-  version: a4ba37699f8bae499586df39f367460ab7566f1b
-- name: gopkg.in/olebedev/go-duktape.v2
-  version: 7da705daddc2f0181fc46c9a5d192f8b4e116212
 - name: gopkg.in/yaml.v2
   version: 4c78c975fe7c825c6d1466c42be594d1d6f3aba6
 testImports: []
