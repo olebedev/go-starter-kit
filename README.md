@@ -1,11 +1,11 @@
 # go-starter-kit [![wercker status](https://app.wercker.com/status/cd5a782c425b1feb06844dcc701e528c/s/master "wercker status")](https://app.wercker.com/project/bykey/cd5a782c425b1feb06844dcc701e528c) [![Join the chat at https://gitter.im/olebedev/go-starter-kit](https://img.shields.io/gitter/room/nwjs/nw.js.svg?maxAge=2592000&style=plastic)](https://gitter.im/olebedev/go-starter-kit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This project contains a quick starter kit for **Facebook React** Single Page Apps with **Golang** server side render and also with a set of useful features for rapid development of efficient applications.
+> This project contains a quick starter kit for **Facebook React** Single Page Apps with **Golang** server side render via goja javascript engine, implemented in pure Golang and also with a set of useful features for rapid development of efficient applications.
 
 ## What it contains?
 
-* server side render via [go-duktape](https://github.com/olebedev/go-duktape)
-* api requests between your react application and server side application directly  via [fetch polyfill](https://github.com/olebedev/go-duktape-fetch) for go-duktape at server side, and it is possible to process requests with user session as well
+* server side render via [goja](https://github.com/dop251/goja)
+* api requests between your react application and server side application directly  via [fetch polyfill](https://github.com/olebedev/gojax/tree/master/fetch)
 * title, Open Graph and other domain-specific meta tags render for each page at the server and at the client
 * server side redirect
 * embedding static files into artefact via bindata

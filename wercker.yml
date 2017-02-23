@@ -7,8 +7,8 @@ build:
         name: install
         code: |
           go version
-          go get github.com/olebedev/srlt
-          srlt --verbose r
+          go get github.com/Masterminds/glide
+          glide install
           ls -la $GOPATH/bin
     - script:
         name: build

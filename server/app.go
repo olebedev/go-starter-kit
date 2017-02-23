@@ -58,12 +58,15 @@ func NewApp(opts ...AppOptions) *App {
 	engine.Debug = conf.UBool("debug")
 
 	// Regular middlewares
-	engine.Use(middleware.Logger())
 	engine.Use(middleware.Recover())
 
 	engine.GET("/favicon.ico", func(c echo.Context) error {
 		return c.Redirect(http.StatusMovedPermanently, "/static/images/favicon.ico")
 	})
+
+	engine.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
+		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
+	}))
 
 	// Initialize the application
 	app := &App{
@@ -77,18 +80,10 @@ func NewApp(opts ...AppOptions) *App {
 		),
 	}
 
-	// Map app struct to access from request handlers
-	// and middlewares
+	// Map app and uuid for every requests
 	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Set("app", app)
-			return next(c)
-		}
-	})
-
-	// Map uuid for every requests
-	app.Engine.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
-		return func(c echo.Context) error {
 			id, _ := uuid.NewV4()
 			c.Set("uuid", id)
 			return next(c)

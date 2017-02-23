@@ -1,0 +1,21 @@
+{
+  "name": "gojax-fetch",
+  "version": "0.0.1",
+  "description": "Fetch polyfill for goja",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "embed": "go-bindata -pkg=\"data\" -o ./internal/data/bindata.go ./dist/bundle.js "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "expose-loader": "^0.7.0",
+    "json-loader": "^0.5.2",
+    "lodash": "^3.9.3",
+    "node-fetch": "^1.3.0",
+    "node-libs-browser": "^0.5.2",
+    "webpack": "^1.9.10",
+    "when": "^3.7.3"
+  }
+}

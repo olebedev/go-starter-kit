@@ -1,20 +1,24 @@
 package main
 
 import (
-	"encoding/json"
+	crand "crypto/rand"
+	"encoding/binary"
 	"fmt"
 	"html/template"
+	"math/rand"
 	"net/http"
 	"runtime"
 	"time"
 
+	"github.com/dop251/goja"
+	"github.com/dop251/goja_nodejs/eventloop"
+	"github.com/fatih/structs"
 	"github.com/labstack/echo"
 	"github.com/nu7hatch/gouuid"
-	"gopkg.in/olebedev/go-duktape-fetch.v2"
-	"gopkg.in/olebedev/go-duktape.v2"
+	"github.com/olebedev/gojax/fetch"
 )
 
-// React struct is contains duktape
+// React struct is contains JS vms
 // pool to serve HTTP requests and
 // separates some domain specific
 // resources.
@@ -25,20 +29,20 @@ type React struct {
 }
 
 // NewReact initialized React struct
-func NewReact(filePath string, debug bool, server http.Handler) *React {
+func NewReact(filePath string, debug bool, proxy http.Handler) *React {
 	r := &React{
 		debug: debug,
 		path:  filePath,
 	}
 	if !debug {
-		r.pool = newDuktapePool(filePath, runtime.NumCPU()+1, server)
+		r.pool = newEnginePool(filePath, runtime.NumCPU(), proxy)
 	} else {
 		// Use onDemandPool to load full react
 		// app each time for any http requests.
 		// Useful to debug the app.
 		r.pool = &onDemandPool{
-			path:   filePath,
-			engine: server,
+			path:  filePath,
+			proxy: proxy,
 		}
 	}
 	return r
@@ -64,31 +68,33 @@ func (r *React) Handle(c echo.Context) error {
 	select {
 	case re := <-vm.Handle(map[string]interface{}{
 		"url":     c.Request().URL.String(),
-		"headers": c.Request().Header,
+		"headers": map[string][]string(c.Request().Header),
 		"uuid":    UUID.String(),
 	}):
-		re.RenderTime = time.Since(start)
 		// Return vm back to the pool
 		r.put(vm)
+
+		re.RenderTime = time.Since(start)
+
 		// Handle the Response
 		if len(re.Redirect) == 0 && len(re.Error) == 0 {
 			// If no redirection and no errors
-			c.Response().Header().Set("X-React-Render-Time", fmt.Sprintf("%s", re.RenderTime))
+			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
 			return c.Render(http.StatusOK, "react.html", re)
 			// If redirect
 		} else if len(re.Redirect) != 0 {
 			return c.Redirect(http.StatusMovedPermanently, re.Redirect)
 			// If internal error
 		} else if len(re.Error) != 0 {
-			c.Response().Header().Set("X-React-Render-Time", fmt.Sprintf("%s", re.RenderTime))
+			c.Response().Header().Set("X-React-Render-Time", re.RenderTime.String())
 			return c.Render(http.StatusInternalServerError, "react.html", re)
 		}
 	case <-time.After(2 * time.Second):
-		// release duktape context
+		// release the context
 		r.drop(vm)
 		return c.Render(http.StatusInternalServerError, "react.html", Resp{
 			UUID:  UUID.String(),
-			Error: "time is out",
+			Error: "timeout",
 		})
 	}
 	return nil
@@ -127,126 +133,122 @@ func (r Resp) HTMLMeta() template.HTML {
 
 // Interface to serve React app on demand or from prepared pool.
 type pool interface {
-	get() *ReactVM
-	put(*ReactVM)
-	drop(*ReactVM)
+	get() *JSVM
+	put(*JSVM)
+	drop(*JSVM)
 }
 
-// NewDuktapePool return new duktape contexts pool.
-func newDuktapePool(filePath string, size int, engine http.Handler) *duktapePool {
-	pool := &duktapePool{
-		path:   filePath,
-		ch:     make(chan *ReactVM, size),
-		engine: engine,
+// newEnginePool return pool of JS vms.
+func newEnginePool(filePath string, size int, proxy http.Handler) *enginePool {
+	pool := &enginePool{
+		path:  filePath,
+		ch:    make(chan *JSVM, size),
+		proxy: proxy,
 	}
 
 	go func() {
 		for i := 0; i < size; i++ {
-			pool.ch <- newReactVM(filePath, engine)
+			pool.ch <- newJSVM(filePath, proxy)
 		}
 	}()
 
 	return pool
 }
 
-// newReactVM loads bundle.js to context.
-func newReactVM(filePath string, engine http.Handler) *ReactVM {
-	vm := &ReactVM{
-		Context: duktape.New(),
-		ch:      make(chan Resp, 1),
-	}
-
-	vm.PevalString(`var console = {log:print,warn:print,error:print,info:print}`)
-	fetch.PushGlobal(vm.Context, engine)
-	app, err := Asset(filePath)
-	Must(err)
-
-	// Reduce CGO calls
-	vm.PushGlobalGoFunction("__goServerCallback__", func(ctx *duktape.Context) int {
-		result := ctx.SafeToString(-1)
-		vm.ch <- func() Resp {
-			var re Resp
-			json.Unmarshal([]byte(result), &re)
-			return re
-		}()
-		return 0
-	})
-
-	fmt.Printf("%s loaded\n", filePath)
-	if err := vm.PevalString(string(app)); err != nil {
-		derr := err.(*duktape.Error)
-		panic(derr.Message)
-	}
-	vm.PopN(vm.GetTop())
-	return vm
+type enginePool struct {
+	ch    chan *JSVM
+	path  string
+	proxy http.Handler
 }
 
-// ReactVM wraps duktape.Context
-type ReactVM struct {
-	*duktape.Context
-	ch chan Resp
-}
-
-// Handle handles http requests
-func (r *ReactVM) Handle(req map[string]interface{}) <-chan Resp {
-	b, err := json.Marshal(req)
-	Must(err)
-	// Keep it sync with `src/app/client/index.js:4`
-	r.PevalString(`main(` + string(b) + `, __goServerCallback__)`)
-	return r.ch
-}
-
-// DestroyHeap destroys the context's heap
-func (r *ReactVM) DestroyHeap() {
-	close(r.ch)
-	r.Context.DestroyHeap()
-}
-
-// Pool's implementations
-
-type onDemandPool struct {
-	path   string
-	engine http.Handler
-}
-
-func (f *onDemandPool) get() *ReactVM {
-	return newReactVM(f.path, f.engine)
-}
-
-func (f onDemandPool) put(c *ReactVM) {
-	c.Lock()
-	c.FlushTimers()
-	c.Gc(0)
-	c.DestroyHeap()
-}
-
-func (f *onDemandPool) drop(c *ReactVM) {
-	f.put(c)
-}
-
-type duktapePool struct {
-	ch     chan *ReactVM
-	path   string
-	engine http.Handler
-}
-
-func (o *duktapePool) get() *ReactVM {
+func (o *enginePool) get() *JSVM {
 	return <-o.ch
 }
 
-func (o *duktapePool) put(ot *ReactVM) {
-	// Drop any futured async calls
-	ot.Lock()
-	ot.FlushTimers()
-	ot.Unlock()
+func (o *enginePool) put(ot *JSVM) {
 	o.ch <- ot
 }
 
-func (o *duktapePool) drop(ot *ReactVM) {
-	ot.Lock()
-	ot.FlushTimers()
-	ot.Gc(0)
-	ot.DestroyHeap()
+func (o *enginePool) drop(ot *JSVM) {
+	ot.Stop()
 	ot = nil
-	o.ch <- newReactVM(o.path, o.engine)
+	o.ch <- newJSVM(o.path, o.proxy)
+}
+
+// newJSVM loads bundle.js into context.
+func newJSVM(filePath string, proxy http.Handler) *JSVM {
+	fmt.Println("init JSVM", filePath)
+	vm := &JSVM{
+		EventLoop: eventloop.NewEventLoop(),
+		ch:        make(chan Resp, 1),
+	}
+
+	vm.EventLoop.Start()
+	fetch.Enable(vm.EventLoop, proxy)
+	bundle := MustAsset(filePath)
+
+	vm.EventLoop.RunOnLoop(func(_vm *goja.Runtime) {
+		var seed int64
+		if err := binary.Read(crand.Reader, binary.LittleEndian, &seed); err != nil {
+			panic(fmt.Errorf("Could not read random bytes: %v", err))
+		}
+		_vm.SetRandSource(goja.RandSource(rand.New(rand.NewSource(seed)).Float64))
+
+		_, err := _vm.RunScript("bundle.js", string(bundle))
+		if err != nil {
+			panic(err)
+		}
+
+		if fn, ok := goja.AssertFunction(_vm.Get("main")); ok {
+			vm.fn = fn
+		} else {
+			fmt.Println("fn assert failed")
+		}
+
+		_vm.Set("__goServerCallback__", func(call goja.FunctionCall) goja.Value {
+			obj := call.Argument(0).Export().(map[string]interface{})
+			re := &Resp{}
+			for _, field := range structs.Fields(re) {
+				if n := field.Tag("json"); len(n) > 1 {
+					field.Set(obj[n])
+				}
+			}
+			vm.ch <- *re
+			return nil
+		})
+	})
+
+	return vm
+}
+
+// JSVM wraps goja EventLoop
+type JSVM struct {
+	*eventloop.EventLoop
+	ch chan Resp
+	fn goja.Callable
+}
+
+// Handle handles http requests
+func (r *JSVM) Handle(req map[string]interface{}) <-chan Resp {
+	r.EventLoop.RunOnLoop(func(vm *goja.Runtime) {
+		r.fn(nil, vm.ToValue(req), vm.ToValue("__goServerCallback__"))
+	})
+	return r.ch
+}
+
+type onDemandPool struct {
+	path  string
+	proxy http.Handler
+}
+
+func (f *onDemandPool) get() *JSVM {
+	return newJSVM(f.path, f.proxy)
+}
+
+func (f onDemandPool) put(c *JSVM) {
+	c.Stop()
+}
+
+func (f *onDemandPool) drop(c *JSVM) {
+	f.put(c)
 }

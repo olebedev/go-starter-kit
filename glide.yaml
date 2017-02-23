@@ -1,14 +1,20 @@
 package: github.com/olebedev/go-starter-kit
 import:
 - package: github.com/codegangsta/cli
+- package: github.com/dop251/goja
+- package: github.com/dop251/goja_nodejs
+  subpackages:
+  - eventloop
 - package: github.com/elazarl/go-bindata-assetfs
+- package: github.com/fatih/structs
 - package: github.com/itsjamie/go-bindata-templates
+- package: github.com/labstack/echo
+  subpackages:
+  - middleware
 - package: github.com/nu7hatch/gouuid
 - package: github.com/olebedev/config
-- package: github.com/labstack/echo
-  subpackage:
-  - middleware
-- package: gopkg.in/olebedev/go-duktape-fetch.v2
-- package: gopkg.in/olebedev/go-duktape.v2
+- package: github.com/olebedev/gojax
+  subpackages:
+  - fetch
 - package: github.com/olebedev/on
 - package: github.com/jteeuwen/go-bindata

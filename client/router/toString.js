@@ -13,7 +13,7 @@ import { createStore, setAsCurrentStore } from '../store';
  * @param   {Function} cbk      response callback
  */
 export default function (options, cbk) {
-
+  cbk = global[cbk];
   let result = {
     uuid: options.uuid,
     app: null,
@@ -50,10 +50,10 @@ export default function (options, cbk) {
       } catch (e) {
         result.error = e;
       }
-      return cbk(JSON.stringify(result));
+      return cbk(result);
     });
   } catch (e) {
     result.error = e;
-    return cbk(JSON.stringify(result));
+    return cbk(result);
   }
 }

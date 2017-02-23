@@ -1,0 +1,12 @@
+package: github.com/olebedev/gojax
+import:
+- package: github.com/dop251/goja
+- package: github.com/dop251/goja_nodejs
+  subpackages:
+  - eventloop
+- package: github.com/pkg/errors
+testImport:
+- package: github.com/stretchr/testify
+  subpackages:
+  - require
+- package: gopkg.in/elazarl/goproxy.v1
