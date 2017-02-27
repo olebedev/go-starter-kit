@@ -11,4 +11,4 @@ build:
     - script:
         name: go test
         code: |
-          go test -v ./fetch
+          go test -v -race ./fetch

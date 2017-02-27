@@ -71,6 +71,7 @@ function Fetch(url, o) {
  */
 
 function Response(r) {
+  var k;
   for (k in r) {
     if (k === 'headers') {
       this[k] = new Headers(r[k]);
@@ -87,11 +88,10 @@ function Response(r) {
  * @return  Promise
  */
 Response.prototype.json = function() {
-
-  return this.text().then(function(text) {
-    return JSON.parse(text);
+  var _this = this;
+  return new Fetch.Promise(function(resolve, reject) {
+    resolve(JSON.parse(_this.body));
   });
-
 }
 
 /**
@@ -100,13 +100,10 @@ Response.prototype.json = function() {
  * @return  Promise
  */
 Response.prototype.text = function() {
-
   var _this = this;
-
   return new Fetch.Promise(function(resolve, reject) {
     resolve(_this.body);
   });
-
 }
 
 Fetch.Promise = typeof Promise !== 'undefined' ? Promise : require('when').Promise;

@@ -2,6 +2,7 @@ package fetch
 
 import (
 	"net/http"
+	"sync"
 	"testing"
 
 	goproxy "gopkg.in/elazarl/goproxy.v1"
@@ -11,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestDefine(t *testing.T) {
+func TestEnable(t *testing.T) {
 	loop := eventloop.NewEventLoop()
 	loop.Start()
 	defer loop.Stop()
@@ -20,10 +21,14 @@ func TestDefine(t *testing.T) {
 
 	var v goja.Value
 	var err error
+	var wg sync.WaitGroup
+	wg.Add(1)
 	loop.RunOnLoop(func(vm *goja.Runtime) {
 		v, err = vm.RunString(`typeof fetch`)
+		wg.Done()
 	})
 
+	wg.Wait()
 	require.Nil(t, err)
 	require.NotNil(t, v)
 	require.Equal(t, "function", v.ToString().String())
