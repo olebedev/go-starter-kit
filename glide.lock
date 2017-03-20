@@ -51,7 +51,7 @@ imports:
 - name: github.com/olebedev/config
   version: afea898d27c7d17376ecc60c7c2e73c76b40060e
 - name: github.com/olebedev/gojax
-  version: fe07e4673cbf22aa44c03032ef616ca5d62de4ed
+  version: bb153be84336f26925890502929cc363477df7ad
   subpackages:
   - fetch
   - fetch/internal/data
