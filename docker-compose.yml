@@ -1,0 +1,13 @@
+version: '2'
+services:
+  app:
+    image: containerize/golang-react
+    working_dir:
+      /go/src/app
+    ports:
+      - 5001:5001
+    volumes:
+      - ./:/go/src/app
+    # tty: true
+    # stdin_open: true
+    command: sh -c "make install && make serve"
