@@ -19,7 +19,7 @@ export function run() {
   setAsCurrentStore(store);
 
   render(
-    <Provider store={store} >
+    <Provider store={store}>
       <Router history={browserHistory}>{createRoutes({store, first: { time: true }})}</Router>
     </Provider>,
     document.getElementById('app')
@@ -35,13 +35,21 @@ require('../css');
 
 // Style live reloading
 if (module.hot) {
-  let c = 0;
-  module.hot.accept('../css', () => {
-    require('../css');
-    const a = document.createElement('a');
-    const link = document.querySelector('link[rel="stylesheet"]');
-    a.href = link.href;
-    a.search = '?' + c++;
-    link.href = a.href;
-  });
+  // eslint-disable-next-line no-underscore-dangle
+  const reporter = window.__webpack_hot_middleware_reporter__;
+  const success = reporter.success;
+  const DEAD_CSS_TIMEOUT = 2000;
+
+  reporter.success = () => {
+    document.querySelectorAll('link[href][rel=stylesheet]').forEach((link) => {
+      const nextStyleHref = link.href.replace(/(\?\d+)?$/, `?${Date.now()}`);
+      const newLink = link.cloneNode();
+      newLink.href = nextStyleHref;
+      link.parentNode.appendChild(newLink);
+      setTimeout(() => {
+        link.parentNode.removeChild(link);
+      }, DEAD_CSS_TIMEOUT);
+    });
+    success();
+  };
 }
