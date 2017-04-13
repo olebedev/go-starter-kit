@@ -14,9 +14,9 @@ config.entry = {
 };
 
 config.plugins.push(
-  new webpack.optimize.OccurenceOrderPlugin(),
+  new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NoErrorsPlugin()
+  new webpack.NoEmitOnErrorsPlugin()
 );
 
 config.devtool = 'cheap-module-eval-source-map';
