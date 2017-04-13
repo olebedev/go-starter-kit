@@ -6,10 +6,21 @@ var functions = require('postcss-functions');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const svgoConfig = JSON.stringify({
+  multipass: true,
   plugins: [
-    { removeTitle: true },
-    { convertColors: { shorthex: false } },
-    { convertPathData: false }
+    // by default enabled
+    {mergePaths: false},
+    {convertTransform: false},
+    {convertShapeToPath: false},
+    {cleanupIDs: false},
+    {collapseGroups: false},
+    {transformsWithOnePath: false},
+    {cleanupNumericValues: false},
+    {convertPathData: false},
+    {moveGroupAttrsToElems: false},
+    // by default disabled
+    {removeTitle: true},
+    {removeDesc: true}
   ]
 });
 
