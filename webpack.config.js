@@ -3,19 +3,19 @@ var webpack = require('webpack');
 var autoprefixer = require('autoprefixer');
 var precss = require('precss');
 var functions = require('postcss-functions');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 var postCssLoader = [
-  'css-loader?module',
+  'css-loader?modules',
   '&localIdentName=[name]__[local]___[hash:base64:5]',
   '&disableStructuralMinification',
   '!postcss-loader'
 ];
 
 var plugins = [
-    new webpack.NoErrorsPlugin(),
-    new webpack.optimize.DedupePlugin(),
-    new ExtractTextPlugin('bundle.css'),
+  new webpack.NoErrorsPlugin(),
+  new webpack.optimize.DedupePlugin(),
+  new ExtractTextPlugin('bundle.css'),
 ];
 
 if (process.env.NODE_ENV === 'production') {
@@ -29,7 +29,7 @@ if (process.env.NODE_ENV === 'production') {
     })
   ]);
 
-  postCssLoader.splice(1, 1) // drop human readable names
+  postCssLoader.splice(1, 1); // drop human readable names
 };
 
 var config  = {
@@ -38,7 +38,7 @@ var config  = {
   },
   output: {
     path: path.join(__dirname, 'server/data/static/build'),
-    publicPath: "/static/build/",
+    publicPath: '/static/build/',
     filename: '[name].js'
   },
   plugins: plugins,
@@ -83,13 +83,17 @@ var config  = {
     ]
   },
   postcss: function() {
-    return [autoprefixer, precss({
-      variables: {
-        variables: require('./client/css/vars')
-      }
-    }), functions({
-      functions: require('./client/css/funcs')
-    })]
+    return [
+      autoprefixer,
+      precss({
+        variables: {
+          variables: require('./client/css/vars')
+        }
+      }),
+      functions({
+        functions: require('./client/css/funcs')
+      })
+    ];
   }
 };
 
