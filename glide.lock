@@ -10,7 +10,7 @@ imports:
   subpackages:
   - syntax
 - name: github.com/dop251/goja
-  version: c67fd92e124685299ba958d4ab82cbbce388aaf0
+  version: d382686fd20bf93d9c4cf2ea0234ae2d353e23cb
   subpackages:
   - ast
   - file
@@ -50,7 +50,9 @@ imports:
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
   version: afea898d27c7d17376ecc60c7c2e73c76b40060e
-- name: github.com/olebedev/gojax
+- name: github.com/olebedev/
+
+x
   version: bb153be84336f26925890502929cc363477df7ad
   subpackages:
   - fetch
