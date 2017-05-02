@@ -50,9 +50,7 @@ imports:
   version: 179d4d0c4d8d407a32af483c2354df1d2c91e6c3
 - name: github.com/olebedev/config
   version: afea898d27c7d17376ecc60c7c2e73c76b40060e
-- name: github.com/olebedev/
-
-x
+- name: github.com/olebedev/gojax
   version: bb153be84336f26925890502929cc363477df7ad
   subpackages:
   - fetch
