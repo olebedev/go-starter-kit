@@ -4,8 +4,8 @@ import reducers from './reducers';
 const middlewares = [];
 
 // Add state logger
-if (process.env.NODE_ENV !== `production`) {
-  const { logger } = require(`redux-logger`);
+if (process.env.NODE_ENV !== 'production') {
+  const { logger } = require('redux-logger');
 
   middlewares.push(logger);
 }
