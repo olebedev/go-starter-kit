@@ -708,6 +708,14 @@ func (o *Object) Get(name string) Value {
 	return o.self.getStr(name)
 }
 
+func (o *Object) Keys() (keys []string) {
+	for item, f := o.self.enumerate(false, false)(); f != nil; item, f = f() {
+		keys = append(keys, item.name)
+	}
+
+	return
+}
+
 func (o *Object) Set(name string, value interface{}) (err error) {
 	defer func() {
 		if x := recover(); x != nil {
@@ -721,6 +729,23 @@ func (o *Object) Set(name string, value interface{}) (err error) {
 
 	o.self.putStr(name, o.runtime.ToValue(value), true)
 	return
+}
+
+// MarshalJSON returns JSON representation of the Object. It is equivalent to JSON.stringify(o).
+// Note, this implements json.Marshaler so that json.Marshal() can be used without the need to Export().
+func (o *Object) MarshalJSON() ([]byte, error) {
+	ctx := _builtinJSON_stringifyContext{
+		r: o.runtime,
+	}
+	ex := o.runtime.vm.try(func() {
+		if !ctx.do(o) {
+			ctx.buf.WriteString("null")
+		}
+	})
+	if ex != nil {
+		return nil, ex
+	}
+	return ctx.buf.Bytes(), nil
 }
 
 func (o valueUnresolved) throw() {

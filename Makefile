@@ -1,7 +1,7 @@
 BIN           = $(GOPATH)/bin
 ON            = $(BIN)/on
 GO_BINDATA    = $(BIN)/go-bindata
-NODE_BIN      = $(shell npm bin)
+NODE_BIN      = $(shell yarn bin)
 PID           = .pid
 GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go"))
 TEMPLATES     = $(wildcard server/data/templates/*.html)
@@ -53,11 +53,11 @@ $(BINDATA):
 	$(GO_BINDATA) $(BINDATA_FLAGS) -o=$@ server/data/...
 
 lint:
-	@npm run eslint || true
+	@yarn run eslint || true
 	@golint $(GO_FILES) || true
 
 install:
-	@npm install
+	@yarn install
 
 ifdef GLIDE
 	@glide install

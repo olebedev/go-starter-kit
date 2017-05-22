@@ -42,6 +42,18 @@ func TestVM1(t *testing.T) {
 
 }
 
+func TestEvalVar(t *testing.T) {
+	const SCRIPT = `
+	function test() {
+		var a;
+		return eval("var a = 'yes'; var z = 'no'; a;") === "yes" && a === "yes";
+	}
+	test();
+	`
+
+	testScript1(SCRIPT, valueTrue, t)
+}
+
 var jumptable = []func(*vm, *instr){
 	f_jump,
 	f_halt,
@@ -331,10 +343,7 @@ func BenchmarkEmptyLoop(b *testing.B) {
 	`
 	b.StopTimer()
 	vm := New()
-	prg, err := Compile("test.js", SCRIPT, false)
-	if err != nil {
-		b.Fatal(err)
-	}
+	prg := MustCompile("test.js", SCRIPT, false)
 	// prg.dumpCode(log.Printf)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -367,10 +376,7 @@ func BenchmarkFuncCall(b *testing.B) {
 	b.StopTimer()
 
 	vm := New()
-	prg, err := Compile("test.js", SCRIPT, false)
-	if err != nil {
-		b.Fatal(err)
-	}
+	prg := MustCompile("test.js", SCRIPT, false)
 
 	vm.RunProgram(prg)
 	if f, ok := AssertFunction(vm.Get("f")); ok {

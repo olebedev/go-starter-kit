@@ -51,10 +51,16 @@ func request(loop *eventloop.EventLoop, proxy http.Handler) func(call goja.Funct
 				method := http.MethodGet
 				header := make(http.Header)
 
-				if h, ex := o["headers"]; ex {
-					if he, ok := h.(http.Header); ok {
-						for key, value := range he {
-							header[textproto.CanonicalMIMEHeaderKey(key)] = value
+
+				if headers, ex := o["headers"]; ex {
+					if hmap, okh := headers.(map[string]interface{}); okh {
+						for key, value := range hmap {
+							v := value.([]interface{})
+							for _, item := range v {
+								var i []string
+								i = append(i, item.(string))
+								header[textproto.CanonicalMIMEHeaderKey(key)] = i
+							}
 						}
 					}
 				}

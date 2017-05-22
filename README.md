@@ -23,10 +23,10 @@
 * webpack bundle builder
 * eslint and golint rules for Makefile
 
-## Dependencies
+## Workflow dependencies
 
 * [golang](https://golang.org/)
-* [node.js](https://nodejs.org/) with [npm](https://www.npmjs.com/), only to build the application bundle at compile time
+* [node.js](https://nodejs.org/) with [yarn](https://yarnpkg.com)
 * [GNU make](https://www.gnu.org/software/make/)
 
 Note that probably not works at windows.

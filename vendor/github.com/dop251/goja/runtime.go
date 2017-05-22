@@ -89,8 +89,39 @@ type stackFrame struct {
 	pc       int
 }
 
-func (f stackFrame) position() Position {
+func (f *stackFrame) position() Position {
 	return f.prg.src.Position(f.prg.sourceOffset(f.pc))
+}
+
+func (f *stackFrame) write(b *bytes.Buffer) {
+	if f.prg != nil {
+		if n := f.prg.funcName; n != "" {
+			b.WriteString(n)
+			b.WriteString(" (")
+		}
+		if n := f.prg.src.name; n != "" {
+			b.WriteString(n)
+		} else {
+			b.WriteString("<eval>")
+		}
+		b.WriteByte(':')
+		b.WriteString(f.position().String())
+		b.WriteByte('(')
+		b.WriteString(strconv.Itoa(f.pc))
+		b.WriteByte(')')
+		if f.prg.funcName != "" {
+			b.WriteByte(')')
+		}
+	} else {
+		if f.funcName != "" {
+			b.WriteString(f.funcName)
+			b.WriteString(" (")
+		}
+		b.WriteString("native")
+		if f.funcName != "" {
+			b.WriteByte(')')
+		}
+	}
 }
 
 type Exception struct {
@@ -118,34 +149,7 @@ func (e *Exception) String() string {
 	b.WriteByte('\n')
 	for _, frame := range e.stack {
 		b.WriteString("\tat ")
-		if frame.prg != nil {
-			if n := frame.prg.funcName; n != "" {
-				b.WriteString(n)
-				b.WriteString(" (")
-			}
-			if n := frame.prg.src.name; n != "" {
-				b.WriteString(n)
-			} else {
-				b.WriteString("<eval>")
-			}
-			b.WriteByte(':')
-			b.WriteString(frame.position().String())
-			b.WriteByte('(')
-			b.WriteString(strconv.Itoa(frame.pc))
-			b.WriteByte(')')
-			if frame.prg.funcName != "" {
-				b.WriteByte(')')
-			}
-		} else {
-			if frame.funcName != "" {
-				b.WriteString(frame.funcName)
-				b.WriteString(" (")
-			}
-			b.WriteString("native")
-			if frame.funcName != "" {
-				b.WriteByte(')')
-			}
-		}
+		frame.write(&b)
 		b.WriteByte('\n')
 	}
 	return b.String()
@@ -155,6 +159,14 @@ func (e *Exception) Error() string {
 	if e == nil || e.val == nil {
 		return "<nil>"
 	}
+	if len(e.stack) > 0 && (e.stack[0].prg != nil || e.stack[0].funcName != "") {
+		var b bytes.Buffer
+		b.WriteString(e.val.String())
+		b.WriteString(" at ")
+		e.stack[0].write(&b)
+		return b.String()
+	}
+
 	return e.val.String()
 }
 
@@ -669,6 +681,17 @@ func Compile(name, src string, strict bool) (p *Program, err error) {
 	return compile(name, src, strict, false)
 }
 
+// MustCompile is like Compile but panics if the code cannot be compiled.
+// It simplifies safe initialization of global variables holding compiled JavaScript code.
+func MustCompile(name, src string, strict bool) *Program {
+	prg, err := Compile(name, src, strict)
+	if err != nil {
+		panic(err)
+	}
+
+	return prg
+}
+
 func compile(name, src string, strict, eval bool) (p *Program, err error) {
 	prg, err1 := parser.ParseFile(nil, name, src, 0)
 	if err1 != nil {
@@ -1097,7 +1120,9 @@ func (r *Runtime) toReflectValue(v Value, typ reflect.Type) (reflect.Value, erro
 	}
 
 	et := v.ExportType()
-
+	if et == nil {
+		return reflect.Zero(typ), nil
+	}
 	if et.AssignableTo(typ) {
 		return reflect.ValueOf(v.Export()), nil
 	} else if et.ConvertibleTo(typ) {
@@ -1230,6 +1255,11 @@ func (r *Runtime) ExportTo(v Value, target interface{}) error {
 	}
 	tval.Elem().Set(vv)
 	return nil
+}
+
+// GlobalObject returns the global object.
+func (r *Runtime) GlobalObject() *Object {
+	return r.globalObject
 }
 
 // Set the specified value as a property of the global object.

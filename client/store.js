@@ -6,7 +6,9 @@ const middlewares = [];
 
 // Add state logger
 if (process.env.NODE_ENV !== 'production') {
-  middlewares.push(createLogger());
+  try {
+    middlewares.push(createLogger());
+  } catch (e) {}
 }
 
 export function createStore(state) {

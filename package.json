@@ -97,5 +97,7 @@
     "plugins": [
       "react"
     ]
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:olebedev/go-starter-kit.git"
 }
