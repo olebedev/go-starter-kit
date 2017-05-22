@@ -1,7 +1,7 @@
 BIN           = $(GOPATH)/bin
 ON            = $(BIN)/on
 GO_BINDATA    = $(BIN)/go-bindata
-NODE_BIN      = $(shell yarn bin)
+NODE_BIN      = $(shell npm bin)
 PID           = .pid
 GO_FILES      = $(filter-out ./server/bindata.go, $(shell find ./server  -type f -name "*.go"))
 TEMPLATES     = $(wildcard server/data/templates/*.html)
