@@ -27,7 +27,7 @@ export function run() {
 
 }
 
-// Export it to render on the Golang sever, keep the name sync with -
+// Export it to render on the Golang server, keep the name sync with -
 // https://github.com/olebedev/go-starter-kit/blob/master/src/app/server/react.go#L65
 export const renderToString = toString;
 
