@@ -1,0 +1,7 @@
+{
+  "template": "golang",
+  "ports": [5001],
+  "scripts": {
+    "Start Go Starter Kit": "cd $GOPATH/src/github.com/nitrous-io/go-starter-kit && make serve"
+  }
+}

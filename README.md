@@ -29,7 +29,13 @@
 * [node.js](https://nodejs.org/) with [yarn](https://yarnpkg.com)
 * [GNU make](https://www.gnu.org/software/make/)
 
-Note that probably not works at windows.
+Note that probably does not work on Windows - you can instead create a free
+development environment to get started using this starter kit in the cloud on
+[Nitrous](https://www.nitrous.io/):
+
+<a href="https://www.nitrous.io/quickstart">
+  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
+</a>
 
 ## Project structure
 
@@ -90,6 +96,17 @@ client
 The client app will be compiled into `server/data/static/build/`.  Then it will be embedded into go package via _go-bindata_. After that the package will be compiled into binary.
 
 **Convention**: javascript app should declare [_main_](https://github.com/olebedev/go-starter-kit/blob/master/client/index.js#L4) function right in the global namespace. It will used to render the app at the server side.
+
+## Nitrous Quickstart
+
+You can quickly create a free development environment to get started using this
+starter kit in the cloud on [Nitrous](https://www.nitrous.io/):
+
+<a href="https://www.nitrous.io/quickstart">
+  <img src="https://nitrous-image-icons.s3.amazonaws.com/quickstart.png" alt="Nitrous Quickstart" width=142 height=34>
+</a>
+
+In the IDE, start Go Starter Kit via `Run > Start Go Starter Kit` and access your site via `Preview > 5001`.
 
 ## Install
 
