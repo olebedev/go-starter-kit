@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/middleware"
 	"github.com/nu7hatch/gouuid"
 	"github.com/olebedev/config"
+	"github.com/nytimes/gziphandler"
 )
 
 // App struct.
@@ -68,6 +69,16 @@ func NewApp(opts ...AppOptions) *App {
 		Format: `${method} | ${status} | ${uri} -> ${latency_human}` + "\n",
 	}))
 
+	engine.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Skipper: middleware.Skipper(func(c echo.Context) bool {
+			if _, err := Asset(c.Request().URL.Path[1:]); err == nil {
+				return true
+			}
+			return false
+		}),
+		Level: -1,
+	}))
+
 	// Initialize the application
 	app := &App{
 		Conf:   conf,
@@ -98,11 +109,11 @@ func NewApp(opts ...AppOptions) *App {
 	)
 
 	// Create file http server from bindata
-	fileServerHandler := http.FileServer(&assetfs.AssetFS{
+	fileServerHandler := gziphandler.GzipHandler(http.FileServer(&assetfs.AssetFS{
 		Asset:     Asset,
 		AssetDir:  AssetDir,
 		AssetInfo: AssetInfo,
-	})
+	}))
 
 	// Serve static via bindata and handle via react app
 	// in case when static file was not found
