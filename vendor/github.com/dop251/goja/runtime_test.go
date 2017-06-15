@@ -2,6 +2,7 @@ package goja
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 	"testing"
 	"time"
@@ -806,6 +807,105 @@ func TestObjectKeys(t *testing.T) {
 	}
 }
 
+func TestReflectCallExtraArgs(t *testing.T) {
+	const SCRIPT = `
+	f(41, "extra")
+	`
+	f := func(x int) int {
+		return x + 1
+	}
+
+	vm := New()
+	vm.Set("f", f)
+
+	prg := MustCompile("test.js", SCRIPT, false)
+
+	res, err := vm.RunProgram(prg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !res.StrictEquals(intToValue(42)) {
+		t.Fatalf("Unexpected result: %v", res)
+	}
+}
+
+func TestReflectCallNotEnoughArgs(t *testing.T) {
+	const SCRIPT = `
+	f(42)
+	`
+	vm := New()
+
+	f := func(x, y int, z *int, s string) (int, error) {
+		if z != nil {
+			return 0, fmt.Errorf("z is not nil")
+		}
+		if s != "" {
+			return 0, fmt.Errorf("s is not \"\"")
+		}
+		return x + y, nil
+	}
+
+	vm.Set("f", f)
+
+	prg := MustCompile("test.js", SCRIPT, false)
+
+	res, err := vm.RunProgram(prg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !res.StrictEquals(intToValue(42)) {
+		t.Fatalf("Unexpected result: %v", res)
+	}
+}
+
+func TestReflectCallVariadic(t *testing.T) {
+	const SCRIPT = `
+	var r = f("Hello %s, %d", "test", 42);
+	if (r !== "Hello test, 42") {
+		throw new Error("test 1 has failed: " + r);
+	}
+
+	r = f("Hello %s, %d", ["test", 42]);
+	if (r !== "Hello test, 42") {
+		throw new Error("test 2 has failed: " + r);
+	}
+
+	r = f("Hello %s, %s", "test");
+	if (r !== "Hello test, %!s(MISSING)") {
+		throw new Error("test 3 has failed: " + r);
+	}
+
+	r = f();
+	if (r !== "") {
+		throw new Error("test 4 has failed: " + r);
+	}
+
+	`
+
+	vm := New()
+	vm.Set("f", fmt.Sprintf)
+
+	prg := MustCompile("test.js", SCRIPT, false)
+
+	_, err := vm.RunProgram(prg)
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestReflectNullValueArgument(t *testing.T) {
+	rt := New()
+	rt.Set("fn", func(v Value) {
+		if v == nil {
+			t.Error("null becomes nil")
+		}
+		if !IsNull(v) {
+			t.Error("null is not null")
+		}
+	})
+	rt.RunString(`fn(null);`)
+}
+
 /*
 func TestArrayConcatSparse(t *testing.T) {
 function foo(a,b,c)
@@ -828,3 +928,31 @@ function foo(a,b,c)
 	testScript1(SCRIPT, valueTrue, t)
 }
 */
+
+func BenchmarkCallReflect(b *testing.B) {
+	vm := New()
+	vm.Set("f", func(v Value) {
+
+	})
+
+	prg := MustCompile("test.js", "f(null)", true)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		vm.RunProgram(prg)
+	}
+}
+
+func BenchmarkCallNative(b *testing.B) {
+	vm := New()
+	vm.Set("f", func(call FunctionCall) (ret Value) {
+		return
+	})
+
+	prg := MustCompile("test.js", "f(null)", true)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		vm.RunProgram(prg)
+	}
+}

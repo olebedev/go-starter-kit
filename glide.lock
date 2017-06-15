@@ -1,5 +1,5 @@
-hash: 589d3fd1ab15d306a78ae118c3e64c287e9f2bb3446e8a58b86ef29d796f8dfa
-updated: 2017-02-20T11:13:26.192169592+05:00
+hash: 7e575e8d8974ce229b2a5aa3e908468b483a5dbdd36d905e392980a3b8d4e481
+updated: 2017-06-15T11:24:56.989567422+05:00
 imports:
 - name: github.com/codegangsta/cli
   version: 347a9884a87374d000eec7e6445a34487c1f4a2b
@@ -10,7 +10,7 @@ imports:
   subpackages:
   - syntax
 - name: github.com/dop251/goja
-  version: d382686fd20bf93d9c4cf2ea0234ae2d353e23cb
+  version: 09718839f5255969d0dcaef99119b867d187ecea
   subpackages:
   - ast
   - file
