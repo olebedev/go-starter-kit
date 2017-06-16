@@ -18,3 +18,4 @@ import:
   - fetch
 - package: github.com/olebedev/on
 - package: github.com/jteeuwen/go-bindata
+- package: github.com/NYTimes/gziphandler
