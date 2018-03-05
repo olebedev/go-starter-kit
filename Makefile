@@ -14,7 +14,6 @@ APP_NAME      = $(shell pwd | sed 's:.*/::')
 TARGET        = $(BIN)/$(APP_NAME)
 GIT_HASH      = $(shell git rev-parse HEAD)
 LDFLAGS       = -w -X main.commitHash=$(GIT_HASH)
-GLIDE         := $(shell command -v glide 2> /dev/null)
 
 build: $(ON) $(GO_BINDATA) clean $(TARGET)
 
@@ -58,9 +57,3 @@ lint:
 
 install:
 	@yarn install
-
-ifdef GLIDE
-	@glide install
-else
-	$(warning "Skipping installation of Go dependencies: glide is not installed")
-endif
