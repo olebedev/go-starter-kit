@@ -1,0 +1,29 @@
+[[constraint]]
+  name = "github.com/codegangsta/cli"
+
+[[constraint]]
+  name = "github.com/dop251/goja"
+
+[[constraint]]
+  name = "github.com/dop251/goja_nodejs"
+
+[[constraint]]
+  name = "github.com/elazarl/go-bindata-assetfs"
+
+[[constraint]]
+  name = "github.com/fatih/structs"
+
+[[constraint]]
+  name = "github.com/itsjamie/go-bindata-templates"
+
+[[constraint]]
+  name = "github.com/labstack/echo"
+
+[[constraint]]
+  name = "github.com/nu7hatch/gouuid"
+
+[[constraint]]
+  name = "github.com/olebedev/config"
+
+[[constraint]]
+  name = "github.com/olebedev/gojax"
